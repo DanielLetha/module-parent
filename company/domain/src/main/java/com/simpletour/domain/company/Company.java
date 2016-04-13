@@ -47,7 +47,7 @@ public class Company extends CanLogicDelDomain {
     @Column
     private String link;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String remark;
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)

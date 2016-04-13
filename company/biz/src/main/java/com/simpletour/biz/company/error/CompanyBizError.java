@@ -11,7 +11,7 @@ public enum CompanyBizError implements IError {
     COMPANY_DEL("0001", "公司对象已经被删除"),
     COMPANY_NAME_REPEAT("0002", "公司名字重复"),
     COMPANY_ID_ERROR("0003", "公司ID为空"),
-    EMPLOYEE_DEPEND_ON_COMPANY("0004", "员工依赖公司"),
+    EMPLOYEE_DEPEND_ON_COMPANY("0004", "员工依赖公司,不能被删除"),
     COMPANY_UPDATE_VERSION_NULL("0005", "更新公司时，公司Version为空"),
     COMPANY_QUERY_CONDITION_NULL("0006", "公司查询时条件为NULL"),
     ;

@@ -52,7 +52,7 @@ public class CompanyServiceImp implements ICompanyService {
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Optional<Company> addCompany(Company company, List<String> permissionCodeList, String password,String avatar) throws BaseSystemException {
+    public Optional<Company> addCompany(Company company, List<String> permissionCodeList, String password, String avatar) throws BaseSystemException {
         verifyCompany(company, Boolean.FALSE);
         Company companySaved = companyBiz.addCompany(company);
         if (companySaved == null) throw new BaseSystemException(CompanyServiceError.COMPANY_SAVE_FAILURE);

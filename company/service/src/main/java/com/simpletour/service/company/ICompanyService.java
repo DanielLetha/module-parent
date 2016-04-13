@@ -36,7 +36,7 @@ public interface ICompanyService {
      * @return
      * @throws
      */
-    Optional<Company> addCompany(Company company, List<String> permissionCodeList, String password,String avatar) throws BaseSystemException;
+    Optional<Company> addCompany(Company company, List<String> permissionCodeList, String password, String avatar) throws BaseSystemException;
 
     /**
      * 删除公司
