@@ -1,6 +1,7 @@
 package com.simpletour.service.company.error;
 
-import com.simpletour.common.core.error.IError;
+
+import com.simpletour.commons.data.error.IError;
 
 /**
  * 超级管理员服务层的错误

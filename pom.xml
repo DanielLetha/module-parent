@@ -14,7 +14,7 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <simpletour.common.version>1.2</simpletour.common.version>
+        <simpletour.common.version>1.0.0</simpletour.common.version>
         <spring.version>4.2.2.RELEASE</spring.version>
         <aspectj.version>1.8.7</aspectj.version>
         <simpletour.version>2.0</simpletour.version>
@@ -24,12 +24,17 @@
         <dependencies>
             <!-- internal common artifact -->
             <dependency>
-                <groupId>com.simpletour.common</groupId>
-                <artifactId>common-core</artifactId>
+                <groupId>com.simpletour.commons</groupId>
+                <artifactId>data</artifactId>
                 <version>${simpletour.common.version}</version>
             </dependency>
             <!-- 3td Party Dependency, all modules must have same version of third party dependency -->
             <!--spring config-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>

@@ -1,6 +1,6 @@
 package com.simpletour.service.company;
 
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.company.Administrator;
 
 import java.util.Optional;

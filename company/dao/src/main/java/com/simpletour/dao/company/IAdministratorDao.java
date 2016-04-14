@@ -1,6 +1,7 @@
 package com.simpletour.dao.company;
 
-import com.simpletour.common.core.dao.IBaseDao;
+
+import com.simpletour.commons.data.dao.IBaseDao;
 
 /**
  * 超级管理员的数据库基本操作

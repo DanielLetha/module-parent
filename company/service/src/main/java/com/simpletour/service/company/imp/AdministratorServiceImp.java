@@ -1,6 +1,6 @@
 package com.simpletour.service.company.imp;
 
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IAdministratorDao;
 import com.simpletour.domain.company.Administrator;
 import com.simpletour.service.company.IAdministratorService;

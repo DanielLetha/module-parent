@@ -13,6 +13,12 @@
     <artifactId>company-dao</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.simpletour.commons</groupId>
+            <artifactId>data</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>company-domain</artifactId>
