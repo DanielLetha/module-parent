@@ -1,6 +1,7 @@
 package com.simpletour.dao.company.support;
 
 
+import com.simpletour.commons.data.dao.jpa.DependencyHandleDAO;
 import com.simpletour.commons.data.dao.jpa.JPABaseDAO;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.dao.query.QueryUtil;
@@ -18,7 +19,7 @@ import java.util.Map;
  * Date: 2016/4/8
  * Time: 10:29
  */
-public class JoinDao extends JPABaseDAO {
+public class JoinDao extends DependencyHandleDAO {
     public <T extends BaseDomain> DomainPage getEntitiesPagesByQuery(Class<T> clazz, ConditionOrderByQuery query) {
         if (query == null)
             query = new ConditionOrderByQuery();
