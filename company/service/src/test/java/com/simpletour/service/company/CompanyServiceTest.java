@@ -1,9 +1,9 @@
 package com.simpletour.service.company;
 
-import com.simpletour.common.core.dao.query.condition.AndConditionSet;
-import com.simpletour.common.core.dao.query.condition.Condition;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
+import com.simpletour.commons.data.dao.query.condition.Condition;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.ICompanyDao;
 import com.simpletour.dao.company.query.CompanyDaoQuery;
 import com.simpletour.domain.company.Company;
@@ -66,13 +66,13 @@ public class CompanyServiceTest extends AbstractTransactionalTestNGSpringContext
     @AfterClass
     public void tearDown() {
         if (companyId != null) {
-            companyDao.removeEntityById(Company.class, companyId, false);
+            companyDao.removeEntityById(Company.class, companyId);
         }
         if (permissionId != null) {
-            companyDao.removeEntityById(Permission.class, permissionId, false);
+            companyDao.removeEntityById(Permission.class, permissionId);
         }
         if (moudleId != null) {
-            companyDao.removeEntityById(Module.class, moudleId, false);
+            companyDao.removeEntityById(Module.class, moudleId);
         }
 
     }

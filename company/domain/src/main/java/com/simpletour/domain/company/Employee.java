@@ -1,6 +1,7 @@
 package com.simpletour.domain.company;
 
-import com.simpletour.common.core.domain.CanLogicDelDomain;
+
+import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "SYS_EMPLOYEE")
-public class Employee extends CanLogicDelDomain {
+public class Employee extends LogicalDeletableDomain {
 
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)

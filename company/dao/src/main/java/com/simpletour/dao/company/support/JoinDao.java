@@ -1,11 +1,12 @@
 package com.simpletour.dao.company.support;
 
-import com.simpletour.common.core.dao.jpa.JPABaseDAO;
-import com.simpletour.common.core.dao.query.ConditionOrderByQuery;
-import com.simpletour.common.core.dao.query.QueryUtil;
-import com.simpletour.common.core.dao.query.condition.Condition;
-import com.simpletour.common.core.domain.BaseDomain;
-import com.simpletour.common.core.domain.DomainPage;
+
+import com.simpletour.commons.data.dao.jpa.JPABaseDAO;
+import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
+import com.simpletour.commons.data.dao.query.QueryUtil;
+import com.simpletour.commons.data.dao.query.condition.Condition;
+import com.simpletour.commons.data.domain.BaseDomain;
+import com.simpletour.commons.data.domain.DomainPage;
 
 import javax.persistence.Query;
 import java.util.List;

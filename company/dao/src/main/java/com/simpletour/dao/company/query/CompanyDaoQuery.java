@@ -1,6 +1,6 @@
 package com.simpletour.dao.company.query;
 
-import com.simpletour.common.core.dao.query.condition.FieldMatcher;
+import com.simpletour.commons.data.dao.query.condition.FieldMatcher;
 import com.simpletour.dao.company.support.JoinConditionOrderByQuery;
 
 import java.util.HashMap;

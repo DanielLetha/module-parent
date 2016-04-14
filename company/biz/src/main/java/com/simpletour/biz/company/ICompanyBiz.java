@@ -1,8 +1,7 @@
 package com.simpletour.biz.company;
 
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.dao.company.query.CompanyDaoQuery;
 import com.simpletour.domain.company.Company;
 
@@ -76,8 +75,7 @@ public interface ICompanyBiz {
      * @param pageSize         分页大小
      * @param byLike           true：使用模糊查询，false：使用精确查询
      *
-     * @return       最新的景点实体
-     * @throws BaseSystemException 表明Scenic为空
+     * @return       最新的公司实体
      */
     DomainPage<Company> queryCompanyPagesByConditions(final Map<String, Object> conditions
             , String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike);
