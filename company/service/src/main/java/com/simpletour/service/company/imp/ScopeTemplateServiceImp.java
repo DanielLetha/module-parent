@@ -1,9 +1,8 @@
 package com.simpletour.service.company.imp;
 
-import com.simpletour.biz.company.IPermissionBiz;
 import com.simpletour.biz.company.IScopeTemplateBiz;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.query.ScopeTemplateDaoQuery;
 import com.simpletour.domain.company.Permission;
 import com.simpletour.domain.company.ScopeTemplate;

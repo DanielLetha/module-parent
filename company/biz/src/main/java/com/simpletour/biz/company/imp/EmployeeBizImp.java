@@ -2,10 +2,10 @@ package com.simpletour.biz.company.imp;
 
 import com.simpletour.biz.company.IEmployeeBiz;
 import com.simpletour.biz.company.error.EmployeeBizError;
-import com.simpletour.common.core.dao.query.ConditionOrderByQuery;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
-import com.simpletour.common.core.util.RandomString;
+import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.commons.data.util.RandomString;
 import com.simpletour.dao.company.IEmployeeDao;
 import com.simpletour.domain.company.Employee;
 import org.bouncycastle.util.encoders.Base64;
@@ -46,7 +46,7 @@ public class EmployeeBizImp implements IEmployeeBiz {
         if (id == null || id.longValue() <= 0) throw new BaseSystemException(EmployeeBizError.EMPLOYEE_ID_NULL);
         if (!this.queryEmployeeById(id).isPresent())
             throw new BaseSystemException(EmployeeBizError.EMPLOYEE_ORIGIN_NOT_EXISTED);
-        employeeDao.removeEntityById(Employee.class, id, true);
+        employeeDao.removeEntityById(Employee.class, id);
     }
 
     @Override

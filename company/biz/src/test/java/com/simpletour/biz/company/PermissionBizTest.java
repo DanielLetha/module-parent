@@ -1,8 +1,7 @@
 package com.simpletour.biz.company;
 
 import com.simpletour.biz.company.data.ModuleData;
-import com.simpletour.biz.company.error.PermissionBizError;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IModuleDao;
 import com.simpletour.domain.company.Module;
 import com.simpletour.domain.company.Permission;

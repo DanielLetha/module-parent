@@ -2,12 +2,11 @@ package com.simpletour.service.company;
 
 import com.simpletour.biz.company.IRoleBiz;
 import com.simpletour.biz.company.error.ModuleBizError;
-import com.simpletour.biz.company.error.PermissionBizError;
 import com.simpletour.biz.company.error.RoleBizError;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.error.DefaultError;
-import com.simpletour.common.core.error.IError;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.error.DefaultError;
+import com.simpletour.commons.data.error.IError;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.common.security.token.ThreadLocalToken;
 import com.simpletour.common.security.token.Token;
 import com.simpletour.dao.company.query.RoleQuery;

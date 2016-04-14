@@ -1,9 +1,9 @@
 package com.simpletour.service.company;
 
-import com.simpletour.common.core.dao.query.condition.AndConditionSet;
-import com.simpletour.common.core.dao.query.condition.Condition;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
+import com.simpletour.commons.data.dao.query.condition.Condition;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IScopeTemplateDao;
 import com.simpletour.dao.company.query.ScopeTemplateDaoQuery;
 import com.simpletour.domain.company.Module;

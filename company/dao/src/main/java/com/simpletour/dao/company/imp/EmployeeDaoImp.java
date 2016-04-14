@@ -1,7 +1,7 @@
 package com.simpletour.dao.company.imp;
 
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.dao.jpa.JPABaseDAO;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.dao.jpa.JPABaseDAO;
 import com.simpletour.dao.company.IEmployeeDao;
 import org.springframework.stereotype.Repository;
 

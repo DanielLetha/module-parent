@@ -1,6 +1,9 @@
 package com.simpletour.domain.company;
 
+import com.simpletour.commons.data.domain.EntityKey;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
+import com.simpletour.commons.data.domain.dependency.Dependency;
+import com.simpletour.commons.data.domain.dependency.IDependTracable;
 
 import javax.persistence.*;
 import java.util.List;
@@ -222,4 +225,10 @@ public class Company extends LogicalDeletableDomain {
                 ", remark='" + remark + '\'' +
                 '}';
     }
+
+    @Override
+    public EntityKey getEntityKey() {
+        return new EntityKey("sys_company",getId());
+    }
+
 }

@@ -7,7 +7,7 @@ package com.simpletour.domain.company;
  * Time: 17:53
  */
 
-import com.simpletour.common.core.domain.BaseDomain;
+import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 import org.springframework.util.ClassUtils;
 
 import javax.persistence.*;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "SYS_MODULE")
-public class Module extends BaseDomain{
+public class Module extends LogicalDeletableDomain{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

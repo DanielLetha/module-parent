@@ -1,9 +1,15 @@
 package com.simpletour.domain.company;
 
 
+import com.simpletour.commons.data.domain.EntityKey;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
+import com.simpletour.commons.data.domain.dependency.Dependency;
+import com.simpletour.commons.data.domain.dependency.IDependTracable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Description 后台用户对象
@@ -13,7 +19,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "SYS_EMPLOYEE")
-public class Employee extends LogicalDeletableDomain {
+public class Employee extends LogicalDeletableDomain implements IDependTracable{
 
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -224,5 +230,15 @@ public class Employee extends LogicalDeletableDomain {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Override
+    public EntityKey getEntityKey() {
+        return new EntityKey("sys_employee",getId());
+    }
+
+    @Override
+    public List<Dependency> getDependencies() {
+        return Arrays.asList(new Dependency(company.getEntityKey()),new Dependency(role.getEntityKey()));
     }
 }

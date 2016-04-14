@@ -1,6 +1,7 @@
 package com.simpletour.domain.company;
 
-import com.simpletour.common.core.domain.BaseDomain;
+import com.simpletour.commons.data.domain.BaseDomain;
+import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "SYS_SCOPE_TEMPLATE")
-public class ScopeTemplate extends BaseDomain{
+public class ScopeTemplate extends LogicalDeletableDomain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

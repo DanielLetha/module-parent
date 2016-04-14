@@ -29,9 +29,6 @@ import java.util.*;
 public class CompanyServiceImp implements ICompanyService {
 
     @Resource
-    private IPermissionBiz permissionBiz;
-
-    @Resource
     private IModuleBiz moduleBiz;
 
     @Resource
@@ -141,16 +138,16 @@ public class CompanyServiceImp implements ICompanyService {
         //对公司包含的功能以及模块是否存在进行验证
         ArrayList<Permission> permissions = new ArrayList<>();
         for (Permission permission:company.getPermissions()){
-            boolean permissionExisted = permissionBiz.isExisted(permission.getId());
+            boolean permissionExisted = moduleBiz.isPermissionExisted(permission.getId());
             if (!permissionExisted){
                 throw  new BaseSystemException(CompanyServiceError.PERMISSION_NOT_EXIST);
             }
-            boolean moduleExisted = moduleBiz.isExisted(permission.getModule().getId());
+            boolean moduleExisted = moduleBiz.isModuleExisted(permission.getModule().getId());
             if (!moduleExisted){
                 throw new BaseSystemException(CompanyServiceError.MODULE_NOT_EXIST);
             }
             //从数据库查询出permisssion
-            Permission permisssionFormDb = permissionBiz.getById(permission.getId());
+            Permission permisssionFormDb = moduleBiz.getPermissionById(permission.getId());
             if (permisssionFormDb != null){
                 permissions.add(permisssionFormDb);
             }
@@ -167,11 +164,11 @@ public class CompanyServiceImp implements ICompanyService {
         ArrayList<Permission> permissions = new ArrayList<>();
         if (permissionCodeList != null && !permissionCodeList.isEmpty()){
             for (String code: permissionCodeList){
-                List<Permission> permissionList = permissionBiz.getByCode(code);
-                if (permissionList == null || permissionList.isEmpty()){
+                Permission permission = moduleBiz.getPermissionByCode(code);
+                if (permission == null){
                     throw new BaseSystemException(CompanyServiceError.COMPANY_ROLE_PERMISSION_NOT_IS_EXIST);
                 }
-                permissions.add(permissionList.get(0));
+                permissions.add(permission);
             }
         }
         Role role = new Role("公司管理员", 0, company, "", permissions);

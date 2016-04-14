@@ -1,7 +1,7 @@
 package com.simpletour.dao.company.query;
 
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.dao.query.BaseQuery;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.dao.query.BaseQuery;
 
 /**
  * 文件描述：角色查询条件封装类

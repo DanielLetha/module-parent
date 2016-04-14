@@ -1,6 +1,6 @@
 package com.simpletour.biz.company.error;
 
-import com.simpletour.common.core.error.IError;
+import com.simpletour.commons.data.error.IError;
 
 /**
  * 文件描述：角色错误信息定义描述类

@@ -1,6 +1,6 @@
 package com.simpletour.service.company.data;
 
-import com.simpletour.common.core.domain.BaseDomain;
+import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.dao.company.IEmployeeDao;
 import com.simpletour.domain.company.Company;
 import com.simpletour.domain.company.Employee;

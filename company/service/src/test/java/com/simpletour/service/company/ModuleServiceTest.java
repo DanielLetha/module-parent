@@ -1,10 +1,10 @@
 package com.simpletour.service.company;
 
 import com.simpletour.biz.company.error.ModuleBizError;
-import com.simpletour.common.core.dao.query.condition.AndConditionSet;
-import com.simpletour.common.core.dao.query.condition.Condition;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
+import com.simpletour.commons.data.dao.query.condition.Condition;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IModuleDao;
 import com.simpletour.dao.company.IPermissionDao;
 import com.simpletour.dao.company.query.ModuleDaoQuery;

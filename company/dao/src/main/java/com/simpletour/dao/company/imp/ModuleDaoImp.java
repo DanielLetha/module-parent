@@ -1,6 +1,6 @@
 package com.simpletour.dao.company.imp;
 
-import com.simpletour.common.core.dao.IBaseDao;
+import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.dao.company.IModuleDao;
 import com.simpletour.dao.company.support.JoinDao;
 import org.springframework.stereotype.Repository;

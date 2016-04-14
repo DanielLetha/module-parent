@@ -1,6 +1,6 @@
 package com.simpletour.dao.company;
 
-import com.simpletour.common.core.dao.IBaseDao;
+import com.simpletour.commons.data.dao.IBaseDao;
 
 /**
  * User: Xuhui/xuhui@simpletour.com

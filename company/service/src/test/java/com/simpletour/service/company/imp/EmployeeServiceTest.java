@@ -1,13 +1,13 @@
 package com.simpletour.service.company.imp;
 
 import com.simpletour.biz.company.error.EmployeeBizError;
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.dao.query.ConditionOrderByQuery;
-import com.simpletour.common.core.dao.query.condition.AndConditionSet;
-import com.simpletour.common.core.dao.query.condition.Condition;
-import com.simpletour.common.core.domain.BaseDomain;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
+import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
+import com.simpletour.commons.data.dao.query.condition.Condition;
+import com.simpletour.commons.data.domain.BaseDomain;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.common.security.token.ThreadLocalToken;
 import com.simpletour.common.security.token.Token;
 import com.simpletour.dao.company.ICompanyDao;

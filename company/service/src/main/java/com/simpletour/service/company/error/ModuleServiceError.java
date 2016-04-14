@@ -1,6 +1,6 @@
 package com.simpletour.service.company.error;
 
-import com.simpletour.common.core.error.IError;
+import com.simpletour.commons.data.error.IError;
 
 /**
  * Author：XuHui/xuhui@simpletour.com
