@@ -160,10 +160,10 @@ public class RoleDaoImp extends JPABaseDAO implements IRoleDao {
                 ROLE_FIELD_NAMES, filterDelPattern, getTenantIdFilterCondition("AND tenant_id"), getNameFilterPattern(query.getName()));
         roleSql += " INNER JOIN sys_r_role_permission rp ON rp.rid = temp_role.role_id INNER JOIN ";
 
-        String permissionSql = String.format("(SELECT %s FROM sys_permission c WHERE 1 = 1 AND %s %s) temp_permission",
-                PERMISSION_FIELD_NAMES, filterDelPattern, getNameFilterPattern(query.getPermission()));
-//        String permissionSql = String.format("(SELECT %s FROM sys_permission c WHERE 1 = 1 %s) temp_permission",
-//                PERMISSION_FIELD_NAMES, getNameFilterPattern(query.getPermission()));
+//        String permissionSql = String.format("(SELECT %s FROM sys_permission c WHERE 1 = 1 AND %s %s) temp_permission",
+//                PERMISSION_FIELD_NAMES, filterDelPattern, getNameFilterPattern(query.getPermission()));
+        String permissionSql = String.format("(SELECT %s FROM sys_permission c WHERE 1 = 1 %s) temp_permission",
+                PERMISSION_FIELD_NAMES, getNameFilterPattern(query.getPermission()));
         permissionSql += " ON rp.pid = temp_permission.permission_id INNER JOIN ";
 
         String moduleSql = String.format("(SELECT %s FROM sys_module c WHERE 1 = 1 AND %s %s) temp_module",
