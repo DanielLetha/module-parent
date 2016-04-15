@@ -9,7 +9,7 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.dao.product.IProductDao;
+import com.simpletour.dao.product.imp.IProductDao;
 import com.simpletour.dao.traveltrans.ITransportDao;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.TourismRoute;
