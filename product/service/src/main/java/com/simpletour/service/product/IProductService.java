@@ -3,6 +3,7 @@ package com.simpletour.service.product;
 
 import com.simpletour.commons.data.dao.query.condition.Condition;
 import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.domain.inventory.Stock;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.TourismRoute;
 
