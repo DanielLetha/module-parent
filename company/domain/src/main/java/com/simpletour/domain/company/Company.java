@@ -225,10 +225,4 @@ public class Company extends LogicalDeletableDomain {
                 ", remark='" + remark + '\'' +
                 '}';
     }
-
-    @Override
-    public EntityKey getEntityKey() {
-        return new EntityKey("sys_company",getId());
-    }
-
 }
