@@ -13,14 +13,16 @@ import java.util.Optional;
  * 文件版本：1.0
  * 创建人员：石广路
  * 创建日期：2016/4/8 16:56
- * 备注说明：null
+ * 备注说明：从simpletour-system项目迁移到com.simpletour.module项目的company模块当中。详细变更说明如下：
+ *         1、去掉该层的getTenantId()接口；
+ *         2、biz层对字符长度不再做限制。
  */
 public interface IRoleBiz {
-    int MIN_NAME_LEN = 2;
-
-    int MAX_NAME_LEN = 20;
-
-    int MAX_REMARK_LEN = 10000;
+//    int MIN_NAME_LEN = 2;
+//
+//    int MAX_NAME_LEN = 20;
+//
+//    int MAX_REMARK_LEN = 10000;
 
     /**
      * 获取当前角色权限关系的租户ID
@@ -32,7 +34,7 @@ public interface IRoleBiz {
      * @date        2016-04-08 11:43
      * @remark      null
      */
-    Long getTenantId();
+    //Long getTenantId();
 
     /**
      * 校验角色权限关系信息是否有效
@@ -78,7 +80,7 @@ public interface IRoleBiz {
      * 根据条件参数查询角色权限关系列表
      *
      * @param query 条件参数
-     * @return
+     * @return      角色权限关系列表
      *
      * @author      shiguanglu@simpletour.com
      * @since       2.0-SNAPSHOT
@@ -92,7 +94,7 @@ public interface IRoleBiz {
      * 根据条件参数查询角色权限关系分页列表
      *
      * @param query 条件参数
-     * @return
+     * @return      权限关系分页列表
      *
      * @author      shiguanglu@simpletour.com
      * @since       2.0-SNAPSHOT

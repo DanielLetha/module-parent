@@ -1,6 +1,5 @@
 package com.simpletour.domain.company;
 
-import com.google.common.collect.Lists;
 import com.simpletour.commons.data.domain.BaseDomain;
 
 import javax.persistence.*;
@@ -44,7 +43,7 @@ public class Permission extends BaseDomain {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "SYS_R_ROLE_PERMISSION", joinColumns = {@JoinColumn(name = "pid")}, inverseJoinColumns = {@JoinColumn(name = "rid")})
     @OrderBy("id")
-    private List<Role> roleList = Lists.newArrayList();
+    private List<Role> roleList;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "SYS_R_COMPANY_PERMISSION", joinColumns = {@JoinColumn(name = "pid")}, inverseJoinColumns = {@JoinColumn(name = "cid")})
