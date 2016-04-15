@@ -49,7 +49,7 @@ public class CompanyServiceImp implements ICompanyService {
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public Optional<Company> addCompany(Company company, List<String> permissionCodeList, String password, String avatar) throws BaseSystemException {
+    public Optional<Company> addCompany(Company company, List<String> permissionCodeList,String avatar) throws BaseSystemException {
         verifyCompany(company, Boolean.FALSE);
         Company companySaved = companyBiz.addCompany(company);
         if (companySaved == null) throw new BaseSystemException(CompanyServiceError.COMPANY_SAVE_FAILURE);
@@ -57,7 +57,7 @@ public class CompanyServiceImp implements ICompanyService {
         Optional<Role> role = initRole(companySaved, permissionCodeList);
         if (!role.isPresent()) throw new BaseSystemException(CompanyServiceError.COMPANY_ROLE_INIT_FAILURE);
         //初始化公司管理员
-        Optional<Employee> employee = initEmployee(companySaved, role.get(), password, avatar);
+        Optional<Employee> employee = initEmployee(companySaved, role.get(),avatar);
         if (!employee.isPresent()) throw new  BaseSystemException(CompanyServiceError.COMPANY_EMPLOYEE_INIT_FAILURE);
         return Optional.ofNullable(companySaved);
     }
@@ -92,7 +92,7 @@ public class CompanyServiceImp implements ICompanyService {
     public Optional<Company> getCompanyById(Long id) {
         if (id == null) throw new BaseSystemException(CompanyServiceError.ID_NULL);
         Company company = companyBiz.findCompanyById(id);
-        return Optional.ofNullable(company != null && !company.getDel() ? company : null);
+        return Optional.ofNullable(company);
     }
 
     @Override
@@ -180,29 +180,8 @@ public class CompanyServiceImp implements ICompanyService {
      * @param company 已经保存的company，不需要判空
      * @param role 初始化后的角色，不需要判空
      */
-    private Optional<Employee> initEmployee(Company company,Role role,String password,String avatar){
-        String salt = generateSalt();
-        String md5Password = getMd5Password(password, salt);
-        Employee employee = new Employee(Boolean.TRUE,"admin",company.getMobile(),avatar,md5Password, salt, company, role);
+    private Optional<Employee> initEmployee(Company company,Role role,String avatar){
+        Employee employee = new Employee(Boolean.TRUE,"admin",company.getMobile(),avatar,company, role);
         return employeeBiz.addEmployee(employee);
-    }
-
-    /**
-     * 得到盐
-     * @return
-     */
-    private  String generateSalt() {
-        SecureRandomNumberGenerator secureRandomNumberGenerator = new SecureRandomNumberGenerator();
-        return secureRandomNumberGenerator.nextBytes().toHex();
-    }
-
-    /**
-     * 得到加密后的密码
-     * @param password
-     * @param salt
-     * @return
-     */
-    private  String getMd5Password(String password, String salt) {
-        return new Md5Hash(password, salt).toBase64();
     }
 }

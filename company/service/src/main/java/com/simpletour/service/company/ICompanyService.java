@@ -31,12 +31,11 @@ public interface ICompanyService {
      *
      * @param company             新增加的公司实体
      * @param permissionCodeList  权限code列表，即新公司管理员，所对应的所有权限
-     * @param password            新公司管理员，密码
      * @param avatar              头像默认的地址
      * @return
      * @throws
      */
-    Optional<Company> addCompany(Company company, List<String> permissionCodeList, String password, String avatar) throws BaseSystemException;
+    Optional<Company> addCompany(Company company, List<String> permissionCodeList,String avatar) throws BaseSystemException;
 
     /**
      * 删除公司
