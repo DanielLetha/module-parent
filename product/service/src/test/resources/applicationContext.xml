@@ -38,7 +38,7 @@
         <property name="packagesToScan">
             <array>
                 <value>com.simpletour.domain</value>
-                <value>com.simpletour.common.core.domain</value>
+                <value>com.simpletour.commons.data.domain</value>
             </array>
         </property>
         <!-- 指定JPA属性；如Hibernate中指定是否显示SQL的是否显示、方言等 -->
