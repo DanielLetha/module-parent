@@ -60,7 +60,7 @@ public interface IRoleService {
      * 根据条件参数查询角色权限关系列表
      *
      * @param query 条件参数
-     * @return
+     * @return      角色权限关系列表
      *
      * @author      shiguanglu@simpletour.com
      * @since       2.0-SNAPSHOT
@@ -74,7 +74,7 @@ public interface IRoleService {
      * 根据条件参数查询角色权限关系分页列表
      *
      * @param query 条件参数
-     * @return
+     * @return      权限关系分页列表
      *
      * @author      shiguanglu@simpletour.com
      * @since       2.0-SNAPSHOT

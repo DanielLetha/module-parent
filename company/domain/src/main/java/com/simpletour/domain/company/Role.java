@@ -1,8 +1,11 @@
 package com.simpletour.domain.company;
 
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
+import com.simpletour.commons.data.domain.dependency.Dependency;
+import com.simpletour.commons.data.domain.dependency.IDependTracable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +17,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "SYS_ROLE")
-public class Role extends LogicalDeletableDomain {
+public class Role extends LogicalDeletableDomain implements IDependTracable{
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -44,9 +47,6 @@ public class Role extends LogicalDeletableDomain {
      */
     @Column(columnDefinition = "text")
     private String remark;
-
-//    @OneToMany(targetEntity = Employee.class, mappedBy = "role")
-//    private List<Employee> employeeList;
 
     /**
      * 模块功能列表
@@ -125,14 +125,6 @@ public class Role extends LogicalDeletableDomain {
         this.remark = remark;
     }
 
-//    public List<Employee> getEmployeeList() {
-//        return employeeList;
-//    }
-
-//    public void setEmployeeList(List<Employee> employeeList) {
-//        this.employeeList = employeeList;
-//    }
-
     public List<Permission> getPermissionList() {
         return permissionList;
     }
@@ -166,5 +158,12 @@ public class Role extends LogicalDeletableDomain {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Dependency> getDependencies() {
+        List<Dependency> dependencies = new ArrayList<>(1);
+        dependencies.add(new Dependency(company.getEntityKey()));
+        return dependencies;
     }
 }

@@ -8,7 +8,6 @@ import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.query.RoleQuery;
 import com.simpletour.domain.company.Permission;
 import com.simpletour.domain.company.Role;
-import com.simpletour.service.company.ICompanyService;
 import com.simpletour.service.company.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,13 +30,7 @@ public class RoleServiceImp implements IRoleService {
     IRoleBiz roleBiz;
 
     @Autowired
-    ICompanyService companyService;
-
-    @Autowired
     IModuleBiz moduleBiz;
-
-//    @Autowired
-//    IPermissionBiz permissionBiz;
 
     private void validateModules(Role role) {
         List<Permission> permissionsList = role.getPermissionList();
@@ -46,12 +39,9 @@ public class RoleServiceImp implements IRoleService {
         }
 
         permissionsList.forEach(item -> {
-//            if (!permissionBiz.isAvailable(item)) {
-//                throw new BaseSystemException(RoleBizError.INVALID_PERMISSION);
-//            }
-//            if (!moduleBiz.isAvailable(item.getModule())) {
-//                throw new BaseSystemException(RoleBizError.INVALID_MODULE);
-//            }
+            if (!moduleBiz.isPermissionExisted(item.getId())) {
+                throw new BaseSystemException(RoleBizError.INVALID_PERMISSION);
+            }
         });
     }
 

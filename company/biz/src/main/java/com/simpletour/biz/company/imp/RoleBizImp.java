@@ -31,10 +31,10 @@ public class RoleBizImp implements IRoleBiz {
     @Autowired
     private IRoleDao roleDao;
 
-    @Override
-    public Long getTenantId() {
-        return 1l;//roleDao.getTenantId();
-    }
+//    @Override
+//    public Long getTenantId() {
+//        return roleDao.getTenantId();
+//    }
 
     @Override
     public void validateRole(Role role) throws BaseSystemException {
@@ -47,15 +47,15 @@ public class RoleBizImp implements IRoleBiz {
             throw new BaseSystemException(RoleBizError.ROLE_NAME_IS_EMPTY);
         }
 
-        int len = name.length();
-        if (MIN_NAME_LEN > len || MAX_NAME_LEN < len) {
-            throw new BaseSystemException(RoleBizError.ROLE_NAME_LEN_INVALID);
-        }
-
-        String remark = role.getRemark();
-        if (null != remark && MAX_REMARK_LEN < remark.length()) {
-            throw new BaseSystemException(RoleBizError.ROLE_REMARK_LEN_INVALID);
-        }
+//        int len = name.length();
+//        if (MIN_NAME_LEN > len || MAX_NAME_LEN < len) {
+//            throw new BaseSystemException(RoleBizError.ROLE_NAME_LEN_INVALID);
+//        }
+//
+//        String remark = role.getRemark();
+//        if (null != remark && MAX_REMARK_LEN < remark.length()) {
+//            throw new BaseSystemException(RoleBizError.ROLE_REMARK_LEN_INVALID);
+//        }
 
         validateTenantId(role);
 
@@ -86,10 +86,10 @@ public class RoleBizImp implements IRoleBiz {
             throw new BaseSystemException(e.getMessage(), RoleBizError.DELETE_FAILD);
         }
     }
-
+	
     @Override
     public List<Role> getRolesList(RoleQuery query) {
-        return roleDao.getEntitiesByFieldList(Role.class, fillQueryConditions(query));
+        return roleDao.getEntitiesByFieldList(Role.class, fillQueryConditions(query), query.getOrderByFiledName(), query.getOrderBy());
     }
 
     @Override
@@ -116,7 +116,7 @@ public class RoleBizImp implements IRoleBiz {
         Map<String, Object> conditions = new HashMap<>(2);
         conditions.put("name", name);
 
-        Long tenantId = getTenantId();
+        Long tenantId = roleDao.getTenantId();
         if (null != tenantId) {
             conditions.put("company.id", tenantId);
         }
@@ -126,7 +126,7 @@ public class RoleBizImp implements IRoleBiz {
     }
 
     private void validateTenantId(Role role) {
-        Long tenantId = getTenantId();
+        Long tenantId = roleDao.getTenantId();
         if (null == tenantId) {
             throw new BaseSystemException(RoleBizError.INVALID_TENANT_ID);
         }
@@ -156,7 +156,7 @@ public class RoleBizImp implements IRoleBiz {
 
         conditions.put("type", query.getType());
 
-        Long tenantId = getTenantId();
+        Long tenantId = roleDao.getTenantId();
         if (null != tenantId) {
             conditions.put("company.id", tenantId);
         }
