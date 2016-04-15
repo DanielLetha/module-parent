@@ -20,6 +20,16 @@
     <groupId>com.simpletour.module</groupId>
     <artifactId>transport</artifactId>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.simpletour.module</groupId>
+                <artifactId>inventory-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.simpletour.commons</groupId>

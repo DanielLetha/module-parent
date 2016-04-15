@@ -7,6 +7,8 @@ import com.simpletour.commons.data.dao.query.QueryUtil;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 import com.simpletour.commons.data.domain.dependency.DependEntity;
 import com.simpletour.commons.data.domain.dependency.IDependTracable;
+import com.simpletour.domain.inventory.InventoryType;
+import com.simpletour.domain.inventory.query.StockKey;
 import com.simpletour.domain.traveltrans.BusNo;
 
 import javax.persistence.*;

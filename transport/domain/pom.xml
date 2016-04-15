@@ -16,6 +16,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>inventory-domain</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
