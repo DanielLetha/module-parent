@@ -268,7 +268,7 @@ public class ProductBizImp implements IProductBiz {
     }
 
     public void deleteProductById(Long id) {
-        productDao.removeEntityById(Product.class, id, true);
+        productDao.removeEntityById(Product.class, id);
         stockBiz.deleteStocksByInventoryTypeId(InventoryType.product, id);
     }
 

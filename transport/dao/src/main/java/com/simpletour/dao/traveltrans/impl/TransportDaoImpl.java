@@ -8,6 +8,7 @@ import com.simpletour.commons.data.dao.query.condition.FieldMatcher;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.dao.traveltrans.ITransportDao;
 import com.simpletour.dao.traveltrans.util.Tuple;
+import com.simpletour.domain.product.TourismRouteLine;
 import com.simpletour.domain.traveltrans.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
