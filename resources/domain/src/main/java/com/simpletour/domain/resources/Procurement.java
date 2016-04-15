@@ -1,15 +1,11 @@
 package com.simpletour.domain.resources;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.simpletour.commons.data.dao.query.QueryUtil;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 import com.simpletour.commons.data.domain.dependency.Dependency;
 import com.simpletour.commons.data.domain.dependency.IDependTracable;
-import com.simpletour.domain.inventory.InventoryType;
-import com.simpletour.domain.inventory.query.IStockTraceable;
-import com.simpletour.domain.inventory.query.StockKey;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,7 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "TR_PROCUREMENT")
 @JSONType(serialzeFeatures = SerializerFeature.DisableCircularReferenceDetect)
-public class Procurement extends LogicalDeletableDomain implements IDependTracable, IStockTraceable {
+public class Procurement extends LogicalDeletableDomain implements IDependTracable { //, IStockTraceable
 
     public enum ResourceType {
         hotel("住宿"),
@@ -200,31 +196,31 @@ public class Procurement extends LogicalDeletableDomain implements IDependTracab
         this.id = id;
     }
 
-    @Override
-    public StockKey getStockKey() {
-        return new StockKey(InventoryType.procurement, id);
-    }
+//    @Override
+//    public StockKey getStockKey() {
+//        return new StockKey(InventoryType.procurement, id);
+//    }
 
-    @Override
-    @JSONField(serialize = false)
-    public List<StockKey> getDependentStockKeys() {
-        return Collections.emptyList();
-    }
+//    @Override
+//    @JSONField(serialize = false)
+//    public List<StockKey> getDependentStockKeys() {
+//        return Collections.emptyList();
+//    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Procurement)) return false;
-        Procurement that = (Procurement) o;
-        return that.getStockKey().equals(getStockKey());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result += InventoryType.valueOf("procurement").hashCode();
-        return result;
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Procurement)) return false;
+//        Procurement that = (Procurement) o;
+//        return that.getStockKey().equals(getStockKey());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = id != null ? id.hashCode() : 0;
+//        result += InventoryType.valueOf("procurement").hashCode();
+//        return result;
+//    }
 
     @Override
     public List<Dependency> getDependencies() {
