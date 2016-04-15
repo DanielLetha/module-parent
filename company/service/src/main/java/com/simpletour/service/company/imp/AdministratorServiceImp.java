@@ -6,6 +6,7 @@ import com.simpletour.domain.company.Administrator;
 import com.simpletour.service.company.IAdministratorService;
 import com.simpletour.service.company.error.AdministratorServiceError;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -22,11 +23,13 @@ public class AdministratorServiceImp implements IAdministratorService {
     private IAdministratorDao administratorDao;
 
     @Override
+    @Transactional
     public Optional<Administrator> findAdminByJobNo(String jobNo) throws BaseSystemException {
         return Optional.ofNullable(administratorDao.getEntityByField(Administrator.class, "jobNo", jobNo));
     }
 
     @Override
+    @Transactional
     public Optional<Administrator> updateAdminPassword(String jobNo, String password) throws BaseSystemException {
         if (jobNo == null || jobNo.isEmpty() || password == null || password.isEmpty()) {
             throw new BaseSystemException(AdministratorServiceError.EMPTY_ENTITY);
