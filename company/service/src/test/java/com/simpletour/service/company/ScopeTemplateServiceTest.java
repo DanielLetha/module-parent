@@ -241,8 +241,7 @@ public class ScopeTemplateServiceTest extends AbstractTransactionalTestNGSpringC
     public void testDelScopeTemplate() {
         scopeTemplateService.deleteScopeTemplate(scopeTemplateId);
         Optional<ScopeTemplate> stOptional = scopeTemplateService.getScopeTemplateById(scopeTemplateId);
-        Assert.assertTrue(stOptional.isPresent());
-        Assert.assertTrue(stOptional.get().getDel());
+        Assert.assertFalse(stOptional.isPresent());
     }
 
     private List<Permission> generateGetPermissionList() {

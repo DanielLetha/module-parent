@@ -60,7 +60,11 @@ public class ModuleBizImp implements IModuleBiz {
 
     @Override
     public Module getModuleById(Long id) {
-        return moduleDao.getEntityById(Module.class, id);
+        Module module=moduleDao.getEntityById(Module.class, id);
+        if(module==null||module.getDel())
+            return null;
+        else
+            return module;
     }
 
     @Override
