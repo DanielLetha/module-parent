@@ -1,0 +1,12 @@
+.*
+.idea/
+.idea/*
+.idea/libraries/*
+target/
+simpletour.*
+!*/Mybatis*
+!*/mybatis-config*
+!*/log4j.properties
+!.git/
+!.gitignore
+*.iml

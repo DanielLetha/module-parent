@@ -68,5 +68,4 @@
             <artifactId>spring-tx</artifactId>
         </dependency>
     </dependencies>
-
 </project>

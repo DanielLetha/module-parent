@@ -11,6 +11,10 @@
     
     <modules>
         <module>company</module>
+        <module>inventory</module>
+        <module>product</module>
+        <module>transport</module>
+        <module>resources</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,6 +43,11 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.0</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -71,6 +80,12 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>org.apache.derby</groupId>
+                <artifactId>derby</artifactId>
+                <version>10.12.1.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>1.0.12</version>
@@ -80,12 +95,6 @@
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
                 <version>6.9.9</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.simpletour</groupId>
-                <artifactId>simpletour-test-helper</artifactId>
-                <version>${project.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
