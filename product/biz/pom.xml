@@ -2,21 +2,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>product</artifactId>
         <groupId>com.simpletour.module</groupId>
-        <artifactId>company</artifactId>
         <version>2.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>company-service</artifactId>
+    <artifactId>product-biz</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.simpletour.module</groupId>
-            <artifactId>company-biz</artifactId>
+            <artifactId>product-dao</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>transport-dao</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.commons</groupId>
+            <artifactId>data</artifactId>
         </dependency>
         <!-- 单元测试 -->
         <dependency>
@@ -53,11 +61,6 @@
             <groupId>com.simpletour.commons</groupId>
             <artifactId>test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

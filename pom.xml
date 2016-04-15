@@ -11,6 +11,10 @@
     
     <modules>
         <module>company</module>
+        <module>inventory</module>
+        <module>product</module>
+        <module>transport</module>
+        <module>resources</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,6 +43,11 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.0</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
