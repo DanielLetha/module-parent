@@ -65,13 +65,11 @@ public class ScopeTemplateServiceTest extends AbstractTransactionalTestNGSpringC
     @AfterClass
     public void clearData() {
         if (scopeTemplateId != null) {
-            scopeTemplateDao.removeEntityById(ScopeTemplate.class, scopeTemplateId, false);
+            scopeTemplateDao.removeEntityById(ScopeTemplate.class, scopeTemplateId);
         }
-        if (permissionId != null) {
-            scopeTemplateDao.removeEntityById(Permission.class, permissionId, false);
-        }
+
         if (moudleId != null) {
-            scopeTemplateDao.removeEntityById(Module.class, moudleId, false);
+            scopeTemplateDao.removeEntityById(Module.class, moudleId);
         }
     }
 

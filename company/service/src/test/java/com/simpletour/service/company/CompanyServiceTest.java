@@ -35,8 +35,6 @@ public class CompanyServiceTest extends AbstractTransactionalTestNGSpringContext
     @Autowired
     private ICompanyService companyService;
     @Autowired
-    private IPermissionService permissionService;
-    @Autowired
     private IModuleService moduleService;
     @Autowired
     private ICompanyDao companyDao;
@@ -67,9 +65,6 @@ public class CompanyServiceTest extends AbstractTransactionalTestNGSpringContext
     public void tearDown() {
         if (companyId != null) {
             companyDao.removeEntityById(Company.class, companyId);
-        }
-        if (permissionId != null) {
-            companyDao.removeEntityById(Permission.class, permissionId);
         }
         if (moudleId != null) {
             companyDao.removeEntityById(Module.class, moudleId);
