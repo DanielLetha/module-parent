@@ -82,12 +82,6 @@
                 <version>6.9.9</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>com.simpletour</groupId>
-                <artifactId>simpletour-test-helper</artifactId>
-                <version>${project.version}</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
