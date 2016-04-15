@@ -1,5 +1,7 @@
 package com.simpletour.domain.product;
 
+import javax.persistence.*;
+
 /**
  * Created by yangdongfeng@simpletour.com on 2016/3/24.
  */

@@ -4,7 +4,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import com.simpletour.commons.data.dao.query.QueryUtil;
 import com.simpletour.commons.data.domain.BaseDomain;
+import com.simpletour.commons.data.domain.dependency.DependEntity;
 import com.simpletour.domain.resources.Destination;
 import com.simpletour.domain.resources.Procurement;
 
@@ -22,7 +24,7 @@ import java.util.List;
 @Entity
 @Table(name = "PROD_PACKAGE")
 @JSONType(serialzeFeatures = SerializerFeature.DisableCircularReferenceDetect)
-@DataChangeTraceable
+//@DataChangeTraceable
 public class ProductPackage extends BaseDomain {
 
     public ProductPackage() {

@@ -27,6 +27,7 @@
             <groupId>com.simpletour.commons</groupId>
             <artifactId>data</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

@@ -17,6 +17,10 @@
             <artifactId>product-dao</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.simpletour.commons</groupId>
+            <artifactId>data</artifactId>
+        </dependency>
         <!-- 单元测试 -->
         <dependency>
             <groupId>org.springframework</groupId>

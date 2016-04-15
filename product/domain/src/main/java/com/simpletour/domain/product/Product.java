@@ -2,10 +2,11 @@ package com.simpletour.domain.product;
 
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 import com.simpletour.commons.data.domain.dependency.IDependTracable;
-import org.hibernate.annotations.Table;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @Table(name = "PROD_PRODUCT")
 @JSONType(serialzeFeatures = SerializerFeature.DisableCircularReferenceDetect)
 @DataChangeTraceable
-public class Product extends CanLogicDelDomain implements IStockTraceable, IDependTracable {
+public class Product extends LogicalDeletableDomain implements IStockTraceable, IDependTracable {
     public Product() {
     }
 
