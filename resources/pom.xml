@@ -71,7 +71,6 @@
                 <groupId>com.simpletour.commons</groupId>
                 <artifactId>test</artifactId>
                 <version>1.0.0</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.shiro</groupId>

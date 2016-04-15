@@ -1,6 +1,5 @@
 package com.simpletour.biz.resources.imp;
 
-import com.simpletour.biz.inventory.IStockBiz;
 import com.simpletour.biz.resources.IProcurementBiz;
 import com.simpletour.biz.resources.IResourcesBiz;
 import com.simpletour.biz.resources.error.ResourcesBizError;
@@ -32,8 +31,8 @@ public class ResourcesBizImp implements IResourcesBiz {
     @Resource
     private IProcurementBiz procurementBiz;
 
-    @Resource
-    private IStockBiz stockBiz;
+//    @Resource
+//    private IStockBiz stockBiz;
 
     @Override
     public long getResourceId(IUnionEntityKey unionEntityKey) {
