@@ -17,15 +17,5 @@
             <groupId>com.simpletour.commons</groupId>
             <artifactId>data</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>jcommander</artifactId>
-            <version>1.48</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>15.0</version>
-        </dependency>
     </dependencies>
 </project>
