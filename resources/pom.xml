@@ -24,6 +24,7 @@
             <artifactId>resources-biz</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
         <!-- 单元测试 -->
         <dependency>
             <groupId>org.springframework</groupId>
