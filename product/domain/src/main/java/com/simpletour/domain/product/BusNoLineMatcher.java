@@ -1,4 +1,4 @@
-package product;
+package com.simpletour.domain.product;
 
 import com.simpletour.domain.traveltrans.BusNoSerial;
 import com.simpletour.domain.traveltrans.Line;

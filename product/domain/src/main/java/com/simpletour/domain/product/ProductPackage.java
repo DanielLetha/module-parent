@@ -1,4 +1,4 @@
-package product;
+package com.simpletour.domain.product;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;

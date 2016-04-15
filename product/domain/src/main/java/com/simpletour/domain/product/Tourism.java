@@ -1,4 +1,4 @@
-package product;
+package com.simpletour.domain.product;
 
 /**
  * Created by yangdongfeng@simpletour.com on 2016/3/24.
