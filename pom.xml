@@ -14,6 +14,7 @@
         <module>inventory</module>
         <module>product</module>
         <module>transport</module>
+        <module>resources</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -89,6 +90,11 @@
                 <artifactId>testng</artifactId>
                 <version>6.9.9</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.0</version>
             </dependency>
             <dependency>
                 <groupId>com.simpletour</groupId>
