@@ -108,13 +108,11 @@ public class Employee extends LogicalDeletableDomain implements IDependTracable{
         this.salt = salt;
     }
 
-    public Employee(Boolean isAdmin,String name,String mobile,String avater,String passwd, String salt, Company company, Role role) {
+    public Employee(Boolean isAdmin,String name,String mobile,String avater,Company company, Role role) {
         this.isAdmin = isAdmin;
         this.name = name;
         this.mobile = mobile;
         this.avater = avater;
-        this.passwd = passwd;
-        this.salt = salt;
         this.company = company;
         this.role = role;
     }
