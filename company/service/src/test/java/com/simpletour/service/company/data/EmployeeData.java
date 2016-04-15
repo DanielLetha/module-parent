@@ -5,7 +5,7 @@ import com.simpletour.dao.company.IEmployeeDao;
 import com.simpletour.domain.company.Company;
 import com.simpletour.domain.company.Employee;
 import com.simpletour.domain.company.Role;
-import com.simpletour.test.helper.generator.AbstractDataGenerator;
+import com.simpletour.commons.test.generator.AbstractDataGenerator;
 
 import java.util.List;
 

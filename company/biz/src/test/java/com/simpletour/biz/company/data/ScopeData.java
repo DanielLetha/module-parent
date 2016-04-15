@@ -1,11 +1,11 @@
 package com.simpletour.biz.company.data;
 
+import com.simpletour.commons.test.generator.AbstractDataGenerator;
 import com.simpletour.dao.company.IModuleDao;
 import com.simpletour.dao.company.IScopeTemplateDao;
 import com.simpletour.domain.company.Module;
 import com.simpletour.domain.company.Permission;
 import com.simpletour.domain.company.ScopeTemplate;
-import com.simpletour.test.helper.generator.AbstractDataGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

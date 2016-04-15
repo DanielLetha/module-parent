@@ -3,7 +3,7 @@ package com.simpletour.service.company.data;
 import com.simpletour.dao.company.IModuleDao;
 import com.simpletour.domain.company.Module;
 import com.simpletour.domain.company.Permission;
-import com.simpletour.test.helper.generator.AbstractDataGenerator;
+import com.simpletour.commons.test.generator.AbstractDataGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

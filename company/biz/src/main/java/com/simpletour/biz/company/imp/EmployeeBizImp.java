@@ -5,10 +5,8 @@ import com.simpletour.biz.company.error.EmployeeBizError;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.commons.data.util.RandomString;
 import com.simpletour.dao.company.IEmployeeDao;
 import com.simpletour.domain.company.Employee;
-import org.bouncycastle.util.encoders.Base64;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -36,7 +34,7 @@ public class EmployeeBizImp implements IEmployeeBiz {
         //设置jobNo
         setJobNoForEmployee(employee);
         //设置初始密码
-        employee.setPasswd(new String(Base64.encode(RandomString.getRandomNumberString(64).getBytes())));
+      //  employee.setPasswd(new String(Base64.encode(RandomString.getRandomNumberString(64).getBytes())));
         employee.setSalt(UUID.randomUUID().toString());
         return Optional.ofNullable(employeeDao.save(employee));
     }
