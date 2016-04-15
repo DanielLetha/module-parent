@@ -15,14 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>com.simpletour.module</groupId>
-            <artifactId>transport-domain</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
-            <artifactId>product-domain</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
             <artifactId>product-dao</artifactId>
         </dependency>
         <dependency>
@@ -31,26 +23,14 @@
         </dependency>
         <dependency>
             <groupId>com.simpletour.module</groupId>
-            <artifactId>resources-domain</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
-            <artifactId>inventory-domain</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
             <artifactId>inventory-dao</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
-            <artifactId>inventory-biz</artifactId>
-        </dependency>
-
-
         <!-- 单元测试 -->
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>resources-domain</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
