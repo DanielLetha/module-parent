@@ -29,6 +29,7 @@
 |id                 |int8          |64       |是   | 是    |                        |                        |
 |name               |varchar       |20       |     | 是    |权限名称                |唯一约束                |
 |remark             |text          |         |     |       |备注                    |                        |
+|del                |bool          |          |      |  是  |是否删除	            |                        |
 |version            |int4          |         |     | 是    |版本号                  |乐观锁                  |   
 |create_date        |timestamp     |6        |     |       |创建时间                |                        |              
 
@@ -45,6 +46,7 @@
 |name               |varchar       |20        |      |是    |模块名称               |         唯一约束       |
 |domain             |varchar       |50        |      |是    |域名                   |                        |
 |remark             |text          |          |      |      |备注                   |                        |
+|del                |bool          |          |      |  是  |是否删除	            |                        |
 |version            |int4          |          |      |是    |版本号                 |         乐观锁         |
 |create_date        |timestamp     |6         |      |      |创建时间               |                        |
 
