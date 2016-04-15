@@ -5,9 +5,9 @@ import com.simpletour.biz.resources.error.ResourcesBizError;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.domain.resources.Area;
+import com.simpletour.domain.resources.Destination;
 import org.springframework.stereotype.Component;
-import resources.Area;
-import resources.Destination;
 
 import javax.annotation.Resource;
 import java.util.HashMap;

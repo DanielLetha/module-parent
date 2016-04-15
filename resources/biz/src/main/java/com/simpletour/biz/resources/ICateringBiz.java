@@ -3,7 +3,7 @@ package com.simpletour.biz.resources;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import resources.Catering;
+import com.simpletour.domain.resources.Catering;
 
 import java.util.Map;
 

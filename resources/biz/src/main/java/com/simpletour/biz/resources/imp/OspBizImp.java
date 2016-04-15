@@ -6,9 +6,9 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.resources.IResourcesDao;
+import com.simpletour.domain.resources.OfflineServiceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import resources.OfflineServiceProvider;
 
 import java.util.HashMap;
 import java.util.List;

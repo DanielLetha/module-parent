@@ -1,6 +1,5 @@
-package resources;
+package com.simpletour.domain.resources;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
@@ -13,35 +12,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 景区
+ * 娱乐、晚会信息
  * <p>
  * Created by Jeff.Song on 2015/11/19.
  */
 @Entity
-@Table(name = "TR_SCENIC")
+@Table(name = "TR_ENTERTAINMENT")
 @JSONType(serialzeFeatures = SerializerFeature.DisableCircularReferenceDetect)
-public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, IDependTracable {
+public class Entertainment extends LogicalDeletableDomain implements IDependTracable {
 
-    @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    protected Long id;
+    public enum Type{
+        activity("活动"), others("其他");
+
+        private  String remark;
+        Type(String remark){
+            this.remark = remark;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+    }
 
     @Column(name = "tenant_id")
     private Long tenantId;
 
-    @ManyToOne
-    @JoinColumn(name = "destination_id")
-    private Destination destination;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    protected Long id;
 
     /**
-     *
+     * 娱乐项目名称
      */
     @Column
     private String name;
 
+    /**
+     * 娱乐类型
+     */
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Type type = Type.activity;
+    /**
+     * 活动地点
+     */
     @Column
     private String address;
+
+    /**
+     * 目的地
+     */
+    @ManyToOne
+    @JoinColumn(name = "destination_id")
+    private Destination destination;
 
     /**
      * 位置信息(经度)
@@ -65,17 +89,18 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
     @Version
     private Integer version;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    @JSONField(serialize = false)
-    private Scenic parent;
+    public Entertainment(){}
 
-    @OneToMany(mappedBy = "parent")
-    @JSONField(serialize = false)
-    private List<Scenic> scenics;
-
-    @Transient
-    private static UnionEntityKey unionEntityKey;
+    public Entertainment(String name,Type type,String address,String remark,
+                         Destination destination,BigDecimal lon,BigDecimal lat){
+        this.name=name;
+        this.type=type;
+        this.address=address;
+        this.remark=remark;
+        this.destination=destination;
+        this.lon=lon;
+        this.lat=lat;
+    }
 
     public Long getTenantId() {
         return tenantId;
@@ -83,14 +108,6 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
 
     public void setTenantId(Long tenantId) {
         this.tenantId = tenantId;
-    }
-
-    public Destination getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Destination destination) {
-        this.destination = destination;
     }
 
     public String getName() {
@@ -107,6 +124,14 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Destination getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Destination destination) {
+        this.destination = destination;
     }
 
     public BigDecimal getLon() {
@@ -141,20 +166,12 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
         this.version = version;
     }
 
-    public Scenic getParent() {
-        return parent;
+    public Type getType() {
+        return type;
     }
 
-    public void setParent(Scenic parent) {
-        this.parent = parent;
-    }
-
-    public List<Scenic> getScenics() {
-        return scenics;
-    }
-
-    public void setScenics(List<Scenic> scenics) {
-        this.scenics = scenics;
+    public void setType(Type type) {
+        this.type = type;
     }
 
     @Override
@@ -168,27 +185,9 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
     }
 
     @Override
-    @JSONField(serialize = false)
-    public UnionEntityKey getUnionEntityKey() {
-        if (null == name || null == destination) {
-            return null;
-        }
-
-        if (null == unionEntityKey) {
-            unionEntityKey = new UnionEntityKey(Scenic.class, name, destination);
-        } else {
-            unionEntityKey.setName(name);
-            unionEntityKey.setDestination(destination);
-        }
-
-        return unionEntityKey;
-    }
-
-    @Override
     public List<Dependency> getDependencies() {
         List<Dependency> dependencyList = new ArrayList<>();
         dependencyList.add(new Dependency(destination.getEntityKey()));
-        dependencyList.add(new Dependency(parent.getEntityKey()));
         return dependencyList;
     }
 }

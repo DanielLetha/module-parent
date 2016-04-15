@@ -1,4 +1,4 @@
-package resources;
+package com.simpletour.domain.resources;
 
 /**
  * 文件描述：资源模块联合主键获取接口

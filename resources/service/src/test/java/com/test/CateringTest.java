@@ -2,6 +2,9 @@ package com.test;
 
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.resources.IResourcesDao;
+import com.simpletour.domain.resources.Area;
+import com.simpletour.domain.resources.Catering;
+import com.simpletour.domain.resources.Destination;
 import com.simpletour.service.resources.IResourcesService;
 import com.simpletour.service.resources.error.ResourcesServiceError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +16,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import resources.Area;
-import resources.Catering;
-import resources.Destination;
 
 import java.math.BigDecimal;
 import java.util.Optional;

@@ -4,8 +4,8 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
-import resources.Procurement;
-import resources.UnionEntityKey;
+import com.simpletour.domain.resources.Procurement;
+import com.simpletour.domain.resources.UnionEntityKey;
 
 import java.util.Map;
 

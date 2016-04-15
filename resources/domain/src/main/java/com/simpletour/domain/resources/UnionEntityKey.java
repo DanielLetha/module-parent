@@ -1,4 +1,4 @@
-package resources;
+package com.simpletour.domain.resources;
 
 
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;

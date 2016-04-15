@@ -1,5 +1,6 @@
-package resources;
+package com.simpletour.domain.resources;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
@@ -12,20 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 娱乐、晚会信息
- * <p>
  * Created by Jeff.Song on 2015/11/19.
  */
 @Entity
-@Table(name = "TR_ENTERTAINMENT")
+@Table(name = "TR_HOTEL")
 @JSONType(serialzeFeatures = SerializerFeature.DisableCircularReferenceDetect)
-public class Entertainment extends LogicalDeletableDomain implements IDependTracable {
+public class Hotel extends LogicalDeletableDomain implements IUnionEntityKey, IDependTracable {
 
-    public enum Type{
-        activity("活动"), others("其他");
+    public enum StayType {
+        hotel("酒店"), inn("客栈"), folk_house("民居"), others("其他");
 
-        private  String remark;
-        Type(String remark){
+        private String remark;
+
+        StayType(String remark) {
             this.remark = remark;
         }
 
@@ -34,28 +34,29 @@ public class Entertainment extends LogicalDeletableDomain implements IDependTrac
         }
     }
 
-    @Column(name = "tenant_id")
-    private Long tenantId;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     protected Long id;
 
+    @Column(name = "tenant_id")
+    private Long tenantId;
+
     /**
-     * 娱乐项目名称
+     * 住宿点名称
      */
     @Column
     private String name;
 
     /**
-     * 娱乐类型
+     * 住宿点类型
      */
     @Column
     @Enumerated(EnumType.STRING)
-    private Type type = Type.activity;
+    private StayType type = StayType.hotel;
+
     /**
-     * 活动地点
+     * 详细地址
      */
     @Column
     private String address;
@@ -89,25 +90,27 @@ public class Entertainment extends LogicalDeletableDomain implements IDependTrac
     @Version
     private Integer version;
 
-    public Entertainment(){}
+    @Transient
+    private static UnionEntityKey unionEntityKey;
 
-    public Entertainment(String name,Type type,String address,String remark,
-                         Destination destination,BigDecimal lon,BigDecimal lat){
-        this.name=name;
-        this.type=type;
-        this.address=address;
-        this.remark=remark;
-        this.destination=destination;
+    public Hotel() {
+    }
+
+    public Hotel(String name, String address, String remark, StayType type,
+                 Destination destination, BigDecimal lon, BigDecimal lat) {
+        this.name = name;
+        this.address = address;
+        this.remark = remark;
+        this.type = type;
+        this.destination = destination;
         this.lon=lon;
         this.lat=lat;
     }
 
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
+    public Hotel(Long id, String name, String address, String remark, StayType type,
+                 Destination destination, BigDecimal lon, BigDecimal lat) {
+        this(name, address, remark, type, destination, lon, lat);
+        this.id=id;
     }
 
     public String getName() {
@@ -118,20 +121,20 @@ public class Entertainment extends LogicalDeletableDomain implements IDependTrac
         this.name = name;
     }
 
+    public StayType getType() {
+        return type;
+    }
+
+    public void setType(StayType type) {
+        this.type = type;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Destination getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Destination destination) {
-        this.destination = destination;
     }
 
     public BigDecimal getLon() {
@@ -166,12 +169,20 @@ public class Entertainment extends LogicalDeletableDomain implements IDependTrac
         this.version = version;
     }
 
-    public Type getType() {
-        return type;
+    public Long getTenantId() {
+        return tenantId;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public Destination getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Destination destination) {
+        this.destination = destination;
     }
 
     @Override
@@ -182,6 +193,23 @@ public class Entertainment extends LogicalDeletableDomain implements IDependTrac
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    @JSONField(serialize = false)
+    public UnionEntityKey getUnionEntityKey() {
+        if (null == name || null == destination) {
+            return null;
+        }
+
+        if (null == unionEntityKey) {
+            unionEntityKey = new UnionEntityKey(Hotel.class, name, destination);
+        } else {
+            unionEntityKey.setName(name);
+            unionEntityKey.setDestination(destination);
+        }
+
+        return unionEntityKey;
     }
 
     @Override

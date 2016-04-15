@@ -7,12 +7,12 @@ import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.error.DefaultError;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.commons.test.TestClassWithLazyLoad;
+import com.simpletour.domain.resources.*;
 import com.simpletour.service.resources.IResourcesService;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import resources.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
