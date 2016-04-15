@@ -1,10 +1,8 @@
 package com.simpletour.biz.resources;
 
 import com.simpletour.biz.resources.error.ResourcesBizError;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
-import com.simpletour.common.security.token.EncryptedToken;
-import com.simpletour.common.security.token.Token;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.resources.Area;
 import com.simpletour.domain.resources.Destination;
 import com.simpletour.domain.resources.Entertainment;
@@ -40,7 +38,7 @@ public class EntertainmentBizTest extends AbstractTestNGSpringContextTests {
 
     @BeforeClass
     public void setUp() {
-        new EncryptedToken("1", "1", "1", "127.0.0.1", Token.ClientType.BROWSER);
+//        new EncryptedToken("1", "1", "1", "127.0.0.1", Token.ClientType.BROWSER);
         Area area = new Area();
         area.setId(110101L);
         destination1 = new Destination(generateName(), "添加娱乐目的地1",
