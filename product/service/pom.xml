@@ -19,30 +19,24 @@
             <artifactId>product-biz</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.simpletour</groupId>-->
-            <!--<artifactId>simpletour-inventory-biz</artifactId>-->
-            <!--<version>${simpletour-global-version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>inventory-biz</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>transport-biz</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.simpletour.module</groupId>-->
-            <!--<artifactId>resources-biz</artifactId>-->
-            <!--<version>${project.parent.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>resources-biz</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.simpletour.commons</groupId>
             <artifactId>test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour</groupId>
-            <artifactId>simpletour-test-helper</artifactId>
-            <version>${project.parent.version}</version>
             <scope>test</scope>
         </dependency>
 

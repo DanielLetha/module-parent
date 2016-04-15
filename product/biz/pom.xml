@@ -23,6 +23,16 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>inventory-dao</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>resources-dao</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.simpletour.commons</groupId>
             <artifactId>data</artifactId>
         </dependency>

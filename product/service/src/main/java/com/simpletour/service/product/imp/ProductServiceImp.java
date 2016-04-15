@@ -1,14 +1,20 @@
 package com.simpletour.service.product.imp;
 
+import com.simpletour.biz.inventory.IStockBiz;
 import com.simpletour.biz.product.IProductBiz;
+import com.simpletour.biz.resources.IProcurementBiz;
+import com.simpletour.biz.resources.error.ResourcesBizError;
 import com.simpletour.biz.traveltrans.IBusNoBiz;
 import com.simpletour.biz.traveltrans.error.TravelTransportBizError;
 import com.simpletour.commons.data.dao.query.condition.Condition;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.domain.inventory.InventoryType;
+import com.simpletour.domain.inventory.Stock;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.ProductPackage;
 import com.simpletour.domain.product.TourismRoute;
+import com.simpletour.domain.resources.Procurement;
 import com.simpletour.domain.traveltrans.BusNo;
 import com.simpletour.service.product.IProductService;
 import com.simpletour.service.product.error.ProductServiceError;

@@ -1,18 +1,19 @@
 package com.simpletour;
 
+import com.simpletour.biz.resources.error.ResourcesBizError;
 import com.simpletour.biz.traveltrans.error.TravelTransportBizError;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.commons.test.TestClassWithLazyLoadAndTenantId;
 import com.simpletour.commons.test.Utils;
+import com.simpletour.dao.resources.IResourcesDao;
 import com.simpletour.dao.traveltrans.ITransportDao;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.ProductPackage;
 import com.simpletour.domain.product.TourismRoute;
+import com.simpletour.domain.resources.Procurement;
 import com.simpletour.domain.traveltrans.BusNo;
 import com.simpletour.service.product.IProductService;
 import com.simpletour.service.product.error.ProductServiceError;
-import com.simpletour.test.helper.ProductDataGenerator;
-import com.simpletour.test.helper.ResourceDataGenerator;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
