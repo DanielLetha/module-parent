@@ -7,6 +7,8 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.traveltrans.ITransportDao;
+import com.simpletour.domain.resources.Area;
+import com.simpletour.domain.resources.Destination;
 import com.simpletour.domain.traveltrans.BusNo;
 import com.simpletour.domain.traveltrans.Node;
 import com.simpletour.domain.traveltrans.NodeType;
@@ -18,8 +20,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import resources.Area;
-import resources.Destination;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;

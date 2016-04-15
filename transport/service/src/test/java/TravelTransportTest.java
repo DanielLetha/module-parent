@@ -8,6 +8,8 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.commons.test.TestClassWithLazyLoad;
+import com.simpletour.domain.resources.Area;
+import com.simpletour.domain.resources.Destination;
 import com.simpletour.domain.traveltrans.*;
 import com.simpletour.service.traveltrans.ITravelTransportService;
 import com.simpletour.service.traveltrans.error.TravelTransportServiceError;
@@ -18,8 +20,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import resources.Area;
-import resources.Destination;
 
 import javax.annotation.Resource;
 import java.util.*;

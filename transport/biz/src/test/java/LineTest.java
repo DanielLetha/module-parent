@@ -1,13 +1,10 @@
 import com.simpletour.biz.traveltrans.ILineBiz;
 import com.simpletour.biz.traveltrans.error.TravelTransportBizError;
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.domain.BaseDomain;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.test.DomainAdder;
+import com.simpletour.commons.test.TestClassWithLazyLoadAndTenantId;
 import com.simpletour.dao.traveltrans.ITransportDao;
 import com.simpletour.domain.traveltrans.BusNoSerial;
 import com.simpletour.domain.traveltrans.Line;
-import com.simpletour.test.helper.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;

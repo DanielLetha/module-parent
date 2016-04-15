@@ -5,6 +5,8 @@ import com.simpletour.biz.traveltrans.ISeatLayoutBiz;
 import com.simpletour.biz.traveltrans.bo.BusNoBo;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.traveltrans.ITransportDao;
+import com.simpletour.domain.resources.Area;
+import com.simpletour.domain.resources.Destination;
 import com.simpletour.domain.traveltrans.*;
 import com.simpletour.service.traveltrans.ITravelTransportService;
 import com.simpletour.service.traveltrans.error.TravelTransportServiceError;
@@ -15,8 +17,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import resources.Area;
-import resources.Destination;
 
 import java.math.BigDecimal;
 import java.util.*;

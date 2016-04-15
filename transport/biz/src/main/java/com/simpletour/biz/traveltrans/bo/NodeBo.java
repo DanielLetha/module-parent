@@ -1,9 +1,9 @@
 package com.simpletour.biz.traveltrans.bo;
 
+import com.simpletour.domain.resources.Destination;
 import com.simpletour.domain.traveltrans.BusNo;
 import com.simpletour.domain.traveltrans.Node;
 import com.simpletour.domain.traveltrans.NodeType;
-import resources.Destination;
 
 /**
  * Created by mario on 2015/12/29.

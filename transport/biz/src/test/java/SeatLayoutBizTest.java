@@ -1,12 +1,12 @@
 import com.simpletour.biz.traveltrans.ISeatLayoutBiz;
 import com.simpletour.biz.traveltrans.error.TravelTransportBizError;
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.domain.DomainPage;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.common.security.token.EncryptedToken;
 import com.simpletour.common.security.token.Token;
 import com.simpletour.domain.traveltrans.Seat;
 import com.simpletour.domain.traveltrans.SeatLayout;
-import com.simpletour.test.helper.TestClassWithLazyLoad;
+import com.simpletour.commons.test.TestClassWithLazyLoad;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;

@@ -1,7 +1,7 @@
 import com.simpletour.biz.traveltrans.INodeTypeBiz;
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.traveltrans.ITransportDao;
 import com.simpletour.domain.traveltrans.NodeType;
 import org.springframework.test.annotation.Rollback;

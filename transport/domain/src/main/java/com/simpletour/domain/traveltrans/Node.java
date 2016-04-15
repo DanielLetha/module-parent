@@ -6,7 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.dependency.Dependency;
 import com.simpletour.commons.data.domain.dependency.IDependTracable;
-import resources.Destination;
+import com.simpletour.domain.resources.Destination;
 
 import javax.persistence.*;
 import java.util.Arrays;
