@@ -33,9 +33,6 @@ import java.util.Optional;
 public class ScopeTemplateServiceTest extends AbstractTransactionalTestNGSpringContextTests {
 
     @Autowired
-    private IPermissionService permissionService;
-
-    @Autowired
     private IModuleService moduleService;
 
     @Autowired

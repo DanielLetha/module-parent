@@ -1,5 +1,6 @@
 package com.simpletour.biz.company;
 
+
 import com.simpletour.biz.company.data.ModuleData;
 import com.simpletour.biz.company.error.ModuleBizError;
 import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
@@ -46,7 +47,7 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
     public void tearDown() throws Exception {
         int size=moduleData.getDomains().size();
         for(int i=size-1;i>=0;i--){
-            moduleDao.removeEntity(moduleData.getDomains().get(i));
+            moduleDao.remove(moduleData.getDomains().get(i));
         }
     }
 
@@ -153,22 +154,14 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
         System.out.println(list.size());
     }
 
-    //测试根据name获取modules；
-    @Test
-    public void testFindModuleByName(){
-        Module module= (Module) moduleData.getDomains(Module.class).get(0);
-        List<Module> modules=moduleBiz.findModuleByName(module.getName());
-        Assert.assertEquals(modules.size(),1);
-    }
-
     //测试isExisted方法
     @Test
-    public void testIsExisted(){
+    public void testIsModuleExisted(){
         Module module=(Module) moduleData.getDomains(Module.class).get(0);
-        Assert.assertTrue(moduleBiz.isExisted(module.getId()));
-        Assert.assertFalse(moduleBiz.isExisted(Long.MAX_VALUE));
+        Assert.assertTrue(moduleBiz.isModuleExisted(module.getId()));
+        Assert.assertFalse(moduleBiz.isModuleExisted(Long.MAX_VALUE));
         try{
-            moduleBiz.isExisted(null);
+            moduleBiz.isModuleExisted(null);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleBizError.MODULE_NULL);
@@ -178,11 +171,11 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
 
     //测试模块是否可用
     @Test
-    public void testAvailable(){
+    public void testModuleAvailable(){
         Module moduleExist=(Module) moduleData.getDomains(Module.class).get(0);
         Module module=null;
         try{
-            moduleBiz.isAvailable(module);
+            moduleBiz.isModuleAvailable(module);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleBizError.MODULE_NULL);
@@ -190,7 +183,7 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
         module=generateModule();
         module.setId(null);
         try{
-            moduleBiz.isAvailable(module);
+            moduleBiz.isModuleAvailable(module);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleBizError.MODULE_NULL);
@@ -199,7 +192,7 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
         module.setId(moduleExist.getId());
         module.setPermissions(null);
         try{
-            moduleBiz.isAvailable(module);
+            moduleBiz.isModuleAvailable(module);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleBizError.MODULE_PERMISSION_NULL);
@@ -207,7 +200,7 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
         module.setId(Long.MAX_VALUE);
         module.setPermissions(moduleExist.getPermissions());
         try{
-            moduleBiz.isAvailable(module);
+            moduleBiz.isModuleAvailable(module);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleBizError.MODULE_NOT_EXIST);
@@ -215,7 +208,7 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
         module.setId(moduleExist.getId());
         module.setPermissions(permissions);
         try{
-            moduleBiz.isAvailable(module);
+            moduleBiz.isModuleAvailable(module);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleBizError.MODULE_PERMISSION_NULL);
@@ -224,7 +217,7 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
             module.getPermissions().get(i).setId(Long.MAX_VALUE-i);
         }
         try{
-            moduleBiz.isAvailable(module);
+            moduleBiz.isModuleAvailable(module);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleBizError.MODULE_PERMISSION_NOT_EXIST);
@@ -242,12 +235,75 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
         modules.add(module1);
         modules.add(module2);
         try{
-            moduleBiz.isAvailable(modules);
+            moduleBiz.isModuleAvailable(modules);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleBizError.MODULE_REPEAT);
         }
     }
+
+    //测试根据id获取权限
+    @Test
+    public void testGetById() {
+        Module module = (Module) moduleData.getDomains(Module.class).get(0);
+        Permission permission = moduleBiz.getPermissionById(module.getPermissions().get(0).getId());
+        Assert.assertNotNull(permission);
+        permission = moduleBiz.getPermissionById(Long.MAX_VALUE);
+        Assert.assertNull(permission);
+    }
+
+    //测试根据code获取权限，（code唯一）
+    @Test
+    public void testGetByCode() {
+        Module module = (Module) moduleData.getDomains(Module.class).get(0);
+        Permission permissions = moduleBiz.getPermissionByCode(module.getPermissions().get(0).getCode());
+        Assert.assertNotNull(permissions);
+        permissions = moduleBiz.getPermissionByCode(module.getPermissions().get(0).getCode() + "test");
+        Assert.assertNull(permissions);
+    }
+
+    //测试判断code是否存在
+    @Test
+    public void testIsCodeExist() {
+        Module module = (Module) moduleData.getDomains(Module.class).get(0);
+        Assert.assertTrue(moduleBiz.isPermissionCodeExist(module.getPermissions().get(0).getCode()));
+        Assert.assertFalse(moduleBiz.isPermissionCodeExist(module.getPermissions().get(0).getCode() + "test"));
+    }
+
+    //测试根据id判断权限是否存在
+    @Test
+    public void testIsExisted() {
+        Module module = (Module) moduleData.getDomains(Module.class).get(0);
+        Assert.assertTrue(moduleBiz.isPermissionExisted(module.getPermissions().get(0).getId()));
+        Assert.assertFalse(moduleBiz.isPermissionExisted(Long.MAX_VALUE));
+    }
+
+    //测试isAvailable
+    @Test
+    public void testIsAvailable(){
+        Module module=(Module) moduleData.getDomains(Module.class).get(0);
+        try{
+            moduleBiz.isPermissionAvailable(null);
+            Assert.fail();
+        }catch (BaseSystemException e){
+            Assert.assertEquals(e.getError(), ModuleBizError.PERMISSION_NULL);
+        }
+        Permission permission=new Permission("test","path","code",null);
+        Assert.assertTrue(moduleBiz.isPermissionAvailable(permission));
+        permission.setId(Long.MAX_VALUE);
+        try {
+            moduleBiz.isPermissionAvailable(permission);
+            Assert.fail();
+        }catch (BaseSystemException e){
+            Assert.assertEquals(e.getError(),ModuleBizError.PERMISSION_NOT_EXIST);
+        }
+        permission.setId(module.getPermissions().get(1).getId());
+        permission.setCode(module.getPermissions().get(0).getCode());
+        Assert.assertFalse(moduleBiz.isPermissionAvailable(permission));
+        permission.setId(module.getPermissions().get(0).getId());
+        Assert.assertTrue(moduleBiz.isPermissionAvailable(permission));
+    }
+
 
     private Module generateModule(){
         Module module = new Module(generateName("module1 name"), generateName("domain1"));

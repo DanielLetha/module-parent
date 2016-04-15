@@ -11,7 +11,7 @@ import com.simpletour.dao.company.IScopeTemplateDao;
 import com.simpletour.dao.company.query.ScopeTemplateDaoQuery;
 import com.simpletour.domain.company.Module;
 import com.simpletour.domain.company.ScopeTemplate;
-import com.simpletour.test.helper.generator.IDataGenerator;
+import com.simpletour.commons.test.generator.IDataGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
@@ -48,7 +48,7 @@ public class ScopeTemplateBizTest extends AbstractTransactionalTestNGSpringConte
     public void tearDown(){
         int size =data.getDomains().size();
         for(int i=size-1;i>=0;i--){
-            moduleDao.removeEntity(data.getDomains().get(i));
+            moduleDao.remove(data.getDomains().get(i));
         }
     }
 
