@@ -1,8 +1,9 @@
 package com.simpletour.biz.product;
 
 import com.simpletour.biz.product.imp.TourismBusAllocation;
-import com.simpletour.common.core.dao.query.condition.Condition;
-import com.simpletour.common.core.domain.DomainPage;
+
+import com.simpletour.commons.data.dao.query.condition.Condition;
+import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.TourismRoute;
 

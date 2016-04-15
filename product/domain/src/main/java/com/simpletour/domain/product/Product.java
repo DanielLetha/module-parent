@@ -1,5 +1,7 @@
 package com.simpletour.domain.product;
 
+import com.alibaba.fastjson.annotation.JSONType;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.simpletour.commons.data.domain.dependency.IDependTracable;
 import org.hibernate.annotations.Table;
 
