@@ -16,17 +16,90 @@
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>transport-domain</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>product-domain</artifactId>
-            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>product-dao</artifactId>
         </dependency>
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>transport-dao</artifactId>
-            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>resources-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>inventory-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>inventory-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>inventory-biz</artifactId>
+        </dependency>
+
+
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>resources-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.commons</groupId>
+            <artifactId>test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.common</groupId>
+            <artifactId>common-security</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

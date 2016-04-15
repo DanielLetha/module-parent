@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--由于底层使用的是JPA框架，所以这个地方必须加上anntation-config-->
+    <!--参考博文:http://m.blog.csdn.net/blog/wzmmao/21990397-->
+    <!--配置扫描类包，使注解生效-->
+    <context:annotation-config/>
+    <context:component-scan base-package="com.simpletour"/>
+
+    <!--加载db配置文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!--配置数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" scope="singleton">
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="driverClassName" value="${db.driver}"/>
+        <property name="url" value="${db.jdbcURL}"/>
+        <property name="validationQuery" value="select 1"/>
+    </bean>
+
+    <!--配置hibernate为jpa的实现-->
+    <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
+        <!--指定Entity实体包路径-->
+        <property name="packagesToScan">
+            <array>
+                <value>com.simpletour.domain</value>
+                <value>com.simpletour.commons.data.domain</value>
+            </array>
+        </property>
+        <!--指定JPA属性；如hibernate中指定是否显示SQL的，方言等-->
+        <property name="jpaProperties">
+            <props>
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>-->
+                <prop key="hibernate.dialect">com.simpletour.commons.data.dialect.LongArrayPostgreSQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="false"/>
+</beans>
