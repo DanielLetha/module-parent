@@ -11,6 +11,8 @@
     
     <modules>
         <module>company</module>
+        <module>inventory</module>
+        <module>product</module>
         <module>transport</module>
     </modules>
     <properties>
