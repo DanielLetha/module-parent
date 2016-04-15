@@ -18,11 +18,11 @@
             <artifactId>transport-domain</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.simpletour</groupId>-->
-            <!--<artifactId>simpletour-inventory-domain</artifactId>-->
-            <!--&lt;!&ndash;<version>${simpletour-global-version}</version>&ndash;&gt;-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>inventory-domain</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.simpletour.commons</groupId>
             <artifactId>data</artifactId>
