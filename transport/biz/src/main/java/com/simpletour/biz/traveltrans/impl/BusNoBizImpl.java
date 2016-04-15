@@ -9,6 +9,8 @@ import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.resources.IResourcesDao;
 import com.simpletour.dao.traveltrans.ITransportDao;
+import com.simpletour.domain.traveltrans.BusNo;
+import com.simpletour.domain.traveltrans.Node;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

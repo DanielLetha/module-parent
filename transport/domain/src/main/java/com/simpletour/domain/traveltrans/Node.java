@@ -3,13 +3,12 @@ package com.simpletour.domain.traveltrans;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.simpletour.commons.data.dao.query.QueryUtil;
 import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.dependency.Dependency;
 import com.simpletour.commons.data.domain.dependency.IDependTracable;
+import com.simpletour.domain.resources.Destination;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package com.simpletour.biz.traveltrans.impl;
 
-import com.simpletour.biz.order.ICertBiz;
 import com.simpletour.biz.traveltrans.IBusNoPlanBiz;
 import com.simpletour.biz.traveltrans.bo.BusNoPlanBo;
 import com.simpletour.biz.traveltrans.bo.Tuple;
@@ -9,7 +8,6 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.traveltrans.ITransportDao;
-import com.simpletour.domain.order.CertIdentity;
 import com.simpletour.domain.traveltrans.BusNoPlan;
 import org.springframework.stereotype.Component;
 

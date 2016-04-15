@@ -6,9 +6,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.simpletour.commons.data.dao.query.QueryUtil;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 import com.simpletour.commons.data.domain.dependency.DependEntity;
+import com.simpletour.commons.data.domain.dependency.Dependency;
 import com.simpletour.commons.data.domain.dependency.IDependTracable;
 import com.simpletour.domain.inventory.InventoryType;
+import com.simpletour.domain.inventory.query.IStockTraceable;
 import com.simpletour.domain.inventory.query.StockKey;
+import com.simpletour.domain.resources.Procurement;
 import com.simpletour.domain.traveltrans.BusNo;
 
 import javax.persistence.*;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "PROD_PRODUCT")
 @JSONType(serialzeFeatures = SerializerFeature.DisableCircularReferenceDetect)
-@DataChangeTraceable
+//@DataChangeTraceable
 public class Product extends LogicalDeletableDomain implements IStockTraceable, IDependTracable {
     public Product() {
     }
@@ -90,6 +93,22 @@ public class Product extends LogicalDeletableDomain implements IStockTraceable, 
         this.productPackages = productPackages;
         this.remark = remark;
         this.online = online;
+    }
+
+    @Override
+    public List<Dependency> getDependencies() {
+        List<Dependency> dependEntities = new ArrayList<>();
+        if (productPackages != null) {
+            for (ProductPackage productPackage : productPackages) {
+                dependEntities.addAll(productPackage.getDependEntities(QueryUtil.getTableName(Product.class), id));
+            }
+        }
+        if (tourismRouteList != null) {
+            for (TourismRoute tourismRoute : tourismRouteList) {
+                dependEntities.addAll(tourismRoute.getDependEntities());
+            }
+        }
+        return dependEntities;
     }
 
     public enum Type {
@@ -374,23 +393,6 @@ public class Product extends LogicalDeletableDomain implements IStockTraceable, 
         int result = id != null ? id.hashCode() : 0;
         result += InventoryType.product.hashCode();
         return result;
-    }
-
-    @Override
-    @JSONField(serialize = false)
-    public List<DependEntity> getDependEntities() {
-        List<DependEntity> dependEntities = new ArrayList<>();
-        if (productPackages != null) {
-            for (ProductPackage productPackage : productPackages) {
-                dependEntities.addAll(productPackage.getDependEntities(QueryUtil.getTableName(Product.class), id));
-            }
-        }
-        if (tourismRouteList != null) {
-            for (TourismRoute tourismRoute : tourismRouteList) {
-                dependEntities.addAll(tourismRoute.getDependEntities());
-            }
-        }
-        return dependEntities;
     }
 
     public boolean containBus() {
