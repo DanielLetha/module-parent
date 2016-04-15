@@ -28,11 +28,21 @@
                 <artifactId>data</artifactId>
                 <version>${simpletour.common.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.simpletour.commons</groupId>
+                <artifactId>test</artifactId>
+                <version>${simpletour.common.version}</version>
+            </dependency>
             <!-- 3td Party Dependency, all modules must have same version of third party dependency -->
             <!--spring config-->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>

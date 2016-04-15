@@ -1,8 +1,9 @@
 package com.simpletour.biz.company;
 
-import com.simpletour.common.core.domain.DomainPage;
+import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.dao.company.query.ModuleDaoQuery;
 import com.simpletour.domain.company.Module;
+import com.simpletour.domain.company.Permission;
 
 import java.util.List;
 
@@ -58,18 +59,11 @@ public interface IModuleBiz {
     List<Module> findModuleList(ModuleDaoQuery query);
 
     /**
-     * 根据模块名称(全匹配)查询模块列表（模块名称不重复）
-     * @param name
-     * @return
-     */
-    List<Module> findModuleByName(String name);
-
-    /**
      * 根据id判断模块是否存在
      * @param moduleId
      * @return
      */
-    boolean isExisted(Long moduleId);
+    boolean isModuleExisted(Long moduleId);
 
     /**
      * 判断模块是否可用
@@ -82,7 +76,7 @@ public interface IModuleBiz {
      * @param module
      * @return
      */
-    boolean isAvailable(Module module);
+    boolean isModuleAvailable(Module module);
 
     /**
      * 判断模块是否可用
@@ -97,5 +91,44 @@ public interface IModuleBiz {
      * @param modules
      * @return
      */
-    boolean isAvailable(List<Module> modules);
+    boolean isModuleAvailable(List<Module> modules);
+
+    /**
+     * 获取所有权限
+     * @return
+     */
+    List<Permission> getAllPermissions();
+
+    /**
+     * 根据id查询权限
+     * @param id
+     * @return
+     */
+    Permission getPermissionById(Long id);
+
+    /**
+     * 根据code获得权限（code是不重复的）
+     */
+    Permission getPermissionByCode(String permissionCode);
+
+    /**
+     * 根据code判断code是否存在。
+     * @param permissionCode
+     * @return
+     */
+    Boolean isPermissionCodeExist(String permissionCode);
+
+    /**
+     * 判断权限是否可用
+     * @param permission
+     * @return
+     */
+    boolean isPermissionAvailable(Permission permission);
+
+    /**
+     * 判断id是否存在
+     * @param functionId
+     * @return
+     */
+    boolean isPermissionExisted(Long functionId);
 }

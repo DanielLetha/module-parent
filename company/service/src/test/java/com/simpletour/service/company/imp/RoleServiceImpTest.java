@@ -1,7 +1,7 @@
 //package com.simpletour.service.system.imp;
 //
-//import com.simpletour.common.core.exception.BaseSystemException;
-//import com.simpletour.domain.system.Role;
+//import com.simpletour.commons.data.exception.BaseSystemException;
+//import com.simpletour.domain.company.Role;
 //import com.simpletour.service.system.IRoleService;
 //import com.simpletour.service.system.error.RoleServiceError;
 //import org.springframework.beans.factory.annotation.Autowired;

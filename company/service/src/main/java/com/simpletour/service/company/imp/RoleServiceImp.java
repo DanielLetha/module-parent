@@ -1,11 +1,10 @@
 package com.simpletour.service.company.imp;
 
 import com.simpletour.biz.company.IModuleBiz;
-import com.simpletour.biz.company.IPermissionBiz;
 import com.simpletour.biz.company.IRoleBiz;
 import com.simpletour.biz.company.error.RoleBizError;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.query.RoleQuery;
 import com.simpletour.domain.company.Permission;
 import com.simpletour.domain.company.Role;
@@ -37,8 +36,8 @@ public class RoleServiceImp implements IRoleService {
     @Autowired
     IModuleBiz moduleBiz;
 
-    @Autowired
-    IPermissionBiz permissionBiz;
+//    @Autowired
+//    IPermissionBiz permissionBiz;
 
     private void validateModules(Role role) {
         List<Permission> permissionsList = role.getPermissionList();
@@ -47,12 +46,12 @@ public class RoleServiceImp implements IRoleService {
         }
 
         permissionsList.forEach(item -> {
-            if (!permissionBiz.isAvailable(item)) {
-                throw new BaseSystemException(RoleBizError.INVALID_PERMISSION);
-            }
-            if (!moduleBiz.isAvailable(item.getModule())) {
-                throw new BaseSystemException(RoleBizError.INVALID_MODULE);
-            }
+//            if (!permissionBiz.isAvailable(item)) {
+//                throw new BaseSystemException(RoleBizError.INVALID_PERMISSION);
+//            }
+//            if (!moduleBiz.isAvailable(item.getModule())) {
+//                throw new BaseSystemException(RoleBizError.INVALID_MODULE);
+//            }
         });
     }
 

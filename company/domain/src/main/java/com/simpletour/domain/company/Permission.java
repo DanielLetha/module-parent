@@ -1,7 +1,7 @@
 package com.simpletour.domain.company;
 
 import com.google.common.collect.Lists;
-import com.simpletour.common.core.domain.BaseDomain;
+import com.simpletour.commons.data.domain.BaseDomain;
 
 import javax.persistence.*;
 import java.util.List;

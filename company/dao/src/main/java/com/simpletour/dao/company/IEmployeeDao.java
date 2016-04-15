@@ -1,6 +1,7 @@
 package com.simpletour.dao.company;
 
-import com.simpletour.common.core.dao.IBaseDao;
+
+import com.simpletour.commons.data.dao.IBaseDao;
 
 /**
  * Created by zt on 15/10/19.

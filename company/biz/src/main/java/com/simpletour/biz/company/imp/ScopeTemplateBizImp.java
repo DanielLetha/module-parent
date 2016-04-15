@@ -2,8 +2,8 @@ package com.simpletour.biz.company.imp;
 
 import com.simpletour.biz.company.IScopeTemplateBiz;
 import com.simpletour.biz.company.error.ScopeTemplateBizError;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IScopeTemplateDao;
 import com.simpletour.dao.company.query.ScopeTemplateDaoQuery;
 import com.simpletour.domain.company.ScopeTemplate;
@@ -48,7 +48,7 @@ public class ScopeTemplateBizImp implements IScopeTemplateBiz {
 
     @Override
     public void deleteScopeTemplate(long id) {
-        scopeTemplateDao.removeEntityById(ScopeTemplate.class,id,false);
+        scopeTemplateDao.removeEntityById(ScopeTemplate.class,id);
     }
 
     @Override

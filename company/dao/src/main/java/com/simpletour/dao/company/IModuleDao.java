@@ -1,6 +1,6 @@
 package com.simpletour.dao.company;
 
-import com.simpletour.common.core.dao.IBaseDao;
+import com.simpletour.commons.data.dao.IBaseDao;
 
 /**
  * Author：XuHui/xuhui@simpletour.com

@@ -1,6 +1,9 @@
 package com.simpletour.domain.company;
 
-import com.simpletour.common.core.domain.CanLogicDelDomain;
+import com.simpletour.commons.data.domain.EntityKey;
+import com.simpletour.commons.data.domain.LogicalDeletableDomain;
+import com.simpletour.commons.data.domain.dependency.Dependency;
+import com.simpletour.commons.data.domain.dependency.IDependTracable;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "SYS_COMPANY")
 @SequenceGenerator(name = "company_id", sequenceName = "company_id_seq", allocationSize = 1)
-public class Company extends CanLogicDelDomain {
+public class Company extends LogicalDeletableDomain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_id")

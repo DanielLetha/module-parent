@@ -1,6 +1,6 @@
 package com.simpletour.domain.company;
 
-import com.simpletour.common.core.domain.CanLogicDelDomain;
+import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "SYS_ROLE")
-public class Role extends CanLogicDelDomain {
+public class Role extends LogicalDeletableDomain {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")

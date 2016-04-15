@@ -1,6 +1,6 @@
 package com.simpletour.service.company.imp;
 
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IAdministratorDao;
 import com.simpletour.domain.company.Administrator;
 import com.simpletour.service.company.IAdministratorService;
@@ -42,7 +42,7 @@ public class AdminServiceTest extends AbstractTransactionalTestNGSpringContextTe
     @AfterClass
     public void tearDown() {
         if (administrator != null) {
-            adminDao.removeEntity(administrator);
+            adminDao.remove(administrator);
         }
     }
 

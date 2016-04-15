@@ -1,6 +1,7 @@
 package com.simpletour.biz.company.error;
 
-import com.simpletour.common.core.error.IError;
+
+import com.simpletour.commons.data.error.IError;
 
 /**
  * Author：XuHui/xuhui@simpletour.com
@@ -8,7 +9,7 @@ import com.simpletour.common.core.error.IError;
  * Date: 2016/4/9
  * Time: 10:13
  */
-public enum ModuleBizError implements IError{
+public enum ModuleBizError implements IError {
     MODULE_NULL("0001","模块为空"),
     MODULE_PERMISSION_NULL("0002","功能列表为空"),
     MODULE_PERMISSION_REPEAT("0003","功能列表项重复，功能名称和代码不能重复"),
@@ -17,6 +18,9 @@ public enum ModuleBizError implements IError{
     MODULE_NAME_EXIST("0006","模块名称已存在"),
     MODULE_PERMISSION_NOT_EXIST("0007","功能不存在"),
     MODULE_REPEAT("0008","模块重复"),
+    MODULE_DATA_ERROR("0009","数据库异常"),
+    PERMISSION_NULL("0010","功能为空"),
+    PERMISSION_NOT_EXIST("0011","功能不存在");
     ;
 
 

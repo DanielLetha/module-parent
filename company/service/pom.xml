@@ -50,8 +50,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.simpletour</groupId>
-            <artifactId>simpletour-test-helper</artifactId>
+            <groupId>com.simpletour.commons</groupId>
+            <artifactId>test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -62,6 +62,10 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
     </dependencies>
 

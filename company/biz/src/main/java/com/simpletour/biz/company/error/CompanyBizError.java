@@ -1,6 +1,7 @@
 package com.simpletour.biz.company.error;
 
-import com.simpletour.common.core.error.IError;
+
+import com.simpletour.commons.data.error.IError;
 
 /**
  * User: Hawk

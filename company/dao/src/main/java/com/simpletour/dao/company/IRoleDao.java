@@ -1,7 +1,7 @@
 package com.simpletour.dao.company;
 
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.domain.DomainPage;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.dao.company.query.RoleQuery;
 import com.simpletour.domain.company.Role;
 

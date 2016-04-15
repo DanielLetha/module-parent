@@ -2,9 +2,9 @@ package com.simpletour.biz.company.imp;
 
 import com.simpletour.biz.company.ICompanyBiz;
 import com.simpletour.biz.company.error.CompanyBizError;
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.ICompanyDao;
 import com.simpletour.dao.company.IEmployeeDao;
 import com.simpletour.dao.company.query.CompanyDaoQuery;
@@ -48,7 +48,7 @@ public class CompanyBizImp implements ICompanyBiz {
         if (!(employees == null || employees.isEmpty())) {
             throw new BaseSystemException(CompanyBizError.EMPLOYEE_DEPEND_ON_COMPANY);
         }
-        companyDao.removeEntityById(Company.class, id, true);
+        companyDao.removeEntityById(Company.class, id);
     }
 
     @Override

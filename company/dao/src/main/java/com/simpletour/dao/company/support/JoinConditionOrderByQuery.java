@@ -1,7 +1,8 @@
 package com.simpletour.dao.company.support;
 
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.dao.query.ConditionOrderByQuery;
+
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 
 import java.util.Map;
 

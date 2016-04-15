@@ -1,10 +1,10 @@
 package com.simpletour.service.company;
 
 import com.simpletour.biz.company.error.ModuleBizError;
-import com.simpletour.common.core.dao.query.condition.AndConditionSet;
-import com.simpletour.common.core.dao.query.condition.Condition;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
+import com.simpletour.commons.data.dao.query.condition.Condition;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IModuleDao;
 import com.simpletour.dao.company.IPermissionDao;
 import com.simpletour.dao.company.query.ModuleDaoQuery;
@@ -20,8 +20,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,12 +38,6 @@ public class ModuleServiceTest extends AbstractTransactionalTestNGSpringContextT
     @Autowired
     private IModuleDao moduleDao;
 
-    @Autowired
-    private IPermissionDao permissionDao;
-
-    @PersistenceContext
-    protected EntityManager em;
-
     private ModuleData moduleData;
 
     @BeforeClass
@@ -58,7 +50,7 @@ public class ModuleServiceTest extends AbstractTransactionalTestNGSpringContextT
     public void tearDown() throws Exception {
         int size=moduleData.getDomains().size();
         for(int i=size-1;i>=0;i--){
-            moduleDao.removeEntity(moduleData.getDomains().get(i));
+            moduleDao.remove(moduleData.getDomains().get(i));
         }
     }
 
@@ -169,6 +161,7 @@ public class ModuleServiceTest extends AbstractTransactionalTestNGSpringContextT
         }
         Module module=generateModule();
         module=moduleService.addModule(module).get();
+        Long id=module.getId();
         module.setId(null);
         try{
             moduleService.updateModule(module);
@@ -176,10 +169,10 @@ public class ModuleServiceTest extends AbstractTransactionalTestNGSpringContextT
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleServiceError.MODULE_NULL);
         }
-        em.detach(module);
-        module.setId(Long.MAX_VALUE-1);
+        module.setId(id);
+        Module module1=new Module(Long.MAX_VALUE-1,module.getName(),module.getDomain(),module.getVersion());
         try{
-            moduleService.updateModule(module);
+            moduleService.updateModule(module1);
             Assert.fail();
         }catch (BaseSystemException e){
             Assert.assertEquals(e.getError(),ModuleServiceError.MODULE_NOT_EXIST);

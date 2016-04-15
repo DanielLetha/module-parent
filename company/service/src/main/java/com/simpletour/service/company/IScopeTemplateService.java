@@ -1,6 +1,6 @@
 package com.simpletour.service.company;
 
-import com.simpletour.common.core.domain.DomainPage;
+import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.dao.company.query.ScopeTemplateDaoQuery;
 import com.simpletour.domain.company.ScopeTemplate;
 

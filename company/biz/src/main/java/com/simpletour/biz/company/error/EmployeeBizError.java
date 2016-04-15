@@ -1,6 +1,6 @@
 package com.simpletour.biz.company.error;
 
-import com.simpletour.common.core.error.IError;
+import com.simpletour.commons.data.error.IError;
 
 /**
  * Created by songfujie on 15/10/24.

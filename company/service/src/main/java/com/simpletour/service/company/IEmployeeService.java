@@ -1,7 +1,7 @@
 package com.simpletour.service.company;
 
-import com.simpletour.common.core.dao.query.ConditionOrderByQuery;
-import com.simpletour.common.core.domain.DomainPage;
+import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
+import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.domain.company.Employee;
 
 import java.util.Optional;

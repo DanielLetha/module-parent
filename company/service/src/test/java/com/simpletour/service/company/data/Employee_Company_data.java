@@ -2,7 +2,7 @@ package com.simpletour.service.company.data;
 
 import com.simpletour.dao.company.ICompanyDao;
 import com.simpletour.domain.company.Company;
-import com.simpletour.test.helper.generator.AbstractDataGenerator;
+import com.simpletour.commons.test.generator.AbstractDataGenerator;
 
 /**
  * Created by Mario on 2016/4/9.

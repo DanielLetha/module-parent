@@ -1,8 +1,9 @@
 package com.simpletour.service.company;
 
-import com.simpletour.common.core.domain.DomainPage;
+import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.dao.company.query.ModuleDaoQuery;
 import com.simpletour.domain.company.Module;
+import com.simpletour.domain.company.Permission;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,10 +70,9 @@ public interface IModuleService {
     List<Module> findModuleList(ModuleDaoQuery query);
 
     /**
-     * 根据名称获取模块（全匹配）
-     * @param name
+     * 获取所有权限
      * @return
      */
-    List<Module> findByName(String name);
+    List<Permission> getAllPermissions();
 
 }

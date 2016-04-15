@@ -2,9 +2,9 @@ package com.simpletour.biz.company.imp;
 
 import com.simpletour.biz.company.IRoleBiz;
 import com.simpletour.biz.company.error.RoleBizError;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.error.DefaultError;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.error.DefaultError;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IRoleDao;
 import com.simpletour.dao.company.query.RoleQuery;
 import com.simpletour.domain.company.Company;
@@ -33,7 +33,7 @@ public class RoleBizImp implements IRoleBiz {
 
     @Override
     public Long getTenantId() {
-        return roleDao.getTenantId();
+        return 1l;//roleDao.getTenantId();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class RoleBizImp implements IRoleBiz {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deleteRoleById(Long id) throws BaseSystemException {
         try {
-            roleDao.removeEntityById(Role.class, id, true);
+            roleDao.removeEntityById(Role.class, id);
         } catch (Exception e) {
             throw new BaseSystemException(e.getMessage(), RoleBizError.DELETE_FAILD);
         }
@@ -116,7 +116,7 @@ public class RoleBizImp implements IRoleBiz {
         Map<String, Object> conditions = new HashMap<>(2);
         conditions.put("name", name);
 
-        Long tenantId = roleDao.getTenantId();
+        Long tenantId = getTenantId();
         if (null != tenantId) {
             conditions.put("company.id", tenantId);
         }
@@ -126,7 +126,7 @@ public class RoleBizImp implements IRoleBiz {
     }
 
     private void validateTenantId(Role role) {
-        Long tenantId = roleDao.getTenantId();
+        Long tenantId = getTenantId();
         if (null == tenantId) {
             throw new BaseSystemException(RoleBizError.INVALID_TENANT_ID);
         }
@@ -156,7 +156,7 @@ public class RoleBizImp implements IRoleBiz {
 
         conditions.put("type", query.getType());
 
-        Long tenantId = roleDao.getTenantId();
+        Long tenantId = getTenantId();
         if (null != tenantId) {
             conditions.put("company.id", tenantId);
         }
