@@ -8,11 +8,10 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.condition.Condition;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.dao.order.IOrderDao;
+import com.simpletour.commons.data.util.TypeConverter;
 import com.simpletour.dao.product.imp.IProductDao;
 import com.simpletour.dao.traveltrans.ITransportDao;
 import com.simpletour.domain.inventory.InventoryType;
-import com.simpletour.domain.order.CertIdentity;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.ProductPackage;
 import com.simpletour.domain.product.TourismRoute;
@@ -256,7 +255,6 @@ public class ProductBizImp implements IProductBiz {
 
     }
 
-    @Transactional
     public Product addProduct(Product product) {
         if (product == null)
             throw new BaseSystemException(ProductBizError.EMPTY_ENTITY);
@@ -269,11 +267,10 @@ public class ProductBizImp implements IProductBiz {
     }
 
     public void deleteProductById(Long id) {
-        productDao.removeEntityById(Product.class, id, true);
+        productDao.removeEntityById(Product.class, id);
         stockBiz.deleteStocksByInventoryTypeId(InventoryType.product, id);
     }
 
-    @Transactional
     public Product updateProduct(Product product) throws BaseSystemException {
         if (product == null || product.getId() == null)
             throw new BaseSystemException(ProductBizError.EMPTY_ENTITY);
@@ -286,7 +283,11 @@ public class ProductBizImp implements IProductBiz {
     }
 
     public Product getProductById(Long id) {
-        return productDao.getEntityById(Product.class, id);
+        Product product = productDao.getEntityById(Product.class, id);
+        if (product == null || product.getDel()) {
+            return null;
+        }
+        return product;
     }
 
     public DomainPage<Product> getProductByConditionsPage(Map<String, Object> conditions, int page, int pageSize) {
