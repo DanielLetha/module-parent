@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.simpletour:simpletour-order-domain:2.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/simpletour/simpletour-order-domain/2.0-SNAPSHOT/simpletour-order-domain-2.0-20160329.033620-12.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/simpletour/simpletour-order-domain/2.0-SNAPSHOT/simpletour-order-domain-2.0-20160329.033620-12-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/simpletour/simpletour-order-domain/2.0-SNAPSHOT/simpletour-order-domain-2.0-20160329.033620-12-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

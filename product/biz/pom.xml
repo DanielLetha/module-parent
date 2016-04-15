@@ -18,6 +18,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>transport-dao</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.simpletour.commons</groupId>
             <artifactId>data</artifactId>
         </dependency>

@@ -53,7 +53,7 @@ public class TourismBusAllocation {
     private static List<BusNo.BusCapacity> reduceTransferableMatrix(List<BusNoPlanCapacityHelper.MergeBusNoCapacity> transferableMatrix) {
         List<BusNo.BusCapacity> overallResult = transferableMatrix.get(0).getBusNoCapacities();
         if (transferableMatrix.size() > 1) {
-            for (BusNoPlanCapacityHelper.MergeBusNoCapacity plans : transferableMatrix.subList(1, transferableMatrix.size())) {
+            for (BusNoPlanCapacityHelper  .MergeBusNoCapacity plans : transferableMatrix.subList(1, transferableMatrix.size())) {
                 overallResult = overallResult.stream().map(busCapacity -> {
                     BusNoPlanCapacityHelper.MergeBusCapacity plan = plans.getMergeBusCapacityByBusId(busCapacity.getBusId().getId());
                     return new BusNo.BusCapacity(busCapacity.getBusId(),
