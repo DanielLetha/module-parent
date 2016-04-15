@@ -9,15 +9,29 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+
+    <groupId>com.simpletour.module</groupId>
     <artifactId>product</artifactId>
     <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+
     <modules>
         <module>domain</module>
-        <module>product-dao</module>
         <module>biz</module>
         <module>dao</module>
         <module>service</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.simpletour.commons</groupId>
+            <artifactId>data</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>

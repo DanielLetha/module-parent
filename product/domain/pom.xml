@@ -12,4 +12,29 @@
     <artifactId>product-domain</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.simpletour</groupId>
+            <artifactId>simpletour-transport-domain</artifactId>
+            <version>${simpletour-global-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour</groupId>
+            <artifactId>simpletour-inventory-domain</artifactId>
+            <version>${simpletour-global-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.common</groupId>
+            <artifactId>common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
