@@ -12,18 +12,15 @@
     <artifactId>resources-dao</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>com.simpletour.commons</groupId>
             <artifactId>data</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>resources-domain</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
-
-
+    
 </project>
