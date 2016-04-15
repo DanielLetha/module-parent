@@ -11,5 +11,12 @@
 
     <artifactId>product-biz</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>product-dao</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

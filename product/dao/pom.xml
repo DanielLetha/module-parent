@@ -11,5 +11,17 @@
 
     <artifactId>product-dao</artifactId>
 
+  <dependencies>
 
+      <dependency>
+          <groupId>com.simpletour.commons</groupId>
+          <artifactId>data</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.simpletour.module</groupId>
+          <artifactId>product-domain</artifactId>
+          <version>${project.parent.version}</version>
+      </dependency>
+
+  </dependencies>
 </project>

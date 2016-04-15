@@ -1,19 +1,9 @@
 package com.simpletour.domain.product;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.annotation.JSONType;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.simpletour.common.core.dao.query.QueryUtil;
-import com.simpletour.common.core.domain.CanLogicDelDomain;
-import com.simpletour.common.core.domain.DependEntity;
-import com.simpletour.common.core.domain.IDependTracable;
-import com.simpletour.common.core.domain.annotation.DataChangeTraceable;
-import com.simpletour.domain.inventory.InventoryType;
-import com.simpletour.domain.inventory.query.IStockTraceable;
-import com.simpletour.domain.inventory.query.StockKey;
-import com.simpletour.domain.resources.Procurement;
-import com.simpletour.domain.traveltrans.BusNo;
+import com.simpletour.commons.data.domain.dependency.IDependTracable;
+import org.hibernate.annotations.Table;
 
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
