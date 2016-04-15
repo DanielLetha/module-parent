@@ -3,6 +3,7 @@ package com.simpletour.dao.traveltrans;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
 import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.domain.product.TourismRouteLine;
 import com.simpletour.domain.traveltrans.*;
 
 import java.util.Date;

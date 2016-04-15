@@ -8,11 +8,10 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.condition.Condition;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.dao.order.IOrderDao;
-import com.simpletour.dao.product.imp.IProductDao;
+import com.simpletour.commons.data.util.TypeConverter;
+import com.simpletour.dao.product.IProductDao;
 import com.simpletour.dao.traveltrans.ITransportDao;
 import com.simpletour.domain.inventory.InventoryType;
-import com.simpletour.domain.order.CertIdentity;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.ProductPackage;
 import com.simpletour.domain.product.TourismRoute;
@@ -269,7 +268,7 @@ public class ProductBizImp implements IProductBiz {
     }
 
     public void deleteProductById(Long id) {
-        productDao.removeEntityById(Product.class, id, true);
+        productDao.removeEntityById(Product.class, id);
         stockBiz.deleteStocksByInventoryTypeId(InventoryType.product, id);
     }
 

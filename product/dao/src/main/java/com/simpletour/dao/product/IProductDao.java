@@ -1,4 +1,4 @@
-package com.simpletour.dao.product.imp;
+package com.simpletour.dao.product;
 
 
 
