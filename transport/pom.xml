@@ -27,6 +27,41 @@
                 <artifactId>inventory-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.simpletour.module</groupId>
+                <artifactId>inventory-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simpletour.module</groupId>
+                <artifactId>inventory-biz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simpletour.module</groupId>
+                <artifactId>resources-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simpletour.module</groupId>
+                <artifactId>transport-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simpletour.module</groupId>
+                <artifactId>product-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simpletour.module</groupId>
+                <artifactId>product-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simpletour.module</groupId>
+                <artifactId>transport-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
