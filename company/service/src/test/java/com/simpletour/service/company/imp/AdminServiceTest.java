@@ -42,7 +42,7 @@ public class AdminServiceTest extends AbstractTransactionalTestNGSpringContextTe
     @AfterClass
     public void tearDown() {
         if (administrator != null) {
-            adminDao.removeEntity(administrator);
+            adminDao.remove(administrator);
         }
     }
 
