@@ -2,7 +2,7 @@ package com.simpletour.biz.resources;
 
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import resources.Destination;
+import com.simpletour.domain.resources.Destination;
 
 /**
  * @author XuHui/xuhui@simpletour.com

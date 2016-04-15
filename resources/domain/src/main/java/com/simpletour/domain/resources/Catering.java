@@ -1,4 +1,4 @@
-package resources;
+package com.simpletour.domain.resources;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;

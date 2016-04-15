@@ -1,4 +1,4 @@
-package resources;
+package com.simpletour.domain.resources;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.annotation.JSONType;
@@ -13,16 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 景区
- * <p>
  * Created by Jeff.Song on 2015/11/19.
  */
 @Entity
-@Table(name = "TR_SCENIC")
+@Table(name = "TR_HOTEL")
 @JSONType(serialzeFeatures = SerializerFeature.DisableCircularReferenceDetect)
-public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, IDependTracable {
+public class Hotel extends LogicalDeletableDomain implements IUnionEntityKey, IDependTracable {
 
-    @Id()
+    public enum StayType {
+        hotel("酒店"), inn("客栈"), folk_house("民居"), others("其他");
+
+        private String remark;
+
+        StayType(String remark) {
+            this.remark = remark;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+    }
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     protected Long id;
@@ -30,18 +42,31 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
     @Column(name = "tenant_id")
     private Long tenantId;
 
-    @ManyToOne
-    @JoinColumn(name = "destination_id")
-    private Destination destination;
-
     /**
-     *
+     * 住宿点名称
      */
     @Column
     private String name;
 
+    /**
+     * 住宿点类型
+     */
+    @Column
+    @Enumerated(EnumType.STRING)
+    private StayType type = StayType.hotel;
+
+    /**
+     * 详细地址
+     */
     @Column
     private String address;
+
+    /**
+     * 目的地
+     */
+    @ManyToOne
+    @JoinColumn(name = "destination_id")
+    private Destination destination;
 
     /**
      * 位置信息(经度)
@@ -65,32 +90,27 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
     @Version
     private Integer version;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    @JSONField(serialize = false)
-    private Scenic parent;
-
-    @OneToMany(mappedBy = "parent")
-    @JSONField(serialize = false)
-    private List<Scenic> scenics;
-
     @Transient
     private static UnionEntityKey unionEntityKey;
 
-    public Long getTenantId() {
-        return tenantId;
+    public Hotel() {
     }
 
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public Destination getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Destination destination) {
+    public Hotel(String name, String address, String remark, StayType type,
+                 Destination destination, BigDecimal lon, BigDecimal lat) {
+        this.name = name;
+        this.address = address;
+        this.remark = remark;
+        this.type = type;
         this.destination = destination;
+        this.lon=lon;
+        this.lat=lat;
+    }
+
+    public Hotel(Long id, String name, String address, String remark, StayType type,
+                 Destination destination, BigDecimal lon, BigDecimal lat) {
+        this(name, address, remark, type, destination, lon, lat);
+        this.id=id;
     }
 
     public String getName() {
@@ -99,6 +119,14 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public StayType getType() {
+        return type;
+    }
+
+    public void setType(StayType type) {
+        this.type = type;
     }
 
     public String getAddress() {
@@ -141,20 +169,20 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
         this.version = version;
     }
 
-    public Scenic getParent() {
-        return parent;
+    public Long getTenantId() {
+        return tenantId;
     }
 
-    public void setParent(Scenic parent) {
-        this.parent = parent;
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
     }
 
-    public List<Scenic> getScenics() {
-        return scenics;
+    public Destination getDestination() {
+        return destination;
     }
 
-    public void setScenics(List<Scenic> scenics) {
-        this.scenics = scenics;
+    public void setDestination(Destination destination) {
+        this.destination = destination;
     }
 
     @Override
@@ -175,7 +203,7 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
         }
 
         if (null == unionEntityKey) {
-            unionEntityKey = new UnionEntityKey(Scenic.class, name, destination);
+            unionEntityKey = new UnionEntityKey(Hotel.class, name, destination);
         } else {
             unionEntityKey.setName(name);
             unionEntityKey.setDestination(destination);
@@ -188,9 +216,6 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
     public List<Dependency> getDependencies() {
         List<Dependency> dependencyList = new ArrayList<>();
         dependencyList.add(new Dependency(destination.getEntityKey()));
-        if (this.parent != null) {
-            dependencyList.add(new Dependency(parent.getEntityKey()));
-        }
         return dependencyList;
     }
 }

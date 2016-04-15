@@ -4,7 +4,7 @@ import com.simpletour.biz.resources.vo.ProcurementVo;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import resources.Procurement;
+import com.simpletour.domain.resources.Procurement;
 
 import java.util.List;
 import java.util.Map;

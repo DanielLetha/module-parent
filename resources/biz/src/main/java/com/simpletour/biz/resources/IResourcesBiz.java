@@ -4,9 +4,9 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import resources.Area;
-import resources.Hotel;
-import resources.IUnionEntityKey;
+import com.simpletour.domain.resources.Area;
+import com.simpletour.domain.resources.Hotel;
+import com.simpletour.domain.resources.IUnionEntityKey;
 
 import java.util.List;
 import java.util.Map;

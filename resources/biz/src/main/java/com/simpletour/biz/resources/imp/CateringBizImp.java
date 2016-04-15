@@ -6,9 +6,9 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.resources.IResourcesDao;
+import com.simpletour.domain.resources.Catering;
+import com.simpletour.domain.resources.Destination;
 import org.springframework.stereotype.Component;
-import resources.Catering;
-import resources.Destination;
 
 import javax.annotation.Resource;
 import java.util.HashMap;

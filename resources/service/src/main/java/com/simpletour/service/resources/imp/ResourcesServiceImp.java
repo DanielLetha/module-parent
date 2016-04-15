@@ -7,10 +7,10 @@ import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.resources.IResourcesDao;
+import com.simpletour.domain.resources.*;
 import com.simpletour.service.resources.IResourcesService;
 import com.simpletour.service.resources.error.ResourcesServiceError;
 import org.springframework.stereotype.Service;
-import resources.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;

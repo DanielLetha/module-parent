@@ -2,7 +2,7 @@ package com.simpletour.biz.resources;
 
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import resources.OfflineServiceProvider;
+import com.simpletour.domain.resources.OfflineServiceProvider;
 
 /**
  * @Brief :  供应商的biz接口

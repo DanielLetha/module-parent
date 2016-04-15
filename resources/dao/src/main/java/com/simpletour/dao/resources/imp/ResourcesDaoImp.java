@@ -5,10 +5,10 @@ import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 import com.simpletour.dao.resources.IResourcesDao;
+import com.simpletour.domain.resources.Destination;
+import com.simpletour.domain.resources.Procurement;
+import com.simpletour.domain.resources.UnionEntityKey;
 import org.springframework.stereotype.Repository;
-import resources.Destination;
-import resources.Procurement;
-import resources.UnionEntityKey;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;

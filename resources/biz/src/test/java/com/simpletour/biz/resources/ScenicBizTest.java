@@ -6,15 +6,15 @@ import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.resources.IResourcesDao;
+import com.simpletour.domain.resources.Area;
+import com.simpletour.domain.resources.Destination;
+import com.simpletour.domain.resources.Scenic;
 import org.junit.Assert;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import resources.Area;
-import resources.Destination;
-import resources.Scenic;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
