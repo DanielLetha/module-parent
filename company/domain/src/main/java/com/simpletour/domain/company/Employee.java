@@ -233,11 +233,6 @@ public class Employee extends LogicalDeletableDomain implements IDependTracable{
     }
 
     @Override
-    public EntityKey getEntityKey() {
-        return new EntityKey("sys_employee",getId());
-    }
-
-    @Override
     public List<Dependency> getDependencies() {
         return Arrays.asList(new Dependency(company.getEntityKey()),new Dependency(role.getEntityKey()));
     }
