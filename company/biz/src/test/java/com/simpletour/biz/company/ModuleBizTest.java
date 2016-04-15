@@ -109,7 +109,8 @@ public class ModuleBizTest extends AbstractTransactionalTestNGSpringContextTests
         Assert.assertNotNull(module);
         moduleBiz.deleteModule(module.getId());
         module=moduleBiz.getModuleById(module.getId());
-        Assert.assertNull(module);
+        Assert.assertNotNull(module);
+        Assert.assertTrue(module.getDel());
     }
 
     //测试page查询

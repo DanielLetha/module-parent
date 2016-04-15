@@ -1,5 +1,6 @@
 package com.simpletour.service.company.imp;
 
+import com.simpletour.biz.company.IModuleBiz;
 import com.simpletour.biz.company.IScopeTemplateBiz;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
@@ -25,7 +26,7 @@ public class ScopeTemplateServiceImp implements IScopeTemplateService {
     @Autowired
     private IScopeTemplateBiz scopeTemplateBiz;
     @Autowired
-    private IPermissionBiz permissionBiz;
+    private IModuleBiz moduleBiz;
 
     @Override
     public Optional<ScopeTemplate> addScopeTemplate(ScopeTemplate scopeTemplate) {
@@ -36,10 +37,10 @@ public class ScopeTemplateServiceImp implements IScopeTemplateService {
         if(scopeTemplate.getPermissions()==null||scopeTemplate.getPermissions().isEmpty())
             throw new BaseSystemException(ScopeTemplateServiceError.SCOPE_TEMPLATE_PERMISSION_NULL);
         if(scopeTemplate.getPermissions().stream()
-                .anyMatch(tmp-> !permissionBiz.isExisted(tmp.getId()))) {
+                .anyMatch(tmp-> !moduleBiz.isPermissionExisted(tmp.getId()))) {
             throw new BaseSystemException(ScopeTemplateServiceError.SCOPE_TEMPLATE_PERMISSION_NOT_EXIST);
         }
-        List<Permission> permissions=scopeTemplate.getPermissions().stream().map(tmp-> permissionBiz.getById(tmp.getId())).collect(Collectors.toList());
+        List<Permission> permissions=scopeTemplate.getPermissions().stream().map(tmp-> moduleBiz.getPermissionById(tmp.getId())).collect(Collectors.toList());
         scopeTemplate.setPermissions(permissions);
         return Optional.ofNullable(scopeTemplateBiz.addScopeTemplate(scopeTemplate));
     }
@@ -53,10 +54,10 @@ public class ScopeTemplateServiceImp implements IScopeTemplateService {
         if(scopeTemplate.getPermissions()==null||scopeTemplate.getPermissions().isEmpty())
             throw new BaseSystemException(ScopeTemplateServiceError.SCOPE_TEMPLATE_PERMISSION_NULL);
         if(scopeTemplate.getPermissions().stream()
-                .anyMatch(tmp-> !permissionBiz.isExisted(tmp.getId()))) {
+                .anyMatch(tmp-> !moduleBiz.isPermissionExisted(tmp.getId()))) {
             throw new BaseSystemException(ScopeTemplateServiceError.SCOPE_TEMPLATE_PERMISSION_NOT_EXIST);
         }
-        List<Permission> permissions=scopeTemplate.getPermissions().stream().map(tmp-> permissionBiz.getById(tmp.getId())).collect(Collectors.toList());
+        List<Permission> permissions=scopeTemplate.getPermissions().stream().map(tmp-> moduleBiz.getPermissionById(tmp.getId())).collect(Collectors.toList());
         scopeTemplate.setPermissions(permissions);
         return Optional.ofNullable(scopeTemplateBiz.updateScopeTemplate(scopeTemplate));
     }

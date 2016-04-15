@@ -36,8 +36,8 @@ public class RoleServiceImp implements IRoleService {
     @Autowired
     IModuleBiz moduleBiz;
 
-    @Autowired
-    IPermissionBiz permissionBiz;
+//    @Autowired
+//    IPermissionBiz permissionBiz;
 
     private void validateModules(Role role) {
         List<Permission> permissionsList = role.getPermissionList();
@@ -46,12 +46,12 @@ public class RoleServiceImp implements IRoleService {
         }
 
         permissionsList.forEach(item -> {
-            if (!permissionBiz.isAvailable(item)) {
-                throw new BaseSystemException(RoleBizError.INVALID_PERMISSION);
-            }
-            if (!moduleBiz.isAvailable(item.getModule())) {
-                throw new BaseSystemException(RoleBizError.INVALID_MODULE);
-            }
+//            if (!permissionBiz.isAvailable(item)) {
+//                throw new BaseSystemException(RoleBizError.INVALID_PERMISSION);
+//            }
+//            if (!moduleBiz.isAvailable(item.getModule())) {
+//                throw new BaseSystemException(RoleBizError.INVALID_MODULE);
+//            }
         });
     }
 
