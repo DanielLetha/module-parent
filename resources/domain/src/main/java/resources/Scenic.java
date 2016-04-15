@@ -188,7 +188,9 @@ public class Scenic extends LogicalDeletableDomain implements IUnionEntityKey, I
     public List<Dependency> getDependencies() {
         List<Dependency> dependencyList = new ArrayList<>();
         dependencyList.add(new Dependency(destination.getEntityKey()));
-        dependencyList.add(new Dependency(parent.getEntityKey()));
+        if (this.parent != null) {
+            dependencyList.add(new Dependency(parent.getEntityKey()));
+        }
         return dependencyList;
     }
 }
