@@ -1,13 +1,11 @@
-package com.simpletour.dao.product.imp.imp;
-
+package com.simpletour.dao.product.imp;
 
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.jpa.JPABaseDAO;
 import com.simpletour.commons.data.dao.query.condition.Condition;
-
 import com.simpletour.commons.data.domain.DomainPage;
-import com.simpletour.dao.product.imp.IProductDao;
-import com.simpletour.dao.product.imp.query.ProductQuery;
+import com.simpletour.dao.product.IProductDao;
+import com.simpletour.dao.product.query.ProductQuery;
 import com.simpletour.domain.product.Product;
 import org.springframework.stereotype.Repository;
 
