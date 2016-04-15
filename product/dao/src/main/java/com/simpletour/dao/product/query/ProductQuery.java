@@ -1,4 +1,4 @@
-package com.simpletour.dao.product.imp.query;
+package com.simpletour.dao.product.query;
 
 
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
