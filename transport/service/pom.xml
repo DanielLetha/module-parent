@@ -11,5 +11,22 @@
 
     <artifactId>transport-service</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>transport-domain</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>transport-dao</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>transport-biz</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
