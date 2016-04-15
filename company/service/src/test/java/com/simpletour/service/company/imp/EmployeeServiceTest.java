@@ -8,8 +8,6 @@
 //import com.simpletour.commons.data.domain.BaseDomain;
 //import com.simpletour.commons.data.domain.DomainPage;
 //import com.simpletour.commons.data.exception.BaseSystemException;
-//import com.simpletour.common.security.token.ThreadLocalToken;
-//import com.simpletour.common.security.token.Token;
 //import com.simpletour.dao.company.ICompanyDao;
 //import com.simpletour.dao.company.IEmployeeDao;
 //import com.simpletour.dao.company.IRoleDao;
@@ -21,7 +19,6 @@
 //import com.simpletour.service.company.data.Employee_Company_data;
 //import com.simpletour.service.company.data.Employee_Role_data;
 //import com.simpletour.service.company.error.EmployeeServiceError;
-//import org.apache.log4j.Logger;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.test.context.ContextConfiguration;
 //import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
@@ -38,8 +35,6 @@
 // */
 //@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 //public class EmployeeServiceTest extends AbstractTransactionalTestNGSpringContextTests {
-//
-//    private static final Logger logger = Logger.getLogger(EmployeeServiceTest.class);
 //
 //    @Autowired
 //    private IEmployeeDao employeeDao;
@@ -62,30 +57,24 @@
 //
 //    @BeforeClass
 //    public void setUp() {
-//        logger.error("setup.....................");
+//        System.out.println("setup.....................");
 //        Employee_Company_data employee_company_data = new Employee_Company_data(companyDao);
 //        Employee_Role_data employee_role_data = new Employee_Role_data(roleDao);
 //        employeeData = new EmployeeData(employeeDao);
 //        employeeData.addDataGenerators(employee_company_data);
 //        employeeData.addDataGenerators(employee_role_data);
 //        employeeData.createData();
-//        ThreadLocalToken.setToken(new Token("1", "1", "1", "1", ((Company) employeeData.getDomains().get(0)).getId().toString(), "1", Token.ClientType.BROWSER) {
-//            @Override
-//            public String toCipherString() {
-//                return null;
-//            }
-//        });
 //    }
 //
 //    @AfterClass
 //    public void tearDown() {
-//        logger.error("teardown..................");
+//        System.out.println("teardown..................");
 //        ListIterator<BaseDomain> iterator = employeeData.getDomains().listIterator();
 //        while (iterator.hasNext()) {
 //            iterator.next();
 //        }
 //        while (iterator.hasPrevious()) {
-//            employeeDao.removeEntity(iterator.previous());
+//            employeeDao.remove(iterator.previous());
 //        }
 //    }
 //
@@ -574,7 +563,7 @@
 //     * jobNo查询:jobNo为空
 //     */
 //    @Test
-//    public void queryEmployeeByJobNoNull(){
+//    public void queryEmployeeByJobNoNull() {
 //        try {
 //            employeeService.queryEmployeeByJobNo(null);
 //        } catch (BaseSystemException e) {
@@ -586,7 +575,7 @@
 //     * jobNo查询:jobNo小于0
 //     */
 //    @Test
-//    public void queryEmployeeByJobNoLessZero(){
+//    public void queryEmployeeByJobNoLessZero() {
 //        try {
 //            employeeService.queryEmployeeByJobNo(Integer.MIN_VALUE);
 //        } catch (BaseSystemException e) {
@@ -599,7 +588,7 @@
 //     */
 //    @Test
 //    public void queryEmployeeOriginNotExisted() {
-//        employeeDao.removeEntityById(Employee.class, employeeData.getDomains(Employee.class).get(0).getId(), true);
+//        employeeDao.removeEntityById(Employee.class, employeeData.getDomains(Employee.class).get(0).getId());
 //        Assert.assertTrue(!employeeService.queryEmployeeById(employeeData.getDomains(Employee.class).get(0).getId()).isPresent());
 //    }
 //
