@@ -10,7 +10,7 @@ import com.simpletour.domain.company.Role;
  * 文件版本：1.0
  * 创建人员：石广路
  * 创建日期：2016/4/8 16:56
- * 备注说明：null
+ * 备注说明：从simpletour-system项目迁移到com.simpletour.module项目的company模块当中，其中DAO底层的removeEntityById接口发生了变更。
  */
 public interface IRoleDao extends IBaseDao {
     /**
