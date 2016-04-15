@@ -23,6 +23,7 @@
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>resources-domain</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 
