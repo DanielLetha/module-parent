@@ -8,6 +8,7 @@ import com.simpletour.commons.data.dao.query.QueryUtil;
 import com.simpletour.commons.data.dialect.LongArrayUserType;
 import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.dependency.DependEntity;
+import com.simpletour.commons.data.domain.dependency.Dependency;
 import com.simpletour.domain.resources.Destination;
 import com.simpletour.domain.traveltrans.BusNo;
 import com.simpletour.domain.traveltrans.Line;
@@ -185,16 +186,16 @@ public class TourismRoute extends BaseDomain {
     }
 
     @JSONField(serialize = false)
-    public List<DependEntity> getDependEntities() {
-        List<DependEntity> dependEntities = new ArrayList<>();
-        dependEntities.add(new DependEntity(QueryUtil.getTableName(Product.class), product.getId(), QueryUtil.getTableName(BusNo.class), busNo.getId()));
-        dependEntities.add(new DependEntity(QueryUtil.getTableName(Product.class), product.getId(), QueryUtil.getTableName(Line.class), line.getId()));
+    public List<Dependency> getDependEntities() {
+        List<Dependency> dependencyList = new ArrayList<>();
+        dependencyList.add(new Dependency(QueryUtil.getTableName(Product.class), busNo.getId()));
+        dependencyList.add(new Dependency(QueryUtil.getTableName(Product.class), line.getId()));
         if (routes != null) {
             for (Long route : routes) {
-                dependEntities.add(new DependEntity(QueryUtil.getTableName(Product.class), product.getId(), QueryUtil.getTableName(Destination.class), route));
+                dependencyList.add(new Dependency(QueryUtil.getTableName(Product.class),route));
             }
         }
-        return dependEntities;
+        return dependencyList;
     }
 
 }

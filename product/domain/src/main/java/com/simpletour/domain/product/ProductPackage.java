@@ -7,6 +7,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.simpletour.commons.data.dao.query.QueryUtil;
 import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.dependency.DependEntity;
+import com.simpletour.commons.data.domain.dependency.Dependency;
 import com.simpletour.domain.resources.Destination;
 import com.simpletour.domain.resources.Procurement;
 
@@ -112,10 +113,10 @@ public class ProductPackage extends BaseDomain {
     }
 
     @JSONField(serialize = false)
-    List<DependEntity> getDependEntities(String rowTable, Long rowId) {
-        List<DependEntity> dependEntities = new ArrayList<>();
-        dependEntities.add(new DependEntity(rowTable, rowId, QueryUtil.getTableName(Procurement.class), procurement.getId()));
-        dependEntities.add(new DependEntity(rowTable, rowId, QueryUtil.getTableName(Destination.class), procurement.getId()));
-        return dependEntities;
+    List<Dependency> getDependEntities(String rowTable, Long rowId) {
+        List<Dependency> DependencyList = new ArrayList<>();
+        DependencyList.add(new Dependency(rowTable, rowId));
+        DependencyList.add(new Dependency(rowTable, rowId));
+        return DependencyList;
     }
 }
