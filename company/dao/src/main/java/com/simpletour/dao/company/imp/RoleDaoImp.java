@@ -104,21 +104,26 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
         StringBuilder sb = new StringBuilder();
         int pageIndex = query.getPageIndex();
         int pageSize = query.getPageSize();
-        Long count = getTotalCount(buildQuerySql(query, sb, true));
-        DomainPage<Role> domainPage = new DomainPage(pageSize, pageIndex, count);
 
-        if (0L == count) {
+        Long distinctCount = getTotalCount(buildQuerySql(query, sb, "COUNT(DISTINCT(temp_role.role_id))"));
+        DomainPage<Role> domainPage = new DomainPage(pageSize, pageIndex, distinctCount);
+
+        if (0L == distinctCount) {
             return domainPage;
         }
 
         sb.delete(0, sb.length());
+        Long totalCount = getTotalCount(buildQuerySql(query, sb, "COUNT(temp_role.role_id)"));
 
-        Query nativeQuery = buildQuerySql(query, sb, false);
+        sb.delete(0, sb.length());
+        Query nativeQuery = buildQuerySql(query, sb, "temp_role.*, temp_permission.*, temp_module.*");
+        pageSize = (int)(pageSize > distinctCount ? totalCount : pageSize);
         nativeQuery.setFirstResult((1 >= pageIndex ? 0 : pageIndex - 1) * pageSize);
         nativeQuery.setMaxResults(pageSize);
 
         List<Object[]> resultsList = nativeQuery.getResultList();
-        Map<Long, Role> roleMap = new HashMap<>(count.intValue());
+        int count = distinctCount.intValue();
+        Map<Long, Role> roleMap = new HashMap<>(count);
 
         resultsList.forEach(fields -> {
             Long roleId = Long.valueOf(fields[0].toString());
@@ -138,7 +143,7 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
                 company.setId(Long.valueOf(fields[3].toString()));
                 role.setCompany(company);
 
-                permissionsList = new ArrayList<>(count.intValue());
+                permissionsList = new ArrayList<>(count);
             }
 
             Permission permission = new Permission();
@@ -164,12 +169,8 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
         return domainPage;
     }
 
-    private Query buildQuerySql(RoleQuery query, StringBuilder sb, boolean isCount) {
-        if (isCount) {
-            sb.append("SELECT COUNT(DISTINCT(temp_role.role_id)) FROM ");
-        } else {
-            sb.append("SELECT temp_role.*, temp_permission.*, temp_module.* FROM ");
-        }
+    private Query buildQuerySql(RoleQuery query, StringBuilder sb, String filter) {
+        sb.append(String.format("SELECT %s FROM ", filter));
 
         String roleSql = String.format("(SELECT %s FROM sys_role c WHERE 1 = 1 AND %s %s %s) temp_role",
                 ROLE_FIELD_NAMES, filterDelPattern, getTenantIdFilterCondition("AND tenant_id"), getNameFilterPattern(query.getName()));
