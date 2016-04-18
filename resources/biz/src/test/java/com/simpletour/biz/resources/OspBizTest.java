@@ -1,10 +1,8 @@
 package com.simpletour.biz.resources;
 
 import com.simpletour.biz.resources.error.ResourcesBizError;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.error.DefaultError;
-import com.simpletour.common.security.token.EncryptedToken;
-import com.simpletour.common.security.token.Token;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.error.DefaultError;
 import com.simpletour.dao.resources.IResourcesDao;
 import com.simpletour.domain.resources.OfflineServiceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,9 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.simpletour.common.security.token.EncryptedToken;
+//import com.simpletour.common.security.token.Token;
 
 
 /**
@@ -44,7 +45,7 @@ public class OspBizTest extends AbstractTestNGSpringContextTests {
      */
     @BeforeClass(alwaysRun = true)
     public void initData() {
-        new EncryptedToken("0", "0", "12", "2", Token.ClientType.BROWSER);
+//        new EncryptedToken("0", "0", "12", "2", Token.ClientType.BROWSER);
     }
     /**
      * 测试添加供应商,初始化一部分数据
