@@ -18,8 +18,8 @@
             <artifactId>data</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.simpletour</groupId>
-            <artifactId>simpletour-sale-dao</artifactId>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>sale-dao</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
