@@ -1,6 +1,5 @@
 package com.simpletour.biz.sale.error;
 
-
 import com.simpletour.commons.data.error.IError;
 
 /**

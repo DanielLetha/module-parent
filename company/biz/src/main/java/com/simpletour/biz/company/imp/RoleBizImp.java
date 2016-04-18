@@ -11,8 +11,6 @@ import com.simpletour.domain.company.Company;
 import com.simpletour.domain.company.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +65,6 @@ public class RoleBizImp implements IRoleBiz {
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Optional<Role> saveRole(Role role) throws BaseSystemException {
         try {
             return Optional.ofNullable(roleDao.save(role));
@@ -78,7 +75,6 @@ public class RoleBizImp implements IRoleBiz {
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deleteRoleById(Long id) throws BaseSystemException {
 //        Role role = roleDao.getEntityById(Role.class, id);
 //        if (null == role || null == role.getId() || role.getDel()) {

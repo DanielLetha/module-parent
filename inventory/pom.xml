@@ -11,29 +11,13 @@
     </parent>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
+    <groupId>com.simpletour.module</groupId>
+    <artifactId>inventory</artifactId>
+
     <modules>
         <module>domain</module>
         <module>dao</module>
         <module>biz</module>
         <module>service</module>
     </modules>
-    <groupId>com.simpletour.module</groupId>
-    <artifactId>inventory</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
-            <artifactId>product-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour.commons</groupId>
-            <artifactId>data</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-    </dependencies>
-
 </project>

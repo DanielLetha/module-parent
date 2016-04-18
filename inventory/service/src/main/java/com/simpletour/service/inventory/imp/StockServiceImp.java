@@ -2,10 +2,10 @@ package com.simpletour.service.inventory.imp;
 
 import com.simpletour.biz.inventory.IStockBiz;
 import com.simpletour.biz.inventory.error.InventoryBizError;
-import com.simpletour.common.core.dao.IBaseDao;
-import com.simpletour.common.core.domain.BaseDomain;
-import com.simpletour.common.core.domain.DomainPage;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.domain.BaseDomain;
+import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.Stock;
 import com.simpletour.domain.inventory.query.IStockAvailable;
 import com.simpletour.domain.inventory.query.IStockTraceable;

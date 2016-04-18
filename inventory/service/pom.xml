@@ -19,24 +19,9 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.simpletour.module</groupId>
-            <artifactId>product-biz</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>test</scope>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
-            <artifactId>resources-service</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.simpletour.module</groupId>-->
-            <!--<artifactId>order-domain</artifactId>-->
-            <!--<version>${project.parent.version}</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-
         <!-- 单元测试 -->
         <dependency>
             <groupId>org.springframework</groupId>
