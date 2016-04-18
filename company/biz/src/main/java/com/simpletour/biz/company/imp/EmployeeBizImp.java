@@ -34,7 +34,7 @@ public class EmployeeBizImp implements IEmployeeBiz {
         //设置jobNo
         setJobNoForEmployee(employee);
         //设置初始密码
-      //  employee.setPasswd(new String(Base64.encode(RandomString.getRandomNumberString(64).getBytes())));
+        employee.setPasswd("st" + employee.getJobNo());
         employee.setSalt(UUID.randomUUID().toString());
         return Optional.ofNullable(employeeDao.save(employee));
     }
