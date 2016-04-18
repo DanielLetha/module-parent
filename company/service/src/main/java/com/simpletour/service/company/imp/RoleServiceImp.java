@@ -2,6 +2,7 @@ package com.simpletour.service.company.imp;
 
 import com.simpletour.biz.company.IModuleBiz;
 import com.simpletour.biz.company.IRoleBiz;
+import com.simpletour.biz.company.error.ModuleBizError;
 import com.simpletour.biz.company.error.RoleBizError;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
@@ -11,8 +12,6 @@ import com.simpletour.domain.company.Role;
 import com.simpletour.service.company.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,18 +34,17 @@ public class RoleServiceImp implements IRoleService {
     private void validateModules(Role role) {
         List<Permission> permissionsList = role.getPermissionList();
         if (null == permissionsList || permissionsList.isEmpty()) {
-            throw new BaseSystemException(RoleBizError.INVALID_PERMISSION);
+            throw new BaseSystemException(ModuleBizError.PERMISSION_NULL);
         }
 
         permissionsList.forEach(item -> {
             if (!moduleBiz.isPermissionExisted(item.getId())) {
-                throw new BaseSystemException(RoleBizError.INVALID_PERMISSION);
+                throw new BaseSystemException(ModuleBizError.PERMISSION_NOT_EXIST);
             }
         });
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Optional<Role> addRole(Role role) throws BaseSystemException {
         roleBiz.validateRole(role);
 
@@ -60,12 +58,7 @@ public class RoleServiceImp implements IRoleService {
         if (null != role && null == role.getId()) {
             throw new BaseSystemException(RoleBizError.ID_NULL);
         }
-
-        roleBiz.validateRole(role);
-
-        validateModules(role);
-
-        return roleBiz.saveRole(role);
+        return addRole(role);
     }
 
     @Override

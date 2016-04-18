@@ -1,7 +1,8 @@
 package com.simpletour.dao.company.imp;
 
-import com.simpletour.commons.data.dao.jpa.JPABaseDAO;
+import com.simpletour.commons.data.dao.jpa.DependencyHandleDAO;
 import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.company.IRoleDao;
 import com.simpletour.dao.company.query.RoleQuery;
 import com.simpletour.domain.company.Company;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
  * 备注说明：null
  */
 @Repository
-public class RoleDaoImp extends JPABaseDAO implements IRoleDao {
+public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
     static final List<String> ROLE_FIELDS_LIST = new ArrayList<>(10);
 
     static final List<String> PERMISSION_FIELDS_LIST = new ArrayList<>(8);
@@ -82,6 +83,20 @@ public class RoleDaoImp extends JPABaseDAO implements IRoleDao {
 
         name = MODULE_FIELDS_LIST.toString();
         MODULE_FIELD_NAMES = name.substring(1, name.length() - 1);
+    }
+
+    @Override
+    public void deleteRole(Role role) throws BaseSystemException {
+//        Long id;
+//        if (null != role && null != (id = role.getId())) {
+//            try {
+//                removeEntity(role);
+//                em.createNativeQuery("DELETE FROM SYS_R_ROLE_PERMISSION WHERE rid = " + id).executeUpdate();
+//            } catch (BaseSystemException bse) {
+//                throw bse;
+//            }
+//        }
+        removeEntity(role);
     }
 
     @Override

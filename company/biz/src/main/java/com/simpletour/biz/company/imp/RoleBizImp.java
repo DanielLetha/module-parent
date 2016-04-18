@@ -80,7 +80,14 @@ public class RoleBizImp implements IRoleBiz {
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void deleteRoleById(Long id) throws BaseSystemException {
+//        Role role = roleDao.getEntityById(Role.class, id);
+//        if (null == role || null == role.getId() || role.getDel()) {
+//            throw new BaseSystemException(RoleBizError.NOT_EXISTING);
+//        }
+
         try {
+            //roleDao.removeEntity(role);
+            //roleDao.deleteRole(role);
             roleDao.removeEntityById(Role.class, id);
         } catch (Exception e) {
             throw new BaseSystemException(e.getMessage(), RoleBizError.DELETE_FAILD);
