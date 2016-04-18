@@ -64,10 +64,12 @@ public class CompanyServiceTest extends AbstractTransactionalTestNGSpringContext
     @AfterClass
     public void tearDown() {
         if (companyId != null) {
-            companyDao.removeEntityById(Company.class, companyId);
+            Optional<Company> companyOptional =  companyService.getCompanyById(companyId);
+            companyDao.remove(companyOptional.get());
         }
         if (moudleId != null) {
-            companyDao.removeEntityById(Module.class, moudleId);
+            Optional<Module> moduleOptional = moduleService.getModuleById(moudleId);
+            companyDao.remove(moduleOptional.get());
         }
 
     }
