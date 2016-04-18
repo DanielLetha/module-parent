@@ -20,8 +20,11 @@
 
     <dependencyManagement>
         <dependencies>
-
-            <!-- 单元测试 -->
+            <dependency>
+                <groupId>com.simpletour.commons</groupId>
+                <artifactId>test</artifactId>
+                <version>1.0.0</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
@@ -31,6 +34,16 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
+                <version>4.2.2.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>4.2.2.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
                 <version>4.2.2.RELEASE</version>
             </dependency>
             <dependency>
@@ -62,26 +75,6 @@
                 <artifactId>postgresql</artifactId>
                 <scope>test</scope>
                 <version>9.4.1207</version>
-            </dependency>
-            <dependency>
-                <groupId>com.simpletour.commons</groupId>
-                <artifactId>test</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-core</artifactId>
-                <version>1.2.3</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>4.2.2.RELEASE</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <version>4.2.2.RELEASE</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
