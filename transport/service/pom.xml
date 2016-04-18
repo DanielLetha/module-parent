@@ -14,25 +14,15 @@
     <dependencies>
         <dependency>
             <groupId>com.simpletour.module</groupId>
-            <artifactId>transport-domain</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
-            <artifactId>transport-dao</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour.module</groupId>
             <artifactId>transport-biz</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <!-- 单元测试 -->
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>resources-domain</artifactId>
+            <version>${project.version}</version>
         </dependency>
+        <!-- 单元测试 -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -68,20 +58,5 @@
             <artifactId>test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.simpletour.common</groupId>
-            <artifactId>common-security</artifactId>
-            <version>1.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
 </project>

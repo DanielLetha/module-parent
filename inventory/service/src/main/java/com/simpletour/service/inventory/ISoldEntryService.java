@@ -1,6 +1,6 @@
 package com.simpletour.service.inventory;
 
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.SoldEntry;
 import com.simpletour.domain.inventory.query.SoldEntryKey;
 

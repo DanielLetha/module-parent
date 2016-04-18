@@ -12,7 +12,6 @@ import com.simpletour.dao.inventory.IStockDao;
 import com.simpletour.domain.inventory.InventoryType;
 import com.simpletour.domain.inventory.Stock;
 import com.simpletour.domain.inventory.query.*;
-import com.simpletour.domain.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -25,6 +24,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+//import com.simpletour.domain.product.Product;
 
 /**
  * 文件描述：库存模块业务处理实现类
@@ -196,11 +197,11 @@ public class StockBizImp implements IStockBiz {
     public List<StockKey> getStockDependencies(final StockKey stockKey, final Date day) throws BaseSystemException {
         List<StockKey> dependencies = Collections.emptyList();
         BaseDomain baseDomain = getStockWithDependencies(stockKey, day);
-        if (null != baseDomain) {
-            if (baseDomain instanceof Product) {
-                dependencies = ((Product) baseDomain).getDependentStockKeys();
-            }
-        }
+//        if (null != baseDomain) {
+//            if (baseDomain instanceof Product) {
+//                dependencies = ((Product) baseDomain).getDependentStockKeys();
+//            }
+//        }
         return dependencies;
     }
 

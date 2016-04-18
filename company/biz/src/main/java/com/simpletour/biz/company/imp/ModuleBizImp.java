@@ -11,7 +11,6 @@ import com.simpletour.domain.company.Module;
 import com.simpletour.domain.company.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +67,6 @@ public class ModuleBizImp implements IModuleBiz {
     }
 
     @Override
-    @Transactional
     public void deleteModule(long id) {
         Module module=getModuleById(id);
         module.setPermissions(new ArrayList<>());

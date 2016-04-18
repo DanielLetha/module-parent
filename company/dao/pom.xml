@@ -18,11 +18,14 @@
             <groupId>com.simpletour.commons</groupId>
             <artifactId>data</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>company-domain</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
     </dependencies>
 </project>

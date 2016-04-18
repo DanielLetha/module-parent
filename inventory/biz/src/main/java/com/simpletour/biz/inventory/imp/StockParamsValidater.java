@@ -1,7 +1,7 @@
 package com.simpletour.biz.inventory.imp;
 
 import com.simpletour.biz.inventory.error.InventoryBizError;
-import com.simpletour.common.core.exception.BaseSystemException;
+import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.InventoryType;
 
 import java.util.Date;
