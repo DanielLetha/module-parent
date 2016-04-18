@@ -33,7 +33,7 @@ import java.util.Optional;
  * 创建日期：2016/4/8 16:57
  * 备注说明：null
  */
-@ContextConfiguration(locations={"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class RoleServiceTest extends AbstractTestNGSpringContextTests {
     @Autowired
     IRoleService roleService;

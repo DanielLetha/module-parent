@@ -63,6 +63,12 @@ public class Role extends LogicalDeletableDomain implements IDependTracable {
     @Version
     private Integer version;
 
+    @Transient
+    private String modules;
+
+    @Transient
+    private String permissions;
+
     public Role() {
     }
 
@@ -140,6 +146,36 @@ public class Role extends LogicalDeletableDomain implements IDependTracable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public String getModules() {
+        int size = permissionList.size();
+
+        modules = "";
+
+        for (int i = 0; i < size; i++) {
+            modules += permissionList.get(i).getModule().getName();
+            if (i != permissionList.size() - 1) {
+                modules += "、";
+            }
+        }
+
+        return modules;
+    }
+
+    public String getPermissions() {
+        int size = permissionList.size();
+
+        permissions = "";
+
+        for (int i = 0; i < size; i++) {
+            permissions += permissionList.get(i).getName();
+            if (i != permissionList.size() - 1) {
+                permissions += "、";
+            }
+        }
+
+        return permissions;
     }
 
     @Override
