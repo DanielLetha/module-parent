@@ -6,7 +6,9 @@ import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.sale.IRefundPolicyDao;
+import com.simpletour.dao.sale.IRefundRuleDao;
 import com.simpletour.domain.sale.RefundPolicy;
+import com.simpletour.domain.sale.RefundRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,9 @@ import java.util.List;
 public class RefundPolicyBizImp implements IRefundPolicyBiz {
     @Autowired
     private IRefundPolicyDao refundPolicyDao;
+    @Autowired
+    private IRefundRuleDao refundRuleDao;
+
 
     private RefundPolicy findRefundPolicyByName(String name){
         List<RefundPolicy> refundPolicies=refundPolicyDao.getEntitiesByField(RefundPolicy.class,"name",name);
@@ -72,5 +77,11 @@ public class RefundPolicyBizImp implements IRefundPolicyBiz {
     public boolean isRefundPolicyExisted(long id) {
         RefundPolicy refundPolicy=getRefundPolicyById(id);
         return refundPolicy!=null;
+    }
+
+    @Override
+    public boolean isRefundRuleExisted(long id) {
+        RefundRule refundRule=refundRuleDao.getEntityById(RefundRule.class,id);
+        return refundRule!=null;
     }
 }
