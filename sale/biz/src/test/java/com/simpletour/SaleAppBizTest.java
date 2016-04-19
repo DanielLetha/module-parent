@@ -59,7 +59,7 @@ public class SaleAppBizTest extends AbstractTransactionalTestNGSpringContextTest
      */
     @Test(priority = 2)
     public void testAddDelSaleApp() {
-        SaleApp saleApp = new SaleApp("携程OTA销售平台", "asdadasd123key", "ertertert456secret", "携程业务员", "13800138000", "028-12345678", "test@ctrip.com", "028-69567896", "备注");
+        SaleApp saleApp = new SaleApp("携程OTA销售平台", "asdadasd123key", "ertertert456secret", "携程业务员", "13800138000", "028-12345678", "test@ctrip.com", "028-69567896",5, "备注");
         saleApp.setDel(true);
         try {
             SaleApp saleApp1 = saleAppBiz.addSaleApp(saleApp);
@@ -78,7 +78,7 @@ public class SaleAppBizTest extends AbstractTransactionalTestNGSpringContextTest
     public void testAddSaleApp() {
         List<SaleApp> saleAppList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            SaleApp saleApp = new SaleApp("携程OTA销售平台" + i, "asdadasd123key" + i, "ertertert456secret" + i, "携程业务员", "13800138000", "028-12345678", "test@ctrip.com", "028-69567896", "备注");
+            SaleApp saleApp = new SaleApp("携程OTA销售平台" + i, "asdadasd123key" + i, "ertertert456secret" + i, "携程业务员", "13800138000", "028-12345678", "test@ctrip.com", "028-69567896",5, "备注");
             SaleApp saleApp1 = saleAppBiz.addSaleApp(saleApp);
             saleAppList.add(saleApp1);
         }
@@ -93,7 +93,7 @@ public class SaleAppBizTest extends AbstractTransactionalTestNGSpringContextTest
      */
     @Test(priority = 4)
     public void testAddExistNameSaleApp() {
-        SaleApp saleApp = new SaleApp("携程OTA销售平台0", "qweweer123key", "fewrwer890secret", "去哪儿业务员", "15600156000", "028-89965632", "test@qunaert.com", "028-12312339", "备注21");
+        SaleApp saleApp = new SaleApp("携程OTA销售平台0", "qweweer123key", "fewrwer890secret", "去哪儿业务员", "15600156000", "028-89965632", "test@qunaert.com", "028-12312339",5, "备注21");
         try {
             SaleApp saleApp1 = saleAppBiz.addSaleApp(saleApp);
             Assert.assertNotNull(saleApp1);
@@ -107,7 +107,7 @@ public class SaleAppBizTest extends AbstractTransactionalTestNGSpringContextTest
      */
     @Test(priority = 5)
     public void testAddExistKeySaleApp() {
-        SaleApp saleApp = new SaleApp("途牛OTA销售平台", "asdadasd123key0", "ewrwer890secret", "途牛业务员", "15600156000", "028-89965632", "test@tuniu.com", "028-12312339", "备注21");
+        SaleApp saleApp = new SaleApp("途牛OTA销售平台", "asdadasd123key0", "ewrwer890secret", "途牛业务员", "15600156000", "028-89965632", "test@tuniu.com", "028-12312339",5, "备注21");
         try {
             SaleApp saleApp1 = saleAppBiz.addSaleApp(saleApp);
             Assert.assertNotNull(saleApp1);
@@ -121,7 +121,7 @@ public class SaleAppBizTest extends AbstractTransactionalTestNGSpringContextTest
      */
     @Test(priority = 6)
     public void testAddExistSecretSaleApp() {
-        SaleApp saleApp = new SaleApp("同程OTA销售平台", "powerqwrq23key", "ertertert456secret0", "同程业务员", "13100131000", "028-12345678", "test@tongc.com", "028-69567896", "备注");
+        SaleApp saleApp = new SaleApp("同程OTA销售平台", "powerqwrq23key", "ertertert456secret0", "同程业务员", "13100131000", "028-12345678", "test@tongc.com", "028-69567896",5, "备注");
         try {
             SaleApp saleApp1 = saleAppBiz.addSaleApp(saleApp);
             Assert.assertNotNull(saleApp1);
