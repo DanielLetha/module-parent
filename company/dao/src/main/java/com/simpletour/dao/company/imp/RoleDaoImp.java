@@ -12,6 +12,7 @@ import com.simpletour.domain.company.Role;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,8 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
     static final String PERMISSION_FIELD_NAMES;
 
     static final String MODULE_FIELD_NAMES;
+
+    String ids;
 
     static {
         ROLE_FIELDS_LIST.add("id as role_id");
@@ -104,24 +107,38 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
         StringBuilder sb = new StringBuilder();
         int pageIndex = query.getPageIndex();
         int pageSize = query.getPageSize();
+        ids = "";
 
-        Long distinctCount = getTotalCount(buildQuerySql(query, sb, "COUNT(DISTINCT(temp_role.role_id))"));
+        Long distinctCount = getTotalCount(buildQuerySql(query, sb, "COUNT(DISTINCT(temp_role.role_id))", null));
         DomainPage<Role> domainPage = new DomainPage(pageSize, pageIndex, distinctCount);
-
         if (0L == distinctCount) {
             return domainPage;
         }
 
         sb.delete(0, sb.length());
-        Long totalCount = getTotalCount(buildQuerySql(query, sb, "COUNT(temp_role.role_id)"));
+
+        Query idsQuery = buildQuerySql(query, sb, "temp_role.role_id", " GROUP BY temp_role.role_id");
+        idsQuery.setFirstResult((1 >= pageIndex ? 0 : pageIndex - 1) * pageSize);
+        idsQuery.setMaxResults(pageSize);
+
+        List<BigInteger> idsList = idsQuery.getResultList();
+        pageSize = idsList.size();
+        for (int index = 0; index < pageSize; index++) {
+            ids += idsList.get(index).toString();
+            if (index != pageSize - 1) {
+                ids += ',';
+            }
+        }
+
+        String orderBy = query.getOrderByFiledName();
+        if (null != orderBy && !orderBy.isEmpty()) {
+            orderBy = " ORDER BY " + orderBy;
+        }
 
         sb.delete(0, sb.length());
-        Query nativeQuery = buildQuerySql(query, sb, "temp_role.*, temp_permission.*, temp_module.*");
-        pageSize = (int)(pageSize > distinctCount ? totalCount : pageSize);
-        nativeQuery.setFirstResult((1 >= pageIndex ? 0 : pageIndex - 1) * pageSize);
-        nativeQuery.setMaxResults(pageSize);
 
-        List<Object[]> resultsList = nativeQuery.getResultList();
+        Query fieldsQuery = buildQuerySql(query, sb, "temp_role.*, temp_permission.*, temp_module.*", orderBy);
+        List<Object[]> resultsList = fieldsQuery.getResultList();
         int count = distinctCount.intValue();
         Map<Long, Role> roleMap = new HashMap<>(count);
 
@@ -169,11 +186,12 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
         return domainPage;
     }
 
-    private Query buildQuerySql(RoleQuery query, StringBuilder sb, String filter) {
+    private Query buildQuerySql(RoleQuery query, StringBuilder sb, String filter, String by) {
         sb.append(String.format("SELECT %s FROM ", filter));
 
-        String roleSql = String.format("(SELECT %s FROM sys_role c WHERE 1 = 1 AND %s %s %s) temp_role",
-                ROLE_FIELD_NAMES, filterDelPattern, getTenantIdFilterCondition("AND tenant_id"), getNameFilterPattern(query.getName()));
+        String idsRange = ids.isEmpty() ? ids : "AND c.id in (" + ids + ')';
+        String roleSql = String.format("(SELECT %s FROM sys_role c WHERE 1 = 1 AND %s %s %s %s) temp_role",
+                ROLE_FIELD_NAMES, filterDelPattern, getTenantIdFilterCondition("AND tenant_id"), getNameFilterPattern(query.getName()), idsRange);
         roleSql += " INNER JOIN sys_r_role_permission rp ON rp.rid = temp_role.role_id INNER JOIN ";
 
 //        String permissionSql = String.format("(SELECT %s FROM sys_permission c WHERE 1 = 1 AND %s %s) temp_permission",
@@ -189,6 +207,10 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
         moduleSql += " ON temp_permission.permission_module_id = temp_module.module_id";
 
         sb.append(roleSql).append(permissionSql).append(moduleSql);
+
+        if (null != by && !by.isEmpty()) {
+            sb.append(by);
+        }
 
         return em.createNativeQuery(sb.toString());
     }
