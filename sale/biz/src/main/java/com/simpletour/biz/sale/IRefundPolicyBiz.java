@@ -15,7 +15,7 @@ public interface IRefundPolicyBiz {
 
     /**
      * 添加退款规则模板
-     * 校验是否存在重名：throw
+     * 校验是否存在重名：throw RefundPolicyBizError.REFUND_POLICY_NAME_EXIST
      * @param refundPolicy
      * @return
      */
@@ -23,7 +23,7 @@ public interface IRefundPolicyBiz {
 
     /**
      * 更新退款规则模板
-     * 校验是否存在重名：
+     * 校验是否存在重名：throw RefundPolicyBizError.REFUND_POLICY_NAME_EXIST
      * @param refundPolicy
      * @return
      */

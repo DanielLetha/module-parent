@@ -37,11 +37,11 @@ public class RefundRule extends BaseDomain {
     @Column
     private Integer ration;
 
-    /**
-     * 公司ID
-     */
-    @Column(name = "tenant_id")
-    private Long tenantId;
+//    /**
+//     * 公司ID
+//     */
+//    @Column(name = "tenant_id")
+//    private Long tenantId;
 
     /**
      * 备注
@@ -105,13 +105,13 @@ public class RefundRule extends BaseDomain {
         this.ration = ration;
     }
 
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
+//    public Long getTenantId() {
+//        return tenantId;
+//    }
+//
+//    public void setTenantId(Long tenantId) {
+//        this.tenantId = tenantId;
+//    }
 
     public String getRemark() {
         return remark;
