@@ -82,7 +82,7 @@ public class SaleApp extends LogicalDeletableDomain {
     private Integer version;
 
 
-    public SaleApp(String name, String key, String secret, String contact, String mobile, String fax, String email, String link, int reserveTime, String remark, Integer version) {
+    public SaleApp(String name, String key, String secret, String contact, String mobile, String fax, String email, String link, int reserveTime, String remark) {
         this.name = name;
         this.key = key;
         this.secret = secret;
@@ -93,7 +93,7 @@ public class SaleApp extends LogicalDeletableDomain {
         this.link = link;
         this.reserveTime = reserveTime;
         this.remark = remark;
-        this.version = version;
+
     }
 
     public SaleApp() {
