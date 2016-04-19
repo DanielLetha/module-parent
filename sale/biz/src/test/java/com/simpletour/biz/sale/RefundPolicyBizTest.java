@@ -54,7 +54,7 @@ public class RefundPolicyBizTest extends AbstractTransactionalTestNGSpringContex
     //测试：正常添加
     @Test
     public void testAddRefundPolicy() {
-        RefundPolicy refundPolicy = generateRefundPolicy();
+        RefundPolicy refundPolicy = refundPolicyData.generateRefundPolicy("add1");
         RefundPolicy refundPolicy1 = refundPolicyBiz.addRefundPolicy(refundPolicy);
         Assert.assertNotNull(refundPolicy1);
         Assert.assertNotNull(refundPolicy1.getId());
@@ -64,7 +64,7 @@ public class RefundPolicyBizTest extends AbstractTransactionalTestNGSpringContex
     //测试：添加存在重名
     @Test
     public void testAddRefundPolicyNameExisted() {
-        RefundPolicy refundPolicy = generateRefundPolicy();
+        RefundPolicy refundPolicy = refundPolicyData.generateRefundPolicy("add2");
         RefundPolicy refundPolicyExist = (RefundPolicy) refundPolicyData.getDomains().get(0);
         refundPolicy.setName(refundPolicyExist.getName());
         try {
@@ -104,7 +104,7 @@ public class RefundPolicyBizTest extends AbstractTransactionalTestNGSpringContex
     //测试删除
     @Test
     public void testDelete() {
-        RefundPolicy refundPolicy = generateRefundPolicy();
+        RefundPolicy refundPolicy = refundPolicyData.generateRefundPolicy("delete1");
         refundPolicy = refundPolicyBiz.addRefundPolicy(refundPolicy);
         refundPolicy = refundPolicyBiz.getRefundPolicyById(refundPolicy.getId());
         Assert.assertNotNull(refundPolicy);
@@ -151,6 +151,7 @@ public class RefundPolicyBizTest extends AbstractTransactionalTestNGSpringContex
         list.forEach(tmp -> System.out.println(((RefundPolicy) tmp).getName() + ";" + ((RefundPolicy) tmp).getRefundRules().size()));
     }
 
+    //测试：根据id判断退款模板是否存在
     @Test
     public void testIsExisted() {
         RefundPolicy refundPolicy1 = (RefundPolicy) refundPolicyData.getDomains().get(0);
@@ -158,14 +159,12 @@ public class RefundPolicyBizTest extends AbstractTransactionalTestNGSpringContex
         Assert.assertFalse(refundPolicyBiz.isRefundPolicyExisted(Long.MAX_VALUE));
     }
 
-
-    private RefundPolicy generateRefundPolicy() {
-        RefundPolicy refundPolicy = new RefundPolicy(generateName(), "");
-        List<RefundRule> refundRuleList = new ArrayList<>();
-        refundRuleList.add(new RefundRule(refundPolicy, 2, 50, ""));
-        refundRuleList.add(new RefundRule(refundPolicy, 4, 80, ""));
-        refundRuleList.add(new RefundRule(refundPolicy, 6, 100, ""));
-        refundPolicy.setRefundRules(refundRuleList);
-        return refundPolicy;
+    //测试：根据id判断退款细则是否存在
+    @Test
+    public void testIsRunleIsExisted(){
+        RefundPolicy refundPolicy= (RefundPolicy) refundPolicyData.getDomains().get(0);
+        Assert.assertTrue(refundPolicyBiz.isRefundRuleExisted(refundPolicy.getRefundRules().get(0).getId()));
+        Assert.assertFalse(refundPolicyBiz.isRefundRuleExisted(Long.MAX_VALUE));
     }
+
 }

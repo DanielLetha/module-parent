@@ -25,6 +25,7 @@ public class RefundPolicyServiceImp implements IRefundPolicyService {
     @Autowired
     private IRefundPolicyBiz refundPolicyBiz;
 
+    //判断退款细则是否重复
     private boolean isRuleAvaliable(List<RefundRule> refundRules){
         List<Integer> timings=refundRules.stream().map(RefundRule::getTiming).distinct().collect(Collectors.toList());
         return timings.size()==refundRules.size();
@@ -36,10 +37,10 @@ public class RefundPolicyServiceImp implements IRefundPolicyService {
             throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_NULL);
         if(refundPolicy.getId()!=null)
             throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_DATA_ERROR);
-        if(refundPolicy.getRefundRules().stream().anyMatch(tmp->tmp.getId()!=null))
-            throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_DATA_ERROR);
         if(refundPolicy.getRefundRules()==null||refundPolicy.getRefundRules().isEmpty())
             throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_NULL);
+        if(refundPolicy.getRefundRules().stream().anyMatch(tmp->tmp.getId()!=null))
+            throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_DATA_ERROR);
         if(!isRuleAvaliable(refundPolicy.getRefundRules()))
             throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_ERROR);
 
@@ -99,6 +100,6 @@ public class RefundPolicyServiceImp implements IRefundPolicyService {
 
     @Override
     public List<RefundPolicy> findRefundPolicyList(ConditionOrderByQuery query) {
-        return findRefundPolicyList(query);
+        return refundPolicyBiz.findRefundPolicyList(query);
     }
 }

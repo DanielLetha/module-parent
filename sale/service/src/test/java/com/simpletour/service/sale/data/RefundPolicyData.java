@@ -1,4 +1,4 @@
-package com.simpletour.biz.sale.data;
+package com.simpletour.service.sale.data;
 
 import com.simpletour.commons.test.generator.AbstractDataGenerator;
 import com.simpletour.dao.sale.IRefundPolicyDao;
@@ -7,6 +7,8 @@ import com.simpletour.domain.sale.RefundRule;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.simpletour.commons.test.Utils.generateName;
 
 /**
  * User: XuHui/xuhui@simpletour.com
