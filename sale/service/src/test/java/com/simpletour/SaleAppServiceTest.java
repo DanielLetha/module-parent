@@ -63,7 +63,7 @@ public class SaleAppServiceTest extends AbstractTransactionalTestNGSpringContext
     @Test(priority = 2)
     public void addDelSaleApp() {
         try {
-            SaleApp saleApp = new SaleApp("携程OTA销售平台", "asdadasd123key", "ertertert456secret", "携程业务员", "13800138000", "028-12345678", "test@ctrip.com", "028-69567896", "备注");
+            SaleApp saleApp = new SaleApp("携程OTA销售平台", "asdadasd123key", "ertertert456secret", "携程业务员", "13800138000", "028-12345678", "test@ctrip.com", "028-69567896",5, "备注");
             saleApp.setDel(true);
             Optional<SaleApp> saleAppOptional = saleAppService.addSaleApp(saleApp);
             Assert.assertTrue(saleAppOptional.isPresent());
@@ -80,7 +80,7 @@ public class SaleAppServiceTest extends AbstractTransactionalTestNGSpringContext
     public void addSaleApp() {
         List<SaleApp> saleAppList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            SaleApp saleApp = new SaleApp("携程OTA销售平台" + i, "asdadasd123key" + i, "ertertert456secret" + i, "携程业务员", "13800138000", "028-12345678", "test@ctrip.com", "028-69567896", "备注");
+            SaleApp saleApp = new SaleApp("携程OTA销售平台" + i, "asdadasd123key" + i, "ertertert456secret" + i, "携程业务员", "13800138000", "028-12345678", "test@ctrip.com", "028-69567896",5, "备注");
             Optional<SaleApp> saleApp1 = saleAppService.addSaleApp(saleApp);
             saleAppList.add(saleApp1.get());
         }

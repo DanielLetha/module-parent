@@ -32,11 +32,11 @@ public class RefundPolicy extends BaseDomain {
     @Column
     private String name;
 
-    /**
-     * 公司ID
-     */
-    @Column(name = "tenant_id")
-    private Long tenantId;
+//    /**
+//     * 公司ID
+//     */
+//    @Column(name = "tenant_id")
+//    private Long tenantId;
 
     /**
      * 备注
@@ -53,14 +53,13 @@ public class RefundPolicy extends BaseDomain {
     public RefundPolicy() {
     }
 
-    public RefundPolicy(String name, List<RefundRule> refundRules, String remark) {
+    public RefundPolicy(String name, String remark) {
         this.name = name;
-        this.refundRules = refundRules;
         this.remark = remark;
     }
 
-    public RefundPolicy(Long id, Integer version, String name, List<RefundRule> refundRules, String remark) {
-        this(name, refundRules, remark);
+    public RefundPolicy(Long id, Integer version, String name, String remark) {
+        this(name, remark);
         this.id = id;
         this.version = version;
     }
@@ -83,13 +82,13 @@ public class RefundPolicy extends BaseDomain {
         this.name = name;
     }
 
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
+//    public Long getTenantId() {
+//        return tenantId;
+//    }
+//
+//    public void setTenantId(Long tenantId) {
+//        this.tenantId = tenantId;
+//    }
 
     public String getRemark() {
         return remark;
@@ -105,5 +104,13 @@ public class RefundPolicy extends BaseDomain {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public List<RefundRule> getRefundRules() {
+        return refundRules;
+    }
+
+    public void setRefundRules(List<RefundRule> refundRules) {
+        this.refundRules = refundRules;
     }
 }
