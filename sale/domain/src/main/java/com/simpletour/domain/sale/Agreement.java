@@ -11,7 +11,7 @@ import javax.persistence.*;
  * @since 2.0-SNAPSHOT
  */
 @Entity
-@Table(name = "SALE_PROTOCOL")
+@Table(name = "SALE_AGREEMENT")
 public class Agreement extends BaseDomain {
     /**
      * 销售协议状态枚举
