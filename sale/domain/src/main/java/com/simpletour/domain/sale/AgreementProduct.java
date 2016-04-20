@@ -1,6 +1,7 @@
 package com.simpletour.domain.sale;
 
 import com.simpletour.commons.data.domain.BaseDomain;
+import com.simpletour.domain.product.Product;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.List;
  * Remark:  产品退改规则的实体类
  */
 @Entity
-@Table(name = "SALE_PRODUCT")
-public class Product extends BaseDomain{
+@Table(name = "SALE_AGREEMENT_PRODUCT")
+public class AgreementProduct extends BaseDomain{
 
     /**
      * 主键
@@ -25,10 +26,11 @@ public class Product extends BaseDomain{
     private Long id;
 
     /**
-     * 业务系统产品id，不是该实体类的id
+     * 业务系统产品
      */
+    @OneToOne
     @Column(name = "product_id")
-    private Long productId;
+    private Product product;
 
     /**
      * 销售协议
@@ -40,21 +42,21 @@ public class Product extends BaseDomain{
     /**
      * 产品退款细则
      */
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "agreementProduct",cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @OrderBy("timing asc")
-    private List<ProductRefundRule> refundRules;
+    private List<AgreementProductRefundRule> productRefundRules;
 
     /**
      * 退款规则文字说明
      */
-    @Column
+    @Column(length=1024)
     private String refund;
 
     /**
-     * 截止下单时间，精确到秒的字符串
+     * 截止下单时间，相对于出行那天的 0:00点，正数表示0点以后，负数表示0点之前
      */
     @Column
-    private String deadline;
+    private Integer deadline;
 
     /**
      * 备注
@@ -78,12 +80,12 @@ public class Product extends BaseDomain{
         this.id = id;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Agreement getAgreement() {
@@ -94,6 +96,14 @@ public class Product extends BaseDomain{
         this.agreement = agreement;
     }
 
+    public List<AgreementProductRefundRule> getProductRefundRules() {
+        return productRefundRules;
+    }
+
+    public void setProductRefundRules(List<AgreementProductRefundRule> productRefundRules) {
+        this.productRefundRules = productRefundRules;
+    }
+
     public String getRefund() {
         return refund;
     }
@@ -102,11 +112,11 @@ public class Product extends BaseDomain{
         this.refund = refund;
     }
 
-    public String getDeadline() {
+    public Integer getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(String deadline) {
+    public void setDeadline(Integer deadline) {
         this.deadline = deadline;
     }
 
