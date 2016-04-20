@@ -47,7 +47,7 @@ public class RefundPolicyBizImp implements IRefundPolicyBiz {
     @Override
     public RefundPolicy updateRefundPolicy(RefundPolicy refundPolicy) {
         RefundPolicy refundPolicyExisted=findRefundPolicyByName(refundPolicy.getName());
-        if(refundPolicyExisted!=null)
+        if(refundPolicyExisted!=null&&refundPolicyExisted.getId()!=refundPolicy.getId())
             throw new BaseSystemException(RefundPolicyBizError.REFUND_POLICY_NAME_EXIST);
         return refundPolicyDao.save(refundPolicy);
     }
