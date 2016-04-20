@@ -1,6 +1,5 @@
 package com.simpletour.biz.product;
 
-import com.simpletour.biz.product.imp.TourismBusAllocation;
 
 import com.simpletour.commons.data.dao.query.condition.Condition;
 import com.simpletour.commons.data.domain.DomainPage;
@@ -48,31 +47,31 @@ public interface IProductBiz {
 
     List<Product> getProductByCondition(Condition conditions);
 
-    //Product
-
-    /**
-     * 添加一个Product
-     *
-     * @param product
-     * @return
-     */
-    Product addProduct(Product product);
-
-    /**
-     * 根据id删除Product，同时会删除Product关联的ProductPackage
-     *
-     * @param id
-     */
-    void deleteProductById(Long id);
-
-    /**
-     * 更新Product, 会先删除原有的ProductPackage，再保存传入的productPackages
-     *
-     * @param product
-     * @return
-     */
-    Product updateProduct(Product product);
-
+//    //Product
+//
+//    /**
+//     * 添加一个Product
+//     *
+//     * @param product
+//     * @return
+//     */
+//    Product addProduct(Product product);
+//
+//    /**
+//     * 根据id删除Product，同时会删除Product关联的ProductPackage
+//     *
+//     * @param id
+//     */
+//    void deleteProductById(Long id);
+//
+//    /**
+//     * 更新Product, 会先删除原有的ProductPackage，再保存传入的productPackages
+//     *
+//     * @param product
+//     * @return
+//     */
+//    Product updateProduct(Product product);
+//
     /**
      * 根据id获取Product
      * 返回的Product不包含ProductPackage
@@ -104,58 +103,58 @@ public interface IProductBiz {
      * @return
      */
     DomainPage<Product> getProductByConditionsPage(Boolean isOnline, String name, Boolean isDel, int page, int pageSize);
-
-
-    //stock
-
-    /**
-     * 查询一个tourism在start-end每一天的车位剩余有效库存（必须能够排车排进去）
-     *
-     * @param tourismRoutes
-     * @param start
-     * @param end
-     * @return
-     */
-    Map<Date, Integer> findTourismBusNoPlanCapacity(List<TourismRoute> tourismRoutes, Date start, Date end);
-
-    /**
-     * 查询一个Tourism 在day这一天的剩余库存
-     *
-     * @param tourismRoutes
-     * @param day
-     * @return
-     */
-    Integer findTourismBusNoPlanCapacity(List<TourismRoute> tourismRoutes, Date day);
-
-    /**
-     * 查询一个Tourism 在day这一天的剩余库存
-     *
-     * @param tourism
-     * @param day
-     * @return
-     */
-    Integer findTourismBusNoPlanCapacity(Product tourism, Date day);
-
-
-    /**
-     * 查询一个Tourism 在day这一天的剩余库存
-     *
-     * @param tourismId
-     * @param day
-     * @return
-     */
-    Integer findTourismBusNoPlanCapacity(Long tourismId, Date day);
-
-    /**
-     * 根据行程，日期，订购数量，以及排车算法安排车辆
-     *
-     * @param tourism
-     * @param day
-     * @param quantity
-     * @param allocateStrategy
-     * @return
-     */
-    List<List<TourismBusAllocation.BusQuantity>> allocate(Product tourism, Date day, Integer quantity, TourismBusAllocation.AllocationStrategy allocateStrategy);
+//
+//
+//    //stock
+//
+//    /**
+//     * 查询一个tourism在start-end每一天的车位剩余有效库存（必须能够排车排进去）
+//     *
+//     * @param tourismRoutes
+//     * @param start
+//     * @param end
+//     * @return
+//     */
+//    Map<Date, Integer> findTourismBusNoPlanCapacity(List<TourismRoute> tourismRoutes, Date start, Date end);
+//
+//    /**
+//     * 查询一个Tourism 在day这一天的剩余库存
+//     *
+//     * @param tourismRoutes
+//     * @param day
+//     * @return
+//     */
+//    Integer findTourismBusNoPlanCapacity(List<TourismRoute> tourismRoutes, Date day);
+//
+//    /**
+//     * 查询一个Tourism 在day这一天的剩余库存
+//     *
+//     * @param tourism
+//     * @param day
+//     * @return
+//     */
+//    Integer findTourismBusNoPlanCapacity(Product tourism, Date day);
+//
+//
+//    /**
+//     * 查询一个Tourism 在day这一天的剩余库存
+//     *
+//     * @param tourismId
+//     * @param day
+//     * @return
+//     */
+//    Integer findTourismBusNoPlanCapacity(Long tourismId, Date day);
+//
+//    /**
+//     * 根据行程，日期，订购数量，以及排车算法安排车辆
+//     *
+//     * @param tourism
+//     * @param day
+//     * @param quantity
+//     * @param allocateStrategy
+//     * @return
+//     */
+//    List<List<TourismBusAllocation.BusQuantity>> allocate(Product tourism, Date day, Integer quantity, TourismBusAllocation.AllocationStrategy allocateStrategy);
 }
 
 
