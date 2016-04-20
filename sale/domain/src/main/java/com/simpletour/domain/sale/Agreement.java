@@ -26,11 +26,11 @@ public class Agreement extends BaseDomain {
     @OneToOne
     @JoinColumn(name = "app_id")
     private SaleApp saleApp;
-    /**
-     * 公司ID
-     */
-    @Column(name = "tenant_id")
-    private Long tenantId;
+//    /**
+//     * 公司ID
+//     */
+//    @Column(name = "tenant_id")
+//    private Long tenantId;
     /**
      * 状态
      */
@@ -50,8 +50,7 @@ public class Agreement extends BaseDomain {
     public Agreement() {
     }
 
-    public Agreement(Long tenantId, SaleApp saleApp, Boolean enabled, String remark) {
-        this.tenantId = tenantId;
+    public Agreement(SaleApp saleApp, Boolean enabled, String remark) {
         this.saleApp = saleApp;
         this.enabled = enabled;
         this.remark = remark;
@@ -75,19 +74,19 @@ public class Agreement extends BaseDomain {
         this.saleApp = saleApp;
     }
 
-    public Long getTenantId() {
-        return tenantId;
-    }
+//    public Long getTenantId() {
+//        return tenantId;
+//    }
+//
+//    public void setTenantId(Long tenantId) {
+//        this.tenantId = tenantId;
+//    }
 
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public Boolean getStatus() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setStatus(Boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 

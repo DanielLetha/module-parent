@@ -68,7 +68,7 @@ public class SaleApp extends LogicalDeletableDomain {
      * 订单失效时间
      */
     @Column(name = "reserve_time")
-    private int reserveTime;
+    private Integer reserveTime;
 
     /**
      * 备注
@@ -82,7 +82,7 @@ public class SaleApp extends LogicalDeletableDomain {
     private Integer version;
 
 
-    public SaleApp(String name, String key, String secret, String contact, String mobile, String fax, String email, String link, int reserveTime, String remark) {
+    public SaleApp(String name, String key, String secret, String contact, String mobile, String fax, String email, String link, Integer reserveTime, String remark) {
         this.name = name;
         this.key = key;
         this.secret = secret;
@@ -163,11 +163,12 @@ public class SaleApp extends LogicalDeletableDomain {
         this.email = email;
     }
 
-    public int getReserveTime() {
+
+    public Integer getReserveTime() {
         return reserveTime;
     }
 
-    public void setReserveTime(int reserveTime) {
+    public void setReserveTime(Integer reserveTime) {
         this.reserveTime = reserveTime;
     }
 
