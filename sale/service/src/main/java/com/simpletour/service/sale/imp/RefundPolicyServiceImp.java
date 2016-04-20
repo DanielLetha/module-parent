@@ -27,8 +27,11 @@ public class RefundPolicyServiceImp implements IRefundPolicyService {
 
     //判断退款细则是否重复
     private boolean isRuleAvaliable(List<RefundRule> refundRules){
-        List<Integer> timings=refundRules.stream().map(RefundRule::getTiming).distinct().collect(Collectors.toList());
-        return timings.size()==refundRules.size();
+        for(int i=1;i<refundRules.size();i++){
+            if (refundRules.get(i-1).getTiming()>=refundRules.get(i).getTiming())
+                return false;
+        }
+        return true;
     }
 
     @Override
