@@ -72,9 +72,9 @@ public class AgreementServiceImp implements IAgreementService {
         if (original == null)
             throw new BaseSystemException(AgreementServiceError.AGREEMENT_NOT_EXIST);
         if (original.getStatus().equals(agreement.getStatus())) {
-            if (original.getStatus().equals(Agreement.Status.enable))
+            if (original.getStatus())
                 throw new BaseSystemException(AgreementServiceError.AGREEMENT_STATUS_ENABLED);
-            if (original.getStatus().equals(Agreement.Status.disable))
+            else
                 throw new BaseSystemException(AgreementServiceError.AGREEMENT_STATUS_DISABLED);
         }
         return Optional.ofNullable(agreementBiz.updateStatus(agreement));

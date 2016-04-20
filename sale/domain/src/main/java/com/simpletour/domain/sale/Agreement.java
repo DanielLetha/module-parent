@@ -14,23 +14,6 @@ import javax.persistence.*;
 @Table(name = "SALE_AGREEMENT")
 public class Agreement extends BaseDomain {
     /**
-     * 销售协议状态枚举
-     */
-    public enum Status {
-        enable("启用"), disable("禁用");
-
-        private String status;
-
-        Status(String status) {
-            this.status = status;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-    }
-
-    /**
      * 销售协议主键
      */
     @Id
@@ -52,8 +35,7 @@ public class Agreement extends BaseDomain {
      * 状态
      */
     @Column
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.enable;
+    private Boolean enabled = true;
     /**
      * 备注
      */
@@ -68,10 +50,10 @@ public class Agreement extends BaseDomain {
     public Agreement() {
     }
 
-    public Agreement(Long tenantId, SaleApp saleApp, Status status, String remark) {
+    public Agreement(Long tenantId, SaleApp saleApp, Boolean enabled, String remark) {
         this.tenantId = tenantId;
         this.saleApp = saleApp;
-        this.status = status;
+        this.enabled = enabled;
         this.remark = remark;
     }
 
@@ -101,12 +83,12 @@ public class Agreement extends BaseDomain {
         this.tenantId = tenantId;
     }
 
-    public Status getStatus() {
-        return status;
+    public Boolean getStatus() {
+        return enabled;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getRemark() {

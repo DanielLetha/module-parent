@@ -53,7 +53,6 @@ public class AgreementBizImp implements IAgreementBiz {
         checkAgreement(agreement);
         checkSaleApp(agreement.getSaleApp());
         checkUnique(agreement, false);
-        checkStatus(agreement.getStatus());
         return agreementDao.save(agreement);
     }
 
@@ -63,7 +62,6 @@ public class AgreementBizImp implements IAgreementBiz {
         checkId(agreement.getId());
         checkSaleApp(agreement.getSaleApp());
         checkUnique(agreement, true);
-        checkStatus(agreement.getStatus());
         if (!isExist(agreement.getId()))
             throw new BaseSystemException(AgreementBizError.AGREEMENT_NOT_EXIST);
         return agreementDao.save(agreement);
@@ -74,7 +72,6 @@ public class AgreementBizImp implements IAgreementBiz {
         checkAgreement(agreement);
         checkId(agreement.getId());
         checkSaleApp(agreement.getSaleApp());
-        checkStatus(agreement.getStatus());
         if (!isExist(agreement.getId()))
             throw new BaseSystemException(AgreementBizError.AGREEMENT_NOT_EXIST);
         return agreementDao.save(agreement);
@@ -83,6 +80,15 @@ public class AgreementBizImp implements IAgreementBiz {
     @Override
     public Boolean isExist(Long id) {
         return Optional.ofNullable(getAgreementById(id)).isPresent();
+    }
+
+    @Override
+    public Boolean isAvailable(Long id) {
+        Agreement agreement = getAgreementById(id);
+        if (agreement == null)
+            return Boolean.FALSE;
+
+        return agreement.getStatus();
     }
 
     /**
@@ -132,15 +138,5 @@ public class AgreementBizImp implements IAgreementBiz {
             if (list != null && list.size() > 0)
                 throw new BaseSystemException(AgreementBizError.AGREEMENT_APP_EXISTED);
         }
-    }
-
-    /**
-     * 检查销售协议状态是否为空
-     *
-     * @param status 状态
-     */
-    private void checkStatus(Agreement.Status status) {
-        if (status == null)
-            throw new BaseSystemException(AgreementBizError.AGREEMENT_STATUS);
     }
 }

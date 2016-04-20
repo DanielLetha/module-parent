@@ -115,4 +115,16 @@ public interface IAgreementBiz {
      * @since 2.0-SNAPSHOT
      */
     Boolean isExist(Long id);
+
+    /**
+     * 根据ID判断销售协议是否有效（是否启用）
+     * <p>
+     * Author: YY/yuanyuan@simpletour.com
+     * Time:   2016-04-20 09:33
+     *
+     * @param id 销售协议ID
+     * @return true/false
+     * @since 2.0-SNAPSHOT
+     */
+    Boolean isAvailable(Long id);
 }
