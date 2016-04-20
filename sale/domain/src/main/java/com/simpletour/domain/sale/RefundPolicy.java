@@ -39,6 +39,12 @@ public class RefundPolicy extends BaseDomain {
 //    private Long tenantId;
 
     /**
+     * 退款说明
+     */
+    @Column(columnDefinition = "text")
+    private String instruction;
+
+    /**
      * 备注
      */
     @Column(columnDefinition = "text")
@@ -53,13 +59,14 @@ public class RefundPolicy extends BaseDomain {
     public RefundPolicy() {
     }
 
-    public RefundPolicy(String name, String remark) {
+    public RefundPolicy(String name, String instruction, String remark) {
         this.name = name;
+        this.instruction = instruction;
         this.remark = remark;
     }
 
-    public RefundPolicy(Long id, Integer version, String name, String remark) {
-        this(name, remark);
+    public RefundPolicy(Long id, Integer version, String name, String instruction, String remark) {
+        this(name, instruction, remark);
         this.id = id;
         this.version = version;
     }
@@ -89,6 +96,15 @@ public class RefundPolicy extends BaseDomain {
 //    public void setTenantId(Long tenantId) {
 //        this.tenantId = tenantId;
 //    }
+
+
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
 
     public String getRemark() {
         return remark;

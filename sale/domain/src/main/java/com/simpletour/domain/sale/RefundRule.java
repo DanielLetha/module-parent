@@ -43,11 +43,6 @@ public class RefundRule extends BaseDomain {
 //    @Column(name = "tenant_id")
 //    private Long tenantId;
 
-    /**
-     * 备注
-     */
-    @Column(columnDefinition = "text")
-    private String remark;
 
     /**
      * 版本号（乐观锁）
@@ -58,15 +53,25 @@ public class RefundRule extends BaseDomain {
     public RefundRule() {
     }
 
-    public RefundRule(RefundPolicy refundPolicy, Integer timing, Integer ration, String remark) {
+    public RefundRule(Integer timing,Integer ration){
+        this.timing=timing;
+        this.ration=ration;
+    }
+
+    public RefundRule(Long id,Integer version,Integer timing,Integer ration){
+        this(timing, ration);
+        this.id=id;
+        this.version=version;
+    }
+
+    public RefundRule(RefundPolicy refundPolicy, Integer timing, Integer ration) {
         this.refundPolicy = refundPolicy;
         this.timing = timing;
         this.ration = ration;
-        this.remark = remark;
     }
 
-    public RefundRule(Long id, Integer version, RefundPolicy refundPolicy, Integer timing, Integer ration, String remark) {
-        this(refundPolicy, timing, ration, remark);
+    public RefundRule(Long id, Integer version, RefundPolicy refundPolicy, Integer timing, Integer ration) {
+        this(refundPolicy, timing, ration);
         this.id = id;
         this.version = version;
     }
@@ -112,14 +117,6 @@ public class RefundRule extends BaseDomain {
 //    public void setTenantId(Long tenantId) {
 //        this.tenantId = tenantId;
 //    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 
     public Integer getVersion() {
         return version;
