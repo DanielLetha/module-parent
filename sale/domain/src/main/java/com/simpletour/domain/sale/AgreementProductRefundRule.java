@@ -11,8 +11,8 @@ import javax.persistence.*;
  * Remark: 产品退款细则
  */
 @Entity
-@Table(name = "SALE_PRODUCT_REFUND_POLICY")
-public class ProductRefundRule  extends BaseDomain{
+@Table(name = "SALE_AGREEMENT_PRODUCT_REFUND_RULE")
+public class AgreementProductRefundRule extends BaseDomain{
 
     /**
      * 主键
@@ -27,10 +27,10 @@ public class ProductRefundRule  extends BaseDomain{
      */
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
+    private AgreementProduct agreementProduct;
 
     /**
-     * 时间范围（距出现当天0点，单位天）
+     * 时间范围（距出现当天0点，单位小时）
      */
     @Column
     private Integer timing;
@@ -63,12 +63,12 @@ public class ProductRefundRule  extends BaseDomain{
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public AgreementProduct getAgreementProduct() {
+        return agreementProduct;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setAgreementProduct(AgreementProduct agreementProduct) {
+        this.agreementProduct = agreementProduct;
     }
 
     public Integer getTiming() {

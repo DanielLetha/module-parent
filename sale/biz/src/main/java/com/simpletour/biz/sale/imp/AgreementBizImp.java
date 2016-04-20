@@ -60,18 +60,18 @@ public class AgreementBizImp implements IAgreementBiz {
     public Agreement updateAgreement(Agreement agreement) {
         checkAgreement(agreement);
         checkId(agreement.getId());
-        checkSaleApp(agreement.getSaleApp());
-        checkUnique(agreement, true);
+        checkVersion(agreement);
         if (!isExist(agreement.getId()))
             throw new BaseSystemException(AgreementBizError.AGREEMENT_NOT_EXIST);
+        checkSaleApp(agreement.getSaleApp());
+        checkUnique(agreement, true);
         return agreementDao.save(agreement);
     }
 
     @Override
     public Agreement updateStatus(Agreement agreement) {
         checkAgreement(agreement);
-        checkId(agreement.getId());
-        checkSaleApp(agreement.getSaleApp());
+        checkVersion(agreement);
         if (!isExist(agreement.getId()))
             throw new BaseSystemException(AgreementBizError.AGREEMENT_NOT_EXIST);
         return agreementDao.save(agreement);
@@ -88,7 +88,7 @@ public class AgreementBizImp implements IAgreementBiz {
         if (agreement == null)
             return Boolean.FALSE;
 
-        return agreement.getStatus();
+        return agreement.isEnabled();
     }
 
     /**
@@ -129,14 +129,24 @@ public class AgreementBizImp implements IAgreementBiz {
      */
     private void checkUnique(Agreement agreement, Boolean isUpdate) {
         Map<String, Object> conditions = new HashMap<>();
-        conditions.put("app_id", agreement.getSaleApp().getId());
+        conditions.put("saleApp", agreement.getSaleApp());
         List<Agreement> list = agreementDao.getEntitiesByFieldList(Agreement.class, conditions);
         if (isUpdate) {
             if (list != null && list.size() > 0 && !list.get(0).getId().equals(agreement.getId()))
-                throw new BaseSystemException(AgreementBizError.AGREEMENT_APP_EXISTED);
+                throw new BaseSystemException(AgreementBizError.AGREEMENT_APP_EXIST);
         } else {
             if (list != null && list.size() > 0)
-                throw new BaseSystemException(AgreementBizError.AGREEMENT_APP_EXISTED);
+                throw new BaseSystemException(AgreementBizError.AGREEMENT_APP_EXIST);
         }
+    }
+
+    /**
+     * 更新时检查version是否存在
+     *
+     * @param agreement 销售协议对象
+     */
+    private void checkVersion(Agreement agreement) {
+        if (agreement.getVersion() == null)
+            throw new BaseSystemException(AgreementBizError.AGREEMENT_VERSION_NULL);
     }
 }

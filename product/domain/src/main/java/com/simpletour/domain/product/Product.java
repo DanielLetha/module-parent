@@ -220,22 +220,22 @@ public class Product extends LogicalDeletableDomain implements IStockTraceable, 
     @JSONField(serialize = false)
     public List<StockKey> getDependentStockKeys() {
         List<StockKey> dependentStockKeys = new ArrayList<>();
-        if (productPackages != null && !productPackages.isEmpty()) {
-            productPackages.forEach(pp -> {
-                Procurement procurement = pp.getProcurement();
-                StockKey stockKey = procurement.getStockKey();
-                stockKey.setOffset(pp.getOffset());
-                dependentStockKeys.add(stockKey);
-            });
-        }
-        if (tourismRouteList != null) {
-            tourismRouteList.forEach(tourismRoute -> {
-                BusNo busNo = tourismRoute.getBusNo();
-                StockKey stockKey = busNo.getStockKey();
-                stockKey.setOffset(tourismRoute.getOffset());
-                dependentStockKeys.add(stockKey);
-            });
-        }
+//        if (productPackages != null && !productPackages.isEmpty()) {
+//            productPackages.forEach(pp -> {
+//                Procurement procurement = pp.getProcurement();
+//                StockKey stockKey = procurement.getStockKey();
+//                stockKey.setOffset(pp.getOffset());
+//                dependentStockKeys.add(stockKey);
+//            });
+//        }
+//        if (tourismRouteList != null) {
+//            tourismRouteList.forEach(tourismRoute -> {
+//                BusNo busNo = tourismRoute.getBusNo();
+//                StockKey stockKey = busNo.getStockKey();
+//                stockKey.setOffset(tourismRoute.getOffset());
+//                dependentStockKeys.add(stockKey);
+//            });
+//        }
 
         return dependentStockKeys;
     }

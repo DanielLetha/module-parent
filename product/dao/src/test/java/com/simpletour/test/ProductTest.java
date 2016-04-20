@@ -1,6 +1,6 @@
 package com.simpletour.test;
 
-import com.simpletour.dao.product.imp.IProductDao;
+import com.simpletour.dao.product.IProductDao;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
