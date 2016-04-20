@@ -28,8 +28,8 @@ public class AgreementProduct extends BaseDomain{
     /**
      * 业务系统产品
      */
-    @OneToOne
-    @Column(name = "product_id")
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
     /**
