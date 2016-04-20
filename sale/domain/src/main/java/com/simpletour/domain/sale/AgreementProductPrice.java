@@ -1,6 +1,7 @@
 package com.simpletour.domain.sale;
 
 
+import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.domain.product.Product;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name="sale_agree_product_price")
-public class AgreementProductPrice  {
+public class AgreementProductPrice  extends BaseDomain {
 
 
     public enum Type{
