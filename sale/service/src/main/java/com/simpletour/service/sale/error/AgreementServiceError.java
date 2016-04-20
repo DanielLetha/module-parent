@@ -21,7 +21,7 @@ public enum AgreementServiceError implements IError {
 
     private static final String ns = "SER.AGREEMENT";
 
-    AgreementServiceError(String errorMessage, String errorCode) {
+    AgreementServiceError(String errorCode, String errorMessage) {
         this.errorMessage = errorMessage;
         this.errorCode = errorCode;
     }

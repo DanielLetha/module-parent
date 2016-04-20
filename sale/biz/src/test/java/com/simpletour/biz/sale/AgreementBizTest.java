@@ -67,7 +67,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
 
         Agreement agreement = (Agreement) agreementData.getDomains().get(0);
         Map<String, Object> conditions = new HashMap<>();
-//        conditions.put("name", agreement.getSaleApp().getName());
+        conditions.put("saleApp.name", agreement.getSaleApp().getName());
         conditions.put("enabled", agreement.isEnabled());
         domainPage = agreementBiz.findAgreementByCondition(conditions, "id", IBaseDao.SortBy.ASC, 1, 10, true);
         Assert.assertNotNull(domainPage);
@@ -93,7 +93,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
 
         Agreement agreement = (Agreement) agreementData.getDomains().get(0);
         AndConditionSet conditionSet = new AndConditionSet();
-//        conditionSet.addCondition("name", agreement.getSaleApp().getName());
+        conditionSet.addCondition("saleApp.name", agreement.getSaleApp().getName());
         conditionSet.addCondition("enabled", agreement.isEnabled());
         query.setCondition(conditionSet);
         domainPage = agreementBiz.findAgreementByQuery(query);
@@ -120,7 +120,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
 
         Agreement agreement = (Agreement) agreementData.getDomains().get(0);
         AndConditionSet conditionSet = new AndConditionSet();
-//        conditionSet.addCondition("name", agreement.getSaleApp().getName());
+        conditionSet.addCondition("saleApp.name", agreement.getSaleApp().getName());
         conditionSet.addCondition("enabled", agreement.isEnabled());
         query.setCondition(conditionSet);
         list = agreementBiz.getAgreementListByQuery(query);
@@ -156,6 +156,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
         Agreement agreement = agreementData.generateAgreement("add");
         agreement = agreementBiz.addAgreement(agreement);
         Assert.assertNotNull(agreement);
+        Assert.assertNotNull(agreement.getId());
     }
 
     /**
@@ -272,6 +273,28 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
     }
 
     /**
+     * 测试更新销售协议，version为空
+     * <p>
+     * Author: YY/yuanyuan@simpletour.com
+     * Time:   2016-04-20 15:25
+     *
+     * @since 2.0-SNAPSHOT
+     */
+    @Test(priority = 12)
+    public void testUpdateAgreementWithNullVersion() {
+        try {
+            Agreement original = (Agreement) agreementData.getDomains().get(0);
+            Agreement agreement = new Agreement(original.getSaleApp(), original.isEnabled(), original.getRemark());
+            agreement.setId(original.getId());
+            agreement.setVersion(null);
+            agreementBiz.updateAgreement(agreement);
+            Assert.fail();
+        } catch (BaseSystemException e) {
+            Assert.assertEquals(e.getMessage(), AgreementBizError.AGREEMENT_VERSION_NULL.getErrorMessage());
+        }
+    }
+
+    /**
      * 测试更新销售协议，销售端对象为空
      * <p>
      * Author: YY/yuanyuan@simpletour.com
@@ -279,7 +302,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
      *
      * @since 2.0-SNAPSHOT
      */
-    @Test(priority = 12)
+    @Test(priority = 13)
     public void testUpdateAgreementWithNullSaleApp() {
         try {
             Agreement original = (Agreement) agreementData.getDomains().get(0);
@@ -301,7 +324,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
      *
      * @since 2.0-SNAPSHOT
      */
-    @Test(priority = 13)
+    @Test(priority = 14)
     public void testUpdateAgreementWithNotExistAgreement() {
         try {
             Agreement original = (Agreement) agreementData.getDomains().get(0);
@@ -323,7 +346,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
      *
      * @since 2.0-SNAPSHOT
      */
-    @Test(priority = 14)
+    @Test(priority = 15)
     public void testUpdateAgreementWithExistedSaleApp() {
         try {
             Agreement original1 = (Agreement) agreementData.getDomains().get(0);
@@ -344,7 +367,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
      *
      * @since 2.0-SNAPSHOT
      */
-    @Test(priority = 15)
+    @Test(priority = 16)
     public void testUpdateStatus() {
         Agreement original = (Agreement) agreementData.getDomains().get(0);
         Boolean enabled = original.isEnabled();
@@ -362,13 +385,35 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
      *
      * @since 2.0-SNAPSHOT
      */
-    @Test(priority = 16)
+    @Test(priority = 17)
     public void testUpdateStatusWithNullAgreement() {
         try {
             agreementBiz.updateStatus(null);
             Assert.fail();
         } catch (BaseSystemException e) {
             Assert.assertEquals(e.getMessage(), AgreementBizError.AGREEMENT_EMPTY.getErrorMessage());
+        }
+    }
+
+    /**
+     * 测试更新销售协议状态，version为空
+     * <p>
+     * Author: YY/yuanyuan@simpletour.com
+     * Time:   2016-04-20 15:24
+     *
+     * @since 2.0-SNAPSHOT
+     */
+    @Test(priority = 18)
+    public void testUpdateStatusWithNullVersion() {
+        try {
+            Agreement original = (Agreement) agreementData.getDomains().get(0);
+            Agreement agreement = new Agreement(original.getSaleApp(), original.isEnabled(), original.getRemark());
+            agreement.setId(original.getId());
+            agreement.setVersion(null);
+            agreementBiz.updateStatus(agreement);
+            Assert.fail();
+        } catch (BaseSystemException e) {
+            Assert.assertEquals(e.getMessage(), AgreementBizError.AGREEMENT_VERSION_NULL.getErrorMessage());
         }
     }
 
@@ -380,7 +425,7 @@ public class AgreementBizTest extends AbstractTransactionalTestNGSpringContextTe
      *
      * @since 2.0-SNAPSHOT
      */
-    @Test(priority = 17)
+    @Test(priority = 19)
     public void testUpdateStatusWithNotExistAgreement() {
         try {
             Agreement original = (Agreement) agreementData.getDomains().get(0);

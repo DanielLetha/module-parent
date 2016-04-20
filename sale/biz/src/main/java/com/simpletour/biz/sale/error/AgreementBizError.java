@@ -21,7 +21,7 @@ public enum AgreementBizError implements IError {
 
     private static final String ns = "BIZ.AGREEMENT";
 
-    AgreementBizError(String errorMessage, String errorCode) {
+    AgreementBizError(String errorCode, String errorMessage) {
         this.errorMessage = errorMessage;
         this.errorCode = errorCode;
     }
