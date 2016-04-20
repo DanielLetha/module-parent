@@ -5,6 +5,7 @@ import com.simpletour.dao.sale.IRefundPolicyDao;
 import com.simpletour.domain.sale.RefundPolicy;
 import com.simpletour.domain.sale.RefundRule;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class RefundPolicyData extends AbstractDataGenerator{
     }
 
     public RefundPolicy generateRefundPolicy(String name) {
-        RefundPolicy refundPolicy = new RefundPolicy(generateName(name),"退款说明", "");
+        RefundPolicy refundPolicy = new RefundPolicy(generateName(name), 5184000L,"退款说明", "");
         List<RefundRule> refundRuleList = new ArrayList<>();
         refundRuleList.add(new RefundRule(refundPolicy, 2, 50));
         refundRuleList.add(new RefundRule(refundPolicy, 4, 80));

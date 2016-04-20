@@ -3,6 +3,7 @@ package com.simpletour.domain.sale;
 import com.simpletour.commons.data.domain.BaseDomain;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -25,6 +26,12 @@ public class RefundPolicy extends BaseDomain {
     @OneToMany(mappedBy = "refundPolicy", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("timing asc")
     private List<RefundRule> refundRules;
+
+    /**
+     * 下单截止时间
+     */
+    @Column
+    private Long deadline;
 
     /**
      * 退款模板名称
@@ -59,14 +66,15 @@ public class RefundPolicy extends BaseDomain {
     public RefundPolicy() {
     }
 
-    public RefundPolicy(String name, String instruction, String remark) {
+    public RefundPolicy(String name, Long deadline, String instruction, String remark) {
+        this.deadline = deadline;
         this.name = name;
         this.instruction = instruction;
         this.remark = remark;
     }
 
-    public RefundPolicy(Long id, Integer version, String name, String instruction, String remark) {
-        this(name, instruction, remark);
+    public RefundPolicy(Long id, Integer version, String name, Long deadline, String instruction, String remark) {
+        this(name, deadline, instruction, remark);
         this.id = id;
         this.version = version;
     }
@@ -97,6 +105,14 @@ public class RefundPolicy extends BaseDomain {
 //        this.tenantId = tenantId;
 //    }
 
+
+    public Long getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Long deadline) {
+        this.deadline = deadline;
+    }
 
     public String getInstruction() {
         return instruction;
