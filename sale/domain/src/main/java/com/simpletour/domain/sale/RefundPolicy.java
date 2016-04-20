@@ -24,7 +24,7 @@ public class RefundPolicy extends BaseDomain {
      * 退款规则
      */
     @OneToMany(mappedBy = "refundPolicy", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @OrderBy("timing asc")
+    @OrderBy("timing asc ")
     private List<RefundRule> refundRules;
 
     /**
