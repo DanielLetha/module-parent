@@ -9,8 +9,6 @@ import com.simpletour.biz.traveltrans.error.TravelTransportBizError;
 import com.simpletour.commons.data.dao.query.condition.Condition;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.domain.inventory.InventoryType;
-import com.simpletour.domain.inventory.Stock;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.ProductPackage;
 import com.simpletour.domain.product.TourismRoute;
@@ -97,19 +95,19 @@ public class ProductServiceImp implements IProductService {
         return productBiz.getProductByCondition(conditions);
     }
 
-    public Optional<Product> addProduct(Product product) {
-        verifyAndInitProduct(product);
-        return Optional.of(productBiz.addProduct(product));
-    }
-
-    public void deleteProductById(Long id) {
-        productBiz.deleteProductById(id);
-    }
-
-    public Optional<Product> updateProduct(Product product) throws BaseSystemException {
-        verifyAndInitProduct(product);
-        return Optional.of(productBiz.updateProduct(product));
-    }
+//    public Optional<Product> addProduct(Product product) {
+//        verifyAndInitProduct(product);
+//        return Optional.of(productBiz.addProduct(product));
+//    }
+//
+//    public void deleteProductById(Long id) {
+//        productBiz.deleteProductById(id);
+//    }
+//
+//    public Optional<Product> updateProduct(Product product) throws BaseSystemException {
+//        verifyAndInitProduct(product);
+//        return Optional.of(productBiz.updateProduct(product));
+//    }
 
     public Optional<Product> getProductById(Long id) {
         return Optional.of(productBiz.getProductById(id));
@@ -124,82 +122,82 @@ public class ProductServiceImp implements IProductService {
     }
 
 
-    // stock
-    public Integer findTourismBusNoPlanCapacity(List<TourismRoute> tourismRoutes, Date day) {
-        return productBiz.findTourismBusNoPlanCapacity(tourismRoutes, day);
-    }
-
-    @Override
-    public Map<Date, Integer> findTourismBusNoPlanCapacity(List<TourismRoute> tourismRoutes, Date start, Date end) {
-        return productBiz.findTourismBusNoPlanCapacity(tourismRoutes, start, end);
-    }
-
-    public Integer findTourismBusNoPlanCapacity(Product product, Date day) {
-        if ( product == null || day == null)
-            return 0;
-        if (!product.containBus())
-            throw new BaseSystemException(ProductServiceError.PRODUCT_NOT_COTAIN_BUS);
-        return findTourismBusNoPlanCapacity(product.getTourismRouteList(), day);
-    }
-
-    @Override
-    public Map<Date, Integer> findTourismBusNoPlanCapacity(Product product, Date start, Date end) {
-        if(product==null||start==null||end==null) return Collections.emptyMap();
-        if (!product.containBus())
-            throw new BaseSystemException(ProductServiceError.PRODUCT_NOT_COTAIN_BUS);
-        return findTourismBusNoPlanCapacity(product.getTourismRouteList(), start, end);
-    }
-
-    public Integer findTourismBusNoPlanCapacity(Long productId, Date day) {
-        Product product = productBiz.getProductById(productId);
-        if (product == null)
-            return 0;
-        if (!product.containBus())
-            throw new BaseSystemException(ProductServiceError.PRODUCT_NOT_COTAIN_BUS);
-        return findTourismBusNoPlanCapacity(product, day);
-    }
-
-    @Override
-    public Map<Date, Integer> findTourismBusNoPlanCapacity(Long productId, Date start, Date end) {
-        Product product = productBiz.getProductById(productId);
-        if(product==null||start==null||end==null) return Collections.emptyMap();
-        if (!product.containBus())
-            throw new BaseSystemException(ProductServiceError.PRODUCT_NOT_COTAIN_BUS);
-        return findTourismBusNoPlanCapacity(product.getTourismRouteList(), start, end);
-    }
-
-    public Optional<Stock> getStock(Product product, Date day, Boolean isOnline) {
-        if (isOnline != null && isOnline == Boolean.FALSE)
-            return Optional.empty();
-        Optional<Stock> stock = stockBiz.getStock(product, day, isOnline);
-        if (!product.containBus())
-            return stock;
-
-        if(stock.isPresent() && stock.get().getInventoryType() == InventoryType.product){
-            Integer busCapacity = productBiz.findTourismBusNoPlanCapacity(product, day);
-            if(stock.get().getAvailableQuantity() > busCapacity){
-                stock.get().setAvailableQuantity(busCapacity);
-            }
-        }
-        return stock;
-    }
-
-    public List<Stock> getStocks(Product product, Date startDay, Date endDay, Boolean isOnline){
-        if (isOnline != null && isOnline == Boolean.FALSE)
-            return Collections.emptyList();
-
-        List<Stock> stocks = stockBiz.getStocks(product, startDay, endDay, isOnline);
-        if (!product.containBus())
-            return stocks;
-
-        Map<Date, Integer> tourismBusNoCapacitiesMap = productBiz.findTourismBusNoPlanCapacity(product.getTourismRouteList(), startDay, endDay);
-
-        for (Stock stock : stocks) {
-            Integer busCapacity = tourismBusNoCapacitiesMap.get(stock.getDay());
-            if(stock.getAvailableQuantity() > busCapacity){
-                stock.setAvailableQuantity(busCapacity);
-            }
-        }
-        return stocks;
-    }
+//    // stock
+//    public Integer findTourismBusNoPlanCapacity(List<TourismRoute> tourismRoutes, Date day) {
+//        return productBiz.findTourismBusNoPlanCapacity(tourismRoutes, day);
+//    }
+//
+//    @Override
+//    public Map<Date, Integer> findTourismBusNoPlanCapacity(List<TourismRoute> tourismRoutes, Date start, Date end) {
+//        return productBiz.findTourismBusNoPlanCapacity(tourismRoutes, start, end);
+//    }
+//
+//    public Integer findTourismBusNoPlanCapacity(Product product, Date day) {
+//        if ( product == null || day == null)
+//            return 0;
+//        if (!product.containBus())
+//            throw new BaseSystemException(ProductServiceError.PRODUCT_NOT_COTAIN_BUS);
+//        return findTourismBusNoPlanCapacity(product.getTourismRouteList(), day);
+//    }
+//
+//    @Override
+//    public Map<Date, Integer> findTourismBusNoPlanCapacity(Product product, Date start, Date end) {
+//        if(product==null||start==null||end==null) return Collections.emptyMap();
+//        if (!product.containBus())
+//            throw new BaseSystemException(ProductServiceError.PRODUCT_NOT_COTAIN_BUS);
+//        return findTourismBusNoPlanCapacity(product.getTourismRouteList(), start, end);
+//    }
+//
+//    public Integer findTourismBusNoPlanCapacity(Long productId, Date day) {
+//        Product product = productBiz.getProductById(productId);
+//        if (product == null)
+//            return 0;
+//        if (!product.containBus())
+//            throw new BaseSystemException(ProductServiceError.PRODUCT_NOT_COTAIN_BUS);
+//        return findTourismBusNoPlanCapacity(product, day);
+//    }
+//
+//    @Override
+//    public Map<Date, Integer> findTourismBusNoPlanCapacity(Long productId, Date start, Date end) {
+//        Product product = productBiz.getProductById(productId);
+//        if(product==null||start==null||end==null) return Collections.emptyMap();
+//        if (!product.containBus())
+//            throw new BaseSystemException(ProductServiceError.PRODUCT_NOT_COTAIN_BUS);
+//        return findTourismBusNoPlanCapacity(product.getTourismRouteList(), start, end);
+//    }
+//
+//    public Optional<Stock> getStock(Product product, Date day, Boolean isOnline) {
+//        if (isOnline != null && isOnline == Boolean.FALSE)
+//            return Optional.empty();
+//        Optional<Stock> stock = stockBiz.getStock(product, day, isOnline);
+//        if (!product.containBus())
+//            return stock;
+//
+//        if(stock.isPresent() && stock.get().getInventoryType() == InventoryType.product){
+//            Integer busCapacity = productBiz.findTourismBusNoPlanCapacity(product, day);
+//            if(stock.get().getAvailableQuantity() > busCapacity){
+//                stock.get().setAvailableQuantity(busCapacity);
+//            }
+//        }
+//        return stock;
+//    }
+//
+//    public List<Stock> getStocks(Product product, Date startDay, Date endDay, Boolean isOnline){
+//        if (isOnline != null && isOnline == Boolean.FALSE)
+//            return Collections.emptyList();
+//
+//        List<Stock> stocks = stockBiz.getStocks(product, startDay, endDay, isOnline);
+//        if (!product.containBus())
+//            return stocks;
+//
+//        Map<Date, Integer> tourismBusNoCapacitiesMap = productBiz.findTourismBusNoPlanCapacity(product.getTourismRouteList(), startDay, endDay);
+//
+//        for (Stock stock : stocks) {
+//            Integer busCapacity = tourismBusNoCapacitiesMap.get(stock.getDay());
+//            if(stock.getAvailableQuantity() > busCapacity){
+//                stock.setAvailableQuantity(busCapacity);
+//            }
+//        }
+//        return stocks;
+   // }
 }

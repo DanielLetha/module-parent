@@ -15,6 +15,7 @@
         <module>product</module>
         <module>transport</module>
         <module>resources</module>
+        <module>order</module>
         <!--<module>sale</module>-->
     </modules>
     <properties>
