@@ -33,9 +33,9 @@ public class RefundPolicyData extends AbstractDataGenerator{
     public RefundPolicy generateRefundPolicy(String name) {
         RefundPolicy refundPolicy = new RefundPolicy(generateName(name),5184000L,"退款说明", "");
         List<RefundRule> refundRuleList = new ArrayList<>();
-        refundRuleList.add(new RefundRule(refundPolicy, 2, 50));
-        refundRuleList.add(new RefundRule(refundPolicy, 4, 80));
-        refundRuleList.add(new RefundRule(refundPolicy, 6, 100));
+        refundRuleList.add(new RefundRule(refundPolicy, 48, 50));
+        refundRuleList.add(new RefundRule(refundPolicy, 96, 80));
+        refundRuleList.add(new RefundRule(refundPolicy, 144, 100));
         refundPolicy.setRefundRules(refundRuleList);
         return refundPolicy;
     }
