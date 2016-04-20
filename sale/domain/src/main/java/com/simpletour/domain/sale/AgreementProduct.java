@@ -65,6 +65,12 @@ public class AgreementProduct extends BaseDomain{
     private String remark;
 
     /**
+     * 公司ID
+     */
+    @Column(name = "tenant_id")
+    private Long tenantId;
+
+    /**
      * 版本号（乐观锁）
      */
     @Version
@@ -134,5 +140,13 @@ public class AgreementProduct extends BaseDomain{
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Long getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
     }
 }
