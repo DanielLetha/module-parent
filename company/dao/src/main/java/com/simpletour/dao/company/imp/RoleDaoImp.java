@@ -13,10 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -122,6 +119,10 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
         idsQuery.setMaxResults(pageSize);
 
         List<BigInteger> idsList = idsQuery.getResultList();
+        if (idsList.isEmpty()) {
+            return domainPage;
+        }
+
         pageSize = idsList.size();
         for (int index = 0; index < pageSize; index++) {
             ids += idsList.get(index).toString();
