@@ -75,7 +75,7 @@ public interface IAgreementProductPriceBiz {
      * @param type
      * @return
      */
-    boolean isAgreementProductPriceExist(Long agreementId,Long productId,Date date,String type);
+    boolean isExisted(Long agreementId,Long productId,Date date,String type);
 
 
 }

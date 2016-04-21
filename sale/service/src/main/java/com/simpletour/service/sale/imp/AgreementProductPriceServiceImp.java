@@ -80,7 +80,7 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     }
 
     private void checkExist(AgreementProductPrice agreementProductPrice) {
-        boolean bool = agreementProductPriceBiz.isAgreementProductPriceExist(agreementProductPrice.getAgreement().getId(), agreementProductPrice.getProduct().getId(), agreementProductPrice.getDate(), agreementProductPrice.getType().name());
+        boolean bool = agreementProductPriceBiz.isExisted(agreementProductPrice.getAgreement().getId(), agreementProductPrice.getProduct().getId(), agreementProductPrice.getDate(), agreementProductPrice.getType().name());
         if (bool)
             throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_EXIST);
     }

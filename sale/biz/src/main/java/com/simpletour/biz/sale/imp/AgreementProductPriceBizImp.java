@@ -51,7 +51,7 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     }
 
     @Override
-    public boolean isAgreementProductPriceExist(Long agreementId, Long productId, Date date, String type) {
+    public boolean isExisted(Long agreementId, Long productId, Date date, String type) {
         ConditionOrderByQuery conditionOrderByQuery = new ConditionOrderByQuery();
         AndConditionSet condition = new AndConditionSet();
         condition.addCondition("productId", productId);
