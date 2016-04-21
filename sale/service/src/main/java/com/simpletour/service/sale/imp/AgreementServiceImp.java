@@ -90,7 +90,7 @@ public class AgreementServiceImp implements IAgreementService {
         if (agreement == null)
             throw new BaseSystemException(AgreementServiceError.AGREEMENT_EMPTY);
         if (isUpdate) {
-            if (!agreementBiz.isExist(agreement.getId()))
+            if (!agreementBiz.isExisted(agreement.getId()))
                 throw new BaseSystemException(AgreementServiceError.AGREEMENT_NOT_EXIST);
         }
         if (!saleAppBiz.isExist(agreement.getSaleApp().getId()))
