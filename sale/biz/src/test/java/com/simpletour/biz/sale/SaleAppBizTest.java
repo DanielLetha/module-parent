@@ -1,4 +1,4 @@
-package com.simpletour;
+package com.simpletour.biz.sale;
 
 import com.simpletour.biz.sale.ISaleAppBiz;
 import com.simpletour.biz.sale.error.SaleAppBizError;

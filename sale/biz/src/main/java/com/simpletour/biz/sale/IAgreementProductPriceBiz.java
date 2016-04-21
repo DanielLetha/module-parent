@@ -5,6 +5,7 @@ import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.sale.AgreementProductPrice;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @Since ： ${VERSION}
  * @Remark: ${Remark}
  */
+@Repository
 public interface IAgreementProductPriceBiz {
     /**
      * 添加协议产品价格
@@ -65,7 +67,15 @@ public interface IAgreementProductPriceBiz {
      */
     DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike);
 
-    boolean isAgreementProductPriceExist(Long agreeId,Long productId,Date date,String type);
+    /**
+     * 依据协议id,产品id,日期以及类型判断销售协议产品价格是否存在
+     * @param agreementId
+     * @param productId
+     * @param date
+     * @param type
+     * @return
+     */
+    boolean isAgreementProductPriceExist(Long agreementId,Long productId,Date date,String type);
 
 
 }
