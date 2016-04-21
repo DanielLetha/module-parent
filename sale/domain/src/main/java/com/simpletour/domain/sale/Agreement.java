@@ -3,6 +3,7 @@ package com.simpletour.domain.sale;
 import com.simpletour.commons.data.domain.BaseDomain;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 销售协议实体类
@@ -41,6 +42,10 @@ public class Agreement extends BaseDomain {
      */
     @Column
     private String remark;
+
+    @OneToMany(mappedBy = "agreement")
+    @OrderBy("id asc")
+    private List<AgreementProduct> agreementProducts;
     /**
      * 乐观锁
      */
@@ -104,5 +109,13 @@ public class Agreement extends BaseDomain {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public List<AgreementProduct> getAgreementProducts() {
+        return agreementProducts;
+    }
+
+    public void setAgreementProducts(List<AgreementProduct> agreementProducts) {
+        this.agreementProducts = agreementProducts;
     }
 }

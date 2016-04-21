@@ -3,6 +3,7 @@ package com.simpletour.biz.sale;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.domain.product.Product;
 import com.simpletour.domain.sale.AgreementProduct;
 
 import java.util.List;
@@ -28,14 +29,14 @@ public interface IAgreementProductBiz {
      * @param agreementProduct 产品退改规则实体类
      * @return
      */
-    AgreementProduct updateAgreementProduct(AgreementProduct agreementProduct);
+    AgreementProduct updateAgreementProduct(AgreementProduct agreementProduct,Boolean isAgreementUpdate);
 
 
     /**
-     * 删除产品退改规则
-     * @param id 主键id
+     * 物理删除产品退改规则
+     * @param agreementProduct
      */
-    void deleteAgreementProduct(Long id);
+    void deleteAgreementProduct(AgreementProduct agreementProduct);
 
     /**
      * 根据id查询产品退改规则
@@ -43,6 +44,13 @@ public interface IAgreementProductBiz {
      * @return
      */
     AgreementProduct getAgreementProductById(Long id);
+
+    /**
+     * 根据销售协议id查询产品退改规则
+     * @param id
+     * @return
+     */
+    List<AgreementProduct> getAgreementProductByAgreementId(Long id);
 
     /**
      * 根据条件查询产品退改规则列表
@@ -54,21 +62,16 @@ public interface IAgreementProductBiz {
     /**
      * 根据条件查询产品退改规则分页
      * @param query
-     * @param orderByFiledName
-     * @param orderBy
-     * @param pageIndex
-     * @param pageSize
      * @return
      */
-    DomainPage<AgreementProduct> queryAgreementProductPagesByConditions(ConditionOrderByQuery query
-            , String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize);
+    DomainPage<AgreementProduct> queryAgreementProductPagesByConditions(ConditionOrderByQuery query);
 
     /**
      * 根据id判断产品退改规则是否存在
      * @param id
      * @return
      */
-    boolean isAgreementProductExisted(Long id);
+    boolean isExisted(Long id);
 
     /**
      * 根据id判断产品退款细则是否存在

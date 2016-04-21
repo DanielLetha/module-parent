@@ -42,7 +42,7 @@ public class AgreementProduct extends BaseDomain{
     /**
      * 产品退款细则
      */
-    @OneToMany(mappedBy = "agreementProduct",cascade = {CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "agreementProduct",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("timing asc")
     private List<AgreementProductRefundRule> productRefundRules;
 
