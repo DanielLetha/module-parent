@@ -35,7 +35,7 @@ public class SoldEntryDaoImp extends JPABaseDAO implements ISoldEntryDao, IBaseD
         StringBuilder sb = new StringBuilder("select c from " + SoldEntry.class.getName() + " c where 1 = 1");
 
         InventoryType inventoryType = soldEntryKey.getInventoryType();
-        Long inventoryTypeId = soldEntryKey.getInventoryTypeId();
+        Long inventoryTypeId = soldEntryKey.getInventoryId();
         Long orderId = soldEntryKey.getOrderId();
         Long itemId = soldEntryKey.getItemId();
         Long parentId = soldEntryKey.getParentId();

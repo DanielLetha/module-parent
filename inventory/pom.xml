@@ -20,4 +20,11 @@
         <module>biz</module>
         <module>service</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+    </dependencies>
 </project>

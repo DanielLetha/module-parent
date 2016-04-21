@@ -2,42 +2,93 @@ package com.simpletour.biz.inventory;
 
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.SoldEntry;
-import com.simpletour.domain.inventory.query.SoldEntryKey;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 /**
  * 文件描述：销售库存模块业务层接口
- * 创建人员：石广路
+ * 创建人员：石广路（shiguanglu@simpletour.com）
  * 创建日期：2015/12/3 17:07
- * 备注说明：null
+ * 备注说明：提供用以增删改库存销售记录信息的相关的业务接口
+ * @since 2.0-SNAPSHOT
  */
 public interface ISoldEntryBiz {
     /**
-     * 功能：添加销售库存
+     * 功能：添加库存销售记录信息
      * 作者：石广路
      * 新增：2015-12-03 17:12
      * 修改：null
      *
-     * @param soldEntry 销售库存
+     * @param soldEntry 库存销售记录信息实体
      *
-     * return 销售库存
+     * return 库存销售记录信息实体
      */
-    Optional<SoldEntry> addSoldEntry(final SoldEntry soldEntry) throws BaseSystemException;
+    Optional<SoldEntry> addSoldEntry(SoldEntry soldEntry) throws BaseSystemException;
 
     /**
-     * 功能：批量添加销售库存
+     * 功能：更新库存销售记录信息
      * 作者：石广路
-     * 新增：2015-12-03 17:12
+     * 新增：2016-4-21
      * 修改：null
      *
-     * @param soldEntries 销售库存列表
+     * @param soldEntry 库存销售记录信息实体
      *
-     * return 销售库存
+     * return 库存销售记录信息实体
      */
-    List<SoldEntry> addSoldEntries(final List<SoldEntry> soldEntries) throws BaseSystemException;
+    Optional<SoldEntry> updateSoldEntry(SoldEntry soldEntry) throws BaseSystemException;
+
+    /**
+     * 功能：删除库存销售记录信息
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     * 备注：如果删除失败则抛出BaseSystemException异常
+     *
+     * @param id     主键ID
+     *
+     * return void
+     */
+    //void deleteSoldEntry(Long id) throws BaseSystemException;
+    void deleteSoldEntry(SoldEntry soldEntry);
+
+    /**
+     * 功能：批量删除库存销售记录信息
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     * 备注：如果删除失败则抛出BaseSystemException异常
+     *
+     * @param ids    库存ID列表
+     *
+     * return void
+     */
+    //void deleteSoldEntries(List<Long> ids);
+
+    /**
+     * 功能：删除库存销售记录信息
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 备注：null
+     *
+     * @param soldEntry 库存销售记录信息实体
+     *
+     * return void
+     */
+    //void deleteSoldEntry(SoldEntry soldEntry);
+
+    /**
+     * 功能：根据ID获取库存销售记录信息
+     * 作者：石广路（shiguanglu@simpletour.com）
+     * 新增：2016-4-21
+     * 备注：null
+     *
+     * @since 2.0-SNAPSHOT
+     *
+     * @param id  库存销售记录信息实体
+     *
+     * return 库存销售记录信息实体
+     */
+    //Optional<SoldEntry> getSoldEntryById(Long id);
 
     /**
      * 功能：使指定订单号的所有销售库存的状态都变为无效
@@ -61,7 +112,7 @@ public interface ISoldEntryBiz {
      *
      * return void
      */
-    List<SoldEntry> getSoldEntriesByUnionIds(SoldEntryKey soldEntryKey);
+    //List<SoldEntry> getSoldEntriesByUnionIds(SoldEntryKey soldEntryKey);
 
     /**
      * 功能：根据库存类型、库存主体ID和库存日期等查询条件来获取有效的销售库存总量
@@ -74,5 +125,5 @@ public interface ISoldEntryBiz {
      *
      * return 库存销售量
      */
-    int getAvailableSoldQuantity(SoldEntryKey soldEntryKey, Date day);
+    //int getAvailableSoldQuantity(SoldEntryKey soldEntryKey, Date day);
 }

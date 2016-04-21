@@ -1,20 +1,15 @@
 package com.simpletour.domain.inventory;
 
 /**
- * 库存类型
- * <p>
- * 1：行程;
- * 2：车次;
- * 3：元素;
- * 4：产品;
- * <p>
- * Created by Jeff.Song on 2015/11/23.
+ * 文件描述：库存类型枚举类
+ * 创建人员：石广路（shiguanglu@simpletour.com）
+ * 创建日期：2016-4-19
+ * 备注说明：仅保留车次和元素两种库存类型
+ * @since 2.0-SNAPSHOT
  */
 public enum InventoryType {
-
     bus_no("com.simpletour.domain.traveltrans.BusNo", "trans_busno", "车次"),
-    procurement("com.simpletour.domain.resources.Procurement", "tr_procurement", "元素"),
-    product("com.simpletour.domain.product.Product", "prod_product", "产品");
+    procurement("com.simpletour.domain.resources.Procurement", "tr_procurement", "元素");
 
     private String className;
 

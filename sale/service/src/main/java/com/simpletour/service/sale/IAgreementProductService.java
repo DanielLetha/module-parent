@@ -3,6 +3,7 @@ package com.simpletour.service.sale;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
+import com.simpletour.domain.sale.Agreement;
 import com.simpletour.domain.sale.AgreementProduct;
 
 import java.util.List;
@@ -24,18 +25,27 @@ public interface IAgreementProductService {
     Optional<AgreementProduct> addAgreementProduct(AgreementProduct agreementProduct);
 
     /**
-     * 更新一个产品退改规则
-     * @param agreementProduct 产品退改规则实体类
+     * 向一个销售协议批量增加产品退改规则
+     * @param agreement 产品退改规则实体类集合
      * @return
      */
-    Optional<AgreementProduct> updateAgreementProduct(AgreementProduct agreementProduct);
-
+    void addAllAgreementProduct(Agreement agreement);
 
     /**
-     * 删除产品退改规则
-     * @param id 主键id
+     * 批量更新产品退改规则
+     * @param agreementProducts 产品退改规则实体类集合
+     * @return
      */
-    void deleteAgreementProduct(Long id);
+    void updateAllAgreementProduct(List<AgreementProduct> agreementProducts);
+
+    /**
+     * 更新一个产品退改规则
+     * @param agreementProduct 产品退改规则实体类
+     * @param isAgreementUpdate 是不是销售协议中的修改，如果是在销售协议的产品列表中修改 是不检查产品退改规则的
+     * @return
+     */
+    Optional<AgreementProduct> updateAgreementProduct(AgreementProduct agreementProduct,Boolean isAgreementUpdate);
+
 
     /**
      * 根据id查询产品退改规则
@@ -54,13 +64,8 @@ public interface IAgreementProductService {
     /**
      * 根据条件查询产品退改规则分页
      * @param query
-     * @param orderByFiledName
-     * @param orderBy
-     * @param pageIndex
-     * @param pageSize
      * @return
      */
-    DomainPage<AgreementProduct> queryAgreementProductPagesByConditions(ConditionOrderByQuery query
-            , String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize);
+    DomainPage<AgreementProduct> queryAgreementProductPagesByConditions(ConditionOrderByQuery query);
 
 }
