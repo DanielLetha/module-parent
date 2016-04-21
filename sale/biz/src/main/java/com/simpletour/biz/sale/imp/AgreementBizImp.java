@@ -61,7 +61,7 @@ public class AgreementBizImp implements IAgreementBiz {
         checkAgreement(agreement);
         checkId(agreement.getId());
         checkVersion(agreement);
-        if (!isExist(agreement.getId()))
+        if (!isExisted(agreement.getId()))
             throw new BaseSystemException(AgreementBizError.AGREEMENT_NOT_EXIST);
         checkSaleApp(agreement.getSaleApp());
         checkUnique(agreement, true);
@@ -72,13 +72,13 @@ public class AgreementBizImp implements IAgreementBiz {
     public Agreement updateStatus(Agreement agreement) {
         checkAgreement(agreement);
         checkVersion(agreement);
-        if (!isExist(agreement.getId()))
+        if (!isExisted(agreement.getId()))
             throw new BaseSystemException(AgreementBizError.AGREEMENT_NOT_EXIST);
         return agreementDao.save(agreement);
     }
 
     @Override
-    public Boolean isExist(Long id) {
+    public Boolean isExisted(Long id) {
         return Optional.ofNullable(getAgreementById(id)).isPresent();
     }
 

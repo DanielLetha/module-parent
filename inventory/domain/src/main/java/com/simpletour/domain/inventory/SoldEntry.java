@@ -1,108 +1,74 @@
 package com.simpletour.domain.inventory;
 
-
-import com.simpletour.commons.data.domain.BaseDomain;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by igotti on 15-11-19.
- * 销售库存，不需要日志支持。
+ * 文件描述：库存价格实体类
+ * 创建人员：石广路（shiguanglu@simpletour.com）
+ * 创建日期：2016/4/19 16:05
+ * 备注说明：增加业务订单项编号、销售条目父编号、有效状态和销售时间等字段，移除订单编号字段
+ * @since 2.0-SNAPSHOT
  */
 @Entity
 @Table(name = "INV_SOLD_ENTRY")
-public class SoldEntry extends BaseDomain {
-    @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Long id;
-
-    @Column(name = "order_id")
-    private Long orderId;
-
-    @Column(name = "item_id")
+public class SoldEntry extends StockBound {
+    /**
+     * 业务订单项编号
+     */
+    @Column(name = "item_id", nullable = false)
     private Long itemId;
 
-    @Column(name = "pid")
-    private Long parentId;  // 注：parendId单词拼写错误，应该是parentId
+    /**
+     * 该销售条目的父编号
+     */
+    @Column(name = "pid", nullable = false)
+    private Long parentId;
 
     /**
-     * 库存类型，包括行程、产品、元素、车次
+     * 销售数量
      */
-    @Column
-    @Enumerated(EnumType.STRING)
-    private InventoryType inventoryType;
-
-    /**
-     * 库存类型Id，对应行程、产品、元素、车次表（对象）的主键（id）
-     */
-    @Column
-    private Long inventoryTypeId;
-
-    @Column
-    @Temporal(value = TemporalType.DATE)
-    private Date day;
-
-    /**
-     * 库存数量，只表示day指示的那天的库存数量
-     */
-    @Column
+    @Column(nullable = false)
     private Integer quantity = 0;
 
     /**
-     * 该销售库存是否有效，订单取消、关闭都将设置该字段为无效
+     * 销售状态是否有效，默认为有效，订单被取消、关闭时，该字段需要被设置为无效
      */
-    @Column
-    private Boolean status = true;
-    
+    @Column(nullable = false)
+    private Boolean valid = true;
+
     /**
-     * 快照
+     * 销售时间，值为产生销售记录时的当前系统时间戳
      */
-    @Column(columnDefinition = "text")
-    private String snapshot;
+    @Column(name = "sold_time", nullable = false)
+    protected Long soldTime;
 
     @Transient
     private List<SoldEntry> soldEntryList;
 
     public SoldEntry() {
-
     }
 
     /**
      * 用以查询库存某天的销售量
      * @param inventoryType
-     * @param inventoryTypeId
+     * @param inventoryId
      * @param day
+     * @param valid
      */
-    public SoldEntry(InventoryType inventoryType, Long inventoryTypeId, Date day, Boolean status) {
-        this.inventoryType = inventoryType;
-        this.inventoryTypeId = inventoryTypeId;
-        this.day = day;
-        if (null != status) {
-            this.status = status;
-        }
+    public SoldEntry(InventoryType inventoryType, Long inventoryId, Date day, Boolean valid) {
+        super(inventoryType, inventoryId, day);
+        this.valid = null == valid ? true : valid;
     }
 
-    public SoldEntry(Long orderId, Long itemId, Long parentId, InventoryType inventoryType, Long inventoryTypeId, Date day, Integer quantity, Boolean status, String snapshot) {
-        this.orderId = orderId;
+    public SoldEntry(InventoryType inventoryType, Long inventoryId, Date day, Long itemId, Long parentId, Integer quantity, Boolean valid, Long soldTime) {
+        super(inventoryType, inventoryId, day);
         this.itemId = itemId;
         this.parentId = parentId;
-        this.inventoryType = inventoryType;
-        this.inventoryTypeId = inventoryTypeId;
-        this.day = day;
         this.quantity = quantity;
-        this.status = status;
-        this.snapshot = snapshot;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+        this.valid = null == valid ? true : valid;
+        this.soldTime = soldTime;
     }
 
     public Long getItemId() {
@@ -121,14 +87,6 @@ public class SoldEntry extends BaseDomain {
         this.parentId = parentId;
     }
 
-    public Date getDay() {
-        return day;
-    }
-
-    public void setDay(Date day) {
-        this.day = day;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -137,36 +95,20 @@ public class SoldEntry extends BaseDomain {
         this.quantity = quantity;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public Boolean isValid() {
+        return valid;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setValid(Boolean valid) {
+        this.valid = valid;
     }
 
-    public String getSnapshot() {
-        return snapshot;
+    public Long getSoldTime() {
+        return soldTime;
     }
 
-    public void setSnapshot(String snapshot) {
-        this.snapshot = snapshot;
-    }
-
-    public InventoryType getInventoryType() {
-        return inventoryType;
-    }
-
-    public void setInventoryType(InventoryType inventoryType) {
-        this.inventoryType = inventoryType;
-    }
-
-    public Long getInventoryTypeId() {
-        return inventoryTypeId;
-    }
-
-    public void setInventoryTypeId(Long inventoryTypeId) {
-        this.inventoryTypeId = inventoryTypeId;
+    public void setSoldTime(Long soldTime) {
+        this.soldTime = soldTime;
     }
 
     public List<SoldEntry> getSoldEntryList() {
@@ -175,15 +117,5 @@ public class SoldEntry extends BaseDomain {
 
     public void setSoldEntryList(List<SoldEntry> soldEntryList) {
         this.soldEntryList = soldEntryList;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
     }
 }

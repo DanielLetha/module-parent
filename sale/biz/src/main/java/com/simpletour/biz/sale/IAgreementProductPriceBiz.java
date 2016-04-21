@@ -5,6 +5,11 @@ import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.sale.AgreementProductPrice;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -14,6 +19,7 @@ import com.simpletour.domain.sale.AgreementProductPrice;
  * @Since ： ${VERSION}
  * @Remark: ${Remark}
  */
+@Repository
 public interface IAgreementProductPriceBiz {
     /**
      * 添加协议产品价格
@@ -32,44 +38,44 @@ public interface IAgreementProductPriceBiz {
     AgreementProductPrice updateAgreementProductPrice(AgreementProductPrice agreementProductPrice) throws BaseSystemException;
 
     /**
-     * 删除协议产品价格
-     * @param id
-     * @throws BaseSystemException
-     */
-    void delAgreementProductPrice(Long id) throws BaseSystemException;
-
-    /**
      * 根据id查询协议产品价格
      * @param id
      * @return
      */
     AgreementProductPrice findAgreementProductPriceById(Long id);
 
+
+
+    List<AgreementProductPrice> getAgreementProductList(ConditionOrderByQuery query);
+
     /**
      * 分页查询产品价格分页
      * @param query
+     * @return
+     */
+    DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(ConditionOrderByQuery query);
+
+    /**
+     * 分页查询产品价格分页
+     * @param conditions
      * @param orderByFiledName
      * @param orderBy
      * @param pageIndex
      * @param pageSize
+     * @param byLike
      * @return
      */
-    DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(ConditionOrderByQuery query, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize);
+    DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike);
 
     /**
-     * 判断协议是否存在
-     * @param id
+     * 依据协议id,产品id,日期以及类型判断销售协议产品价格是否存在
+     * @param agreementId
+     * @param productId
+     * @param date
+     * @param type
      * @return
      */
-    boolean isAgreementExist(Long id);
-
-    /**
-     * 判断产品是否存在
-     * @param id
-     * @return
-     */
-    boolean isProductExist(Long id);
-
+    boolean isExisted(Long agreementId,Long productId,Date date,String type);
 
 
 }

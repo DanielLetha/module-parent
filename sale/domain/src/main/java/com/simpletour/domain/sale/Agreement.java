@@ -40,7 +40,7 @@ public class Agreement extends BaseDomain {
     /**
      * 备注
      */
-    @Column
+    @Column(columnDefinition = "text")
     private String remark;
 
     @OneToMany(mappedBy = "agreement")

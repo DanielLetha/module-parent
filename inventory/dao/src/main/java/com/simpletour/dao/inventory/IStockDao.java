@@ -15,9 +15,10 @@ import java.util.Optional;
 
 /**
  * 文件描述：库存数据层接口
- * 创建人员：石广路
- * 创建日期：2015/11/25 20:37
- * 备注说明：@Deprecated注解的接口没有计算已售库存和可售可存，现已废弃，请使用新的接口
+ * 创建人员：石广路（shiguanglu@simpletour.com）
+ * 创建日期：2016/4/19 16:05
+ * 备注说明：1、移除@Deprecated注解的接口，2、
+ * @since 2.0-SNAPSHOT
  */
 public interface IStockDao extends IBaseDao {
     /**
@@ -26,12 +27,12 @@ public interface IStockDao extends IBaseDao {
      * 新增：2015-12-14 14:27
      * 备注：不区分库存依托对象的状态
      *
-     * @param inventoryType     库存类型
-     * @param inventoryTypeId   库存主体ID
+     * @param inventoryType 库存类型
+     * @param inventoryId   库存主体ID
      *
      * return 库存依托对象
      */
-    <T extends BaseDomain> T getStockDependency(final InventoryType inventoryType, final Long inventoryTypeId);
+    <T extends BaseDomain> T getStockDependency(final InventoryType inventoryType, final Long inventoryId);
 
     /**
      * 功能：根据库存类型和库存主体ID来获取上架中的库存托管对象
@@ -39,12 +40,12 @@ public interface IStockDao extends IBaseDao {
      * 新增：2015-12-01 11:47
      * 备注：只获取上架中的库存托管对象
      *
-     * @param inventoryType     库存类型
-     * @param inventoryTypeId   库存主体ID
+     * @param inventoryType 库存类型
+     * @param inventoryId   库存主体ID
      *
      * return true：存在库存依赖，false：不存在库存依赖
      */
-    <T extends BaseDomain> T getOnlineStockDependency(final InventoryType inventoryType, final Long inventoryTypeId);
+    <T extends BaseDomain> T getOnlineStockDependency(final InventoryType inventoryType, final Long inventoryId);
 
     /**
      * 功能：根据库存类型、库存主体ID、库存日期和上线状态等查询条件来获取指定库存字段的值
@@ -86,8 +87,8 @@ public interface IStockDao extends IBaseDao {
      *
      * return 库存列表
      */
-    @Deprecated
-    List<Stock> getStocksListByConditions(final StockKey stockKey, final Date startDate, final Date endDate, final Boolean online);
+    //@Deprecated
+    //List<Stock> getStocksListByConditions(final StockKey stockKey, final Date startDate, final Date endDate, final Boolean online);
 
     /**
      * 功能：根据库存类型、库存主体ID、库存日期和上线状态等查询条件来获取库存信息
@@ -125,8 +126,8 @@ public interface IStockDao extends IBaseDao {
      *
      * return 库存分页列表
      */
-    @Deprecated
-    DomainPage getStocksQuantitiesPagesByConditions(final StockQuery stockQuery);
+    //@Deprecated
+    //DomainPage getStocksQuantitiesPagesByConditions(final StockQuery stockQuery);
 
     /**
      * 功能：根据库存关联关系（如依托的具体库存对象）来查询指定时间段内的库存及其关联的库存销售记录

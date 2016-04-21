@@ -44,7 +44,7 @@
 // * 备注说明：null
 // */
 //@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-//public class StockTest extends AbstractTestNGSpringContextTests {
+//public class StockBizTest extends AbstractTestNGSpringContextTests {
 //    @Resource
 //    IStockService stockService;
 //
@@ -306,7 +306,7 @@
 //    public void updateStock() {
 //        //tid = 18;    // just for test
 //        System.out.println("update Stock id=" + tid + " quantity and price start...");
-//        Optional<Stock> optObj = stockService.getStockRecordById(tid);
+//        Optional<Stock> optObj = stockService.getStockById(tid);
 //        Assert.assertTrue(optObj.isPresent());
 //
 //        Stock stock = optObj.get();
@@ -452,18 +452,18 @@
 //        System.out.println("delete Stock id=" + tid);
 //
 //        stockService.deleteStock(tid);
-//        Optional<Stock> optObj = stockService.getStockRecordById(tid);
+//        Optional<Stock> optObj = stockService.getStockById(tid);
 //        Assert.assertFalse(optObj.isPresent());
 //
 //        List<Long> ids = new ArrayList<>(1);
 //        ids.add(tid + 1);
 //        stockService.deleteStocks(ids);
-//        optObj = stockService.getStockRecordById(tid + 1);
+//        optObj = stockService.getStockById(tid + 1);
 //        Assert.assertFalse(optObj.isPresent());
 //
 //        if (0 < prodStockId) {
 //            stockService.deleteStock(prodStockId);
-//            Assert.assertFalse(stockService.getStockRecordById(prodStockId).isPresent());
+//            Assert.assertFalse(stockService.getStockById(prodStockId).isPresent());
 //        }
 //
 //        try {
@@ -493,7 +493,7 @@
 //
 //    @Test(priority = 8, dependsOnMethods = {"addStock", "deleteStock"})
 //    public void deleteStockByInventoryTypeId() {
-//        stockBiz.deleteStocksByInventoryTypeId(InventoryType.procurement, procurement.getId());
+//        stockBiz.deleteStocksByInventoryId(InventoryType.procurement, procurement.getId());
 //        Optional<Stock> stockOpt = stockService.getStock(procurement, stockDate, true);
 //        Assert.assertFalse(stockOpt.isPresent());
 //    }

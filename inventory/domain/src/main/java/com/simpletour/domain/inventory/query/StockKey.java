@@ -11,18 +11,18 @@ import com.simpletour.domain.inventory.InventoryType;
 public class StockKey {
     private InventoryType inventoryType;
 
-    private Long inventoryTypeId;
+    private Long inventoryId;
 
     private int offset;
 
-    public StockKey(InventoryType inventoryType, Long inventoryTypeId) {
+    public StockKey(InventoryType inventoryType, Long inventoryId) {
         this.inventoryType = inventoryType;
-        this.inventoryTypeId = inventoryTypeId;
+        this.inventoryId = inventoryId;
     }
 
-    public StockKey(InventoryType inventoryType, Long inventoryTypeId, int offset) {
+    public StockKey(InventoryType inventoryType, Long inventoryId, int offset) {
         this.inventoryType = inventoryType;
-        this.inventoryTypeId = inventoryTypeId;
+        this.inventoryId = inventoryId;
         this.offset = offset;
     }
 
@@ -34,12 +34,12 @@ public class StockKey {
         this.inventoryType = inventoryType;
     }
 
-    public Long getInventoryTypeId() {
-        return inventoryTypeId;
+    public Long getInventoryId() {
+        return inventoryId;
     }
 
-    public void setInventoryTypeId(Long inventoryTypeId) {
-        this.inventoryTypeId = inventoryTypeId;
+    public void setInventoryId(Long inventoryId) {
+        this.inventoryId = inventoryId;
     }
 
     public int getOffset() {
@@ -58,13 +58,13 @@ public class StockKey {
         StockKey stockKey = (StockKey) o;
         if (inventoryType != stockKey.inventoryType) return false;
         if (offset != stockKey.offset) return false;
-        return !(inventoryTypeId != null ? !inventoryTypeId.equals(stockKey.inventoryTypeId) : stockKey.inventoryTypeId != null);
+        return !(inventoryId != null ? !inventoryId.equals(stockKey.inventoryId) : stockKey.inventoryId != null);
     }
 
     @Override
     public int hashCode() {
         int result = inventoryType != null ? inventoryType.hashCode() : 0;
-        result = 31 * result + (inventoryTypeId != null ? inventoryTypeId.hashCode() : 0);
+        result = 31 * result + (inventoryId != null ? inventoryId.hashCode() : 0);
         result = 31 * result + 0 < offset ? Integer.hashCode(offset) : 0;
         return result;
     }
@@ -73,7 +73,7 @@ public class StockKey {
     public String toString() {
         return "StockKey{" +
                 "inventoryType=" + inventoryType +
-                ", inventoryTypeId=" + inventoryTypeId +
+                ", inventoryId=" + inventoryId +
                 ", offset=" + offset +
                 '}';
     }

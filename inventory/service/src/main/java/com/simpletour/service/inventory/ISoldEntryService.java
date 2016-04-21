@@ -2,9 +2,7 @@ package com.simpletour.service.inventory;
 
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.SoldEntry;
-import com.simpletour.domain.inventory.query.SoldEntryKey;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,28 +14,78 @@ import java.util.Optional;
  */
 public interface ISoldEntryService {
     /**
-     * 功能：添加销售库存
+     * 功能：添加库存销售记录信息
      * 作者：石广路
      * 新增：2015-12-03 17:12
      * 修改：null
      *
-     * @param soldEntry 销售库存
+     * @param soldEntry 库存销售记录信息实体
      *
-     * return 销售库存
+     * return 库存销售记录信息实体
      */
-    Optional<SoldEntry> addSoldEntry(final SoldEntry soldEntry) throws BaseSystemException;
+    Optional<SoldEntry> addSoldEntry(SoldEntry soldEntry) throws BaseSystemException;
 
     /**
-     * 功能：批量添加销售库存
+     * 功能：批量添加库存销售记录信息
      * 作者：石广路
      * 新增：2015-12-03 17:12
      * 修改：null
      *
-     * @param soldEntries 销售库存列表
+     * @param soldEntries 库存销售记录信息实体列表
      *
-     * return 销售库存
+     * return 库存销售记录信息实体列表
      */
-    List<SoldEntry> addSoldEntries(final List<SoldEntry> soldEntries) throws BaseSystemException;
+    List<SoldEntry> addSoldEntries(List<SoldEntry> soldEntries) throws BaseSystemException;
+
+    /**
+     * 功能：更新库存销售记录信息
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     *
+     * @param soldEntry 库存销售记录信息实体
+     *
+     * return 库存销售记录信息实体
+     */
+    Optional<SoldEntry> updateSoldEntry(SoldEntry soldEntry) throws BaseSystemException;
+
+    /**
+     * 功能：批量更新库存销售记录信息
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     *
+     * @param soldEntries 库存销售记录信息实体列表
+     *
+     * return 库存销售记录信息实体列表
+     */
+    List<SoldEntry> updateSoldEntries(List<SoldEntry> soldEntries) throws BaseSystemException;
+
+    /**
+     * 功能：删除库存销售记录信息
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     * 备注：如果删除失败则抛出BaseSystemException异常
+     *
+     * @param id     主键ID
+     *
+     * return void
+     */
+    void deleteSoldEntry(Long id) throws BaseSystemException;
+
+    /**
+     * 功能：批量删除库存销售记录信息
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     * 备注：如果删除失败则抛出BaseSystemException异常
+     *
+     * @param ids    库存ID列表
+     *
+     * return void
+     */
+    void deleteSoldEntries(List<Long> ids);
 
     /**
      * 功能：使指定订单号的所有销售库存的状态都变为无效
@@ -61,7 +109,7 @@ public interface ISoldEntryService {
      *
      * return void
      */
-    List<SoldEntry> getSoldEntriesByUnionIds(SoldEntryKey soldEntryKey);
+    //List<SoldEntry> getSoldEntriesByUnionIds(SoldEntryKey soldEntryKey);
 
     /**
      * 功能：根据库存类型、库存主体ID和库存日期等查询条件来获取有效的销售库存总量
@@ -74,5 +122,5 @@ public interface ISoldEntryService {
      *
      * return 库存销售量
      */
-    int getAvailableSoldQuantity(SoldEntryKey soldEntryKey, Date day);
+    //int getAvailableSoldQuantity(SoldEntryKey soldEntryKey, Date day);
 }
