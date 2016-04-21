@@ -28,7 +28,7 @@ public enum SaleAppBizError implements IError {
 
     private static final String ns = "BIZ.SA";
 
-    SaleAppBizError(String errorMessage, String errorCode) {
+    SaleAppBizError(String errorCode,String errorMessage) {
         this.errorMessage = errorMessage;
         this.errorCode = errorCode;
     }
