@@ -19,8 +19,8 @@
         </dependency>
         <dependency>
             <groupId>com.simpletour.module</groupId>
-            <artifactId>transport-dao</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>inventory-biz</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.simpletour.module</groupId>
