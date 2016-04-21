@@ -93,6 +93,12 @@ public class Procurement extends LogicalDeletableDomain implements IDependTracab
     @Column
     private Boolean online = true;
 
+    /**
+     * 儿童是否占用库存  true:占用, false:不占用
+     */
+    @Column
+    private Boolean inventory = true;
+
     @Version
     private Integer version;
 
@@ -106,7 +112,7 @@ public class Procurement extends LogicalDeletableDomain implements IDependTracab
     public Procurement() {
     }
 
-    public Procurement(Long tenantId, ResourceType resourceType, Long resourceId, String remark, String name, Destination destination, Boolean online, Integer version, OfflineServiceProvider osp) {
+    public Procurement(Long tenantId, ResourceType resourceType, Long resourceId, String remark, String name, Destination destination, Boolean online, Boolean inventory,Integer version, OfflineServiceProvider osp) {
         this.tenantId = tenantId;
         this.resourceType = resourceType;
         this.resourceId = resourceId;
@@ -114,6 +120,7 @@ public class Procurement extends LogicalDeletableDomain implements IDependTracab
         this.name = name;
         this.destination = destination;
         this.online = online;
+        this.inventory = inventory;
         this.version = version;
         this.osp = osp;
     }
@@ -188,6 +195,14 @@ public class Procurement extends LogicalDeletableDomain implements IDependTracab
 
     public void setOnline(Boolean online) {
         this.online = online;
+    }
+
+    public Boolean getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Boolean inventory) {
+        this.inventory = inventory;
     }
 
     @Override

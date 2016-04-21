@@ -114,7 +114,7 @@ public interface IAgreementBiz {
      * @return true/false
      * @since 2.0-SNAPSHOT
      */
-    Boolean isExist(Long id);
+    Boolean isExisted(Long id);
 
     /**
      * 根据ID判断销售协议是否有效（是否启用）
