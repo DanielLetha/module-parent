@@ -1,13 +1,18 @@
 package com.simpletour.service.inventory.imp;
 
 import com.simpletour.biz.inventory.ISoldEntryBiz;
+import com.simpletour.biz.inventory.IStockQueryBiz;
+import com.simpletour.biz.inventory.error.InventoryBizError;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.SoldEntry;
+import com.simpletour.domain.inventory.Stock;
 import com.simpletour.domain.inventory.query.SoldEntryKey;
 import com.simpletour.service.inventory.ISoldEntryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +25,10 @@ import java.util.Optional;
  */
 @Service
 public class SoldEntryServiceImp implements ISoldEntryService {
-    @Resource
+    @Autowired
+    private IStockQueryBiz stockQueryBiz;
+
+    @Autowired
     private ISoldEntryBiz soldEntryBiz;
 
     @Override
@@ -30,7 +38,45 @@ public class SoldEntryServiceImp implements ISoldEntryService {
 
     @Override
     public List<SoldEntry> addSoldEntries(List<SoldEntry> soldEntries) throws BaseSystemException {
-        return soldEntryBiz.addSoldEntries(soldEntries);
+        if (null != soldEntries && !soldEntries.isEmpty()) {
+            List<SoldEntry> soldEntriesList = new ArrayList<>(soldEntries.size());
+            soldEntries.forEach(soldEntry -> soldEntriesList.add(soldEntryBiz.addSoldEntry(soldEntry).get()));
+            return soldEntriesList;
+        }
+        return soldEntries;
+    }
+
+    @Override
+    public Optional<SoldEntry> updateSoldEntry(SoldEntry soldEntry) throws BaseSystemException {
+        return soldEntryBiz.updateSoldEntry(soldEntry);
+    }
+
+    @Override
+    public List<SoldEntry> updateSoldEntries(List<SoldEntry> soldEntries) throws BaseSystemException {
+        if (null != soldEntries && !soldEntries.isEmpty()) {
+            List<SoldEntry> soldEntriesList = new ArrayList<>(soldEntries.size());
+            soldEntries.forEach(soldEntry -> soldEntriesList.add(updateSoldEntry(soldEntry).get()));
+            return soldEntriesList;
+        }
+        return soldEntries;
+    }
+
+    @Override
+    public void deleteSoldEntry(Long id) throws BaseSystemException {
+        //soldEntryBiz.deleteSoldEntry(id);
+
+        Optional<SoldEntry> optional = stockQueryBiz.getSoldEntryById(id);
+        if (!optional.isPresent()) {
+            throw new BaseSystemException(InventoryBizError.SOLD_ENTRY_NOT_EXIST);
+        }
+        soldEntryBiz.deleteSoldEntry(optional.get());
+    }
+
+    @Override
+    public void deleteSoldEntries(List<Long> ids) {
+        if (null != ids) {
+            ids.stream().filter(id -> null != id && 0 < id).forEach(id -> deleteSoldEntry(id));
+        }
     }
 
     @Override
@@ -38,13 +84,13 @@ public class SoldEntryServiceImp implements ISoldEntryService {
         soldEntryBiz.invalidateSoldEntriesByOrderId(oid);
     }
 
-    @Override
-    public List<SoldEntry> getSoldEntriesByUnionIds(SoldEntryKey soldEntryKey) {
-        return soldEntryBiz.getSoldEntriesByUnionIds(soldEntryKey);
-    }
-
-    @Override
-    public int getAvailableSoldQuantity(SoldEntryKey soldEntryKey, Date day) {
-        return soldEntryBiz.getAvailableSoldQuantity(soldEntryKey, day);
-    }
+//    @Override
+//    public List<SoldEntry> getSoldEntriesByUnionIds(SoldEntryKey soldEntryKey) {
+//        return stockQueryBiz.getSoldEntriesByUnionIds(soldEntryKey);
+//    }
+//
+//    @Override
+//    public int getAvailableSoldQuantity(SoldEntryKey soldEntryKey, Date day) {
+//        return stockQueryBiz.getAvailableSoldQuantity(soldEntryKey, day);
+//    }
 }

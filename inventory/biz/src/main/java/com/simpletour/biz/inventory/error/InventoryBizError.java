@@ -4,13 +4,14 @@ package com.simpletour.biz.inventory.error;
 import com.simpletour.commons.data.error.IError;
 
 /**
- * 文件描述：库存业务处理失败错误信息
+ * 文件描述：库存业务层处理失败错误信息
  * 创建人员：石广路
  * 创建日期：2015/11/25 10:57
  * 备注说明：null
  */
 public enum InventoryBizError implements IError {
     EMPTY_ENTITY("0000", "对象为空"),
+    INVALID_ID("0001", "无效的ID"),
 
     /**
      * note: add some error descriptions for the procurement
@@ -27,6 +28,12 @@ public enum InventoryBizError implements IError {
     STOCK_SOLD_OUT("0009", "库存已售罄"),
     DEPENDENT_STOCK_SHORTAGE("0010", "依赖库存量已不足"),
     GET_STOCK_PRICE_FAILED("0011", "获取库存价格失败，请检查查询参数是否正确，以及库存是否还存在"),
+
+    PRICE_IS_EXISTING("1001", "库存价格信息已存在"),
+    PRICE_NOT_EXIST("1002", "库存价格信息不存在"),
+
+    SOLD_ENTRY_IS_EXISTING("2001", "库存销售记录信息已存在"),
+    SOLD_ENTRY_NOT_EXIST("2002", "库存销售记录信息不存在"),
     ;
 
     String errorCode;

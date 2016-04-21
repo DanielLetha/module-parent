@@ -1,37 +1,22 @@
 package com.simpletour.domain.inventory;
 
-import com.simpletour.commons.data.domain.BaseDomain;
-
-import javax.persistence.*;
-import java.math.BigDecimal;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by igotti on 15-11-19.
- * 库存实体，表示特定某一天，库存主体可售数量，售价等。
- * 需要提供操作日志的支持
+ * 文件描述：库存实体类
+ * 创建人员：石广路（shiguanglu@simpletour.com）
+ * 创建日期：2016-4-19
+ * 备注说明：将库存价格字段与库存主表进行拆分，库存类型仅保持车次与元素两种类型
+ * @since 2.0-SNAPSHOT
  */
 @Entity
 @Table(name = "INV_STOCK")
-public class Stock extends BaseDomain {
-    @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Long id;
-
-    /**
-     * 库存类型，包括行程、产品、元素、车次
-     */
-    @Column
-    @Enumerated(EnumType.STRING)
-    private InventoryType inventoryType;
-
-    /**
-     * 库存类型Id，对应行程、产品、元素、车次表（对象）的主键（id）
-     */
-    @Column
-    private Long inventoryTypeId;
-
+public class Stock extends StockBound {
     /**
      * 缓存字段：库存主体名称
      * added by shiguanglu at 2015-12-15 18:12
@@ -47,135 +32,64 @@ public class Stock extends BaseDomain {
     private String inventoryRemark;
 
     /**
-     * 库存日期，只表示day指示的那天的库存
-     */
-    @Column
-    @Temporal(value = TemporalType.DATE)
-    private Date day;
-
-    /**
      * 库存数量，只表示day指示的那天的库存数量
      */
-    @Column
-    private Integer quantity;
+    @Column(nullable = false)
+    private Integer quantity = 0;
 
     /**
      * 缓存字段：添加已售库存量
      * added by shiguanglu at 2015-11-27 15:42
      */
     @Transient
-    private Integer soldQuantity;
+    private Integer soldQuantity = 0;
 
     /**
      * 缓存字段：添加可售库存量
      * added by shiguanglu at 2015-11-27 15:45
      */
     @Transient
-    private Integer availableQuantity;
+    private Integer availableQuantity = 0;
 
     /**
-     * 库存价格，只表示day指示的那天的库存价格
+     * 库存是否上线，默认为上线
      */
-    @Column
-    private BigDecimal price;
-
-    /**
-     * 库存是否下线，默认为上线
-     */
-    @Column
+    @Column(nullable = false)
     private Boolean online = true;
 
-    /**
-     * version
-     */
-    @Version
-    @Column
-    private Long version;
-
-    public Stock(){
+    public Stock() {
     }
 
     /**
      * constructor
      * @param inventoryType
-     * @param inventoryTypeId
+     * @param inventoryId
      * @param day
      * @param quantity
-     * @param price
-     * @param online
-     * @param version
-     */
-    public Stock(InventoryType inventoryType, Long inventoryTypeId, Date day, Integer quantity, BigDecimal price, Boolean online, Long version) {
-        this.inventoryType = inventoryType;
-        this.inventoryTypeId = inventoryTypeId;
-        this.day = day;
-        this.quantity = quantity;
-        this.price = price;
-        this.online = online;
-        this.version = version;
-    }
-
-    /**
-     * 对应前端添加一个库存时候的表单数据
-     * @param inventoryType
-     * @param inventoryTypeId
-     * @param day
-     * @param quantity
-     * @param price
      * @param online
      */
-    public Stock(InventoryType inventoryType, Long inventoryTypeId, Date day, Integer quantity, BigDecimal price, Boolean online) {
-        this.inventoryType = inventoryType;
-        this.inventoryTypeId = inventoryTypeId;
-        this.day = day;
+    public Stock(InventoryType inventoryType, Long inventoryId, Date day, Integer quantity, Boolean online) {
+        super(inventoryType, inventoryId, day);
         this.quantity = quantity;
-        this.price = price;
         this.online = online;
     }
 
     /**
      * 提供一个全属性带参构造方法
-     * @author: 石广路
      * @param inventoryType
-     * @param inventoryTypeId
+     * @param inventoryId
      * @param day
      * @param quantity
      * @param soldQuantity
      * @param availableQuantity
-     * @param price
      * @param online
-     * @param version
      */
-    public Stock(InventoryType inventoryType, Long inventoryTypeId, Date day, Integer quantity, Integer soldQuantity, Integer availableQuantity, BigDecimal price, Boolean online, Long version) {
-        this.inventoryType = inventoryType;
-        this.inventoryTypeId = inventoryTypeId;
-        this.day = day;
+    public Stock(InventoryType inventoryType, Long inventoryId, Date day, Integer quantity, Integer soldQuantity, Integer availableQuantity, Boolean online) {
+        super(inventoryType, inventoryId, day);
         this.quantity = quantity;
         this.soldQuantity = soldQuantity;
         this.availableQuantity = availableQuantity;
-        this.price = price;
         this.online = online;
-        this.version = version;
-    }
-
-    /**
-     * 获取经过日期类型转换的库存日期
-     * @author 石广路
-     * @return  java.util.Date
-     */
-    public Date getDay() {
-        //return DateTimeTools.convertSqlDate2UtilDate(day);
-        return day;
-    }
-
-    /**
-     * 设置经过日期类型转换的库存日期
-     * @author 石广路
-     * @return  java.util.Date
-     */
-    public void setDay(Date day) {
-        //this.day = DateTimeTools.convertSqlDate2UtilDate(day);
-        this.day = day;
     }
 
     public Integer getQuantity() {
@@ -202,44 +116,12 @@ public class Stock extends BaseDomain {
         this.availableQuantity = availableQuantity;
     }
 
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Boolean getOnline() {
+    public Boolean isOnline() {
         return online;
     }
 
     public void setOnline(Boolean online) {
         this.online = online;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    public InventoryType getInventoryType() {
-        return inventoryType;
-    }
-
-    public void setInventoryType(InventoryType inventoryType) {
-        this.inventoryType = inventoryType;
-    }
-
-    public Long getInventoryTypeId() {
-        return inventoryTypeId;
-    }
-
-    public void setInventoryTypeId(Long inventoryTypeId) {
-        this.inventoryTypeId = inventoryTypeId;
     }
 
     public String getInventoryName() {
@@ -259,16 +141,6 @@ public class Stock extends BaseDomain {
     }
 
     @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Stock)) return false;
@@ -276,55 +148,51 @@ public class Stock extends BaseDomain {
         Stock stock = (Stock) o;
 
         if (getInventoryType() != stock.getInventoryType()) return false;
-        if (getInventoryTypeId() != null ? !getInventoryTypeId().equals(stock.getInventoryTypeId()) : stock.getInventoryTypeId() != null)
+        if (inventoryId != null ? !inventoryId.equals(stock.getInventoryId()) : stock.getInventoryId() != null)
             return false;
         if (inventoryName != null ? !inventoryName.equals(stock.getInventoryName()) : stock.getInventoryName() != null)
             return false;
         if (inventoryRemark != null ? !inventoryRemark.equals(stock.getInventoryRemark()) : stock.getInventoryRemark() != null)
             return false;
-        if (getDay() != null ? !getDay().equals(stock.getDay()) : stock.getDay() != null) return false;
-        if (getQuantity() != null ? !getQuantity().equals(stock.getQuantity()) : stock.getQuantity() != null)
+        if (day != null ? !day.equals(stock.getDay()) : stock.getDay() != null) return false;
+        if (quantity != null ? !quantity.equals(stock.getQuantity()) : stock.getQuantity() != null)
             return false;
-        if (getSoldQuantity() != null ? !getSoldQuantity().equals(stock.getSoldQuantity()) : stock.getSoldQuantity() != null)
+        if (soldQuantity != null ? !soldQuantity.equals(stock.getSoldQuantity()) : stock.getSoldQuantity() != null)
             return false;
-        if (getAvailableQuantity() != null ? !getAvailableQuantity().equals(stock.getAvailableQuantity()) : stock.getAvailableQuantity() != null)
+        if (availableQuantity != null ? !availableQuantity.equals(stock.getAvailableQuantity()) : stock.getAvailableQuantity() != null)
             return false;
-        if (getPrice() != null ? !getPrice().equals(stock.getPrice()) : stock.getPrice() != null) return false;
-        if (getOnline() != null ? !getOnline().equals(stock.getOnline()) : stock.getOnline() != null) return false;
-        return !(getVersion() != null ? !getVersion().equals(stock.getVersion()) : stock.getVersion() != null);
+
+        return !(online != null ? !online.equals(stock.isOnline()) : stock.isOnline() != null);
     }
 
     @Override
     public int hashCode() {
         int result = getInventoryType() != null ? getInventoryType().hashCode() : 0;
-        result = 31 * result + (getInventoryTypeId() != null ? getInventoryTypeId().hashCode() : 0);
+        result = 31 * result + (inventoryId != null ? inventoryId.hashCode() : 0);
         result = 31 * result + (inventoryName != null ? inventoryName.hashCode() : 0);
         result = 31 * result + (inventoryRemark != null ? inventoryRemark.hashCode() : 0);
-        result = 31 * result + (getDay() != null ? getDay().hashCode() : 0);
-        result = 31 * result + (getQuantity() != null ? getQuantity().hashCode() : 0);
-        result = 31 * result + (getSoldQuantity() != null ? getSoldQuantity().hashCode() : 0);
-        result = 31 * result + (getAvailableQuantity() != null ? getAvailableQuantity().hashCode() : 0);
-        result = 31 * result + (getPrice() != null ? getPrice().hashCode() : 0);
-        result = 31 * result + (getOnline() != null ? getOnline().hashCode() : 0);
-        result = 31 * result + (getVersion() != null ? getVersion().hashCode() : 0);
+        result = 31 * result + (day != null ? day.hashCode() : 0);
+        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
+        result = 31 * result + (soldQuantity != null ? soldQuantity.hashCode() : 0);
+        result = 31 * result + (availableQuantity != null ? availableQuantity.hashCode() : 0);
+        result = 31 * result + (online != null ? online.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return "Stock{" +
                 "id=" + id +
                 ", inventoryType=" + inventoryType +
-                ", inventoryTypeId=" + inventoryTypeId +
+                ", inventoryId=" + inventoryId +
                 ", inventoryName='" + inventoryName + '\'' +
                 ", inventoryRemark='" + inventoryRemark + '\'' +
-                ", day=" + day +
+                ", day=" + sdf.format(day) +
                 ", quantity=" + quantity +
                 ", soldQuantity=" + soldQuantity +
                 ", availableQuantity=" + availableQuantity +
-                ", price=" + price +
                 ", online=" + online +
-                ", version=" + version +
                 '}';
     }
 }

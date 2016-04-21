@@ -1,7 +1,6 @@
 package com.simpletour.dao.inventory.imp;
 
-import com.simpletour.commons.data.dao.IBaseDao;
-import com.simpletour.commons.data.dao.jpa.JPABaseDAO;
+import com.simpletour.commons.data.dao.jpa.DependencyHandleDAO;
 import com.simpletour.commons.data.dao.query.condition.Condition;
 import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.DomainPage;
@@ -25,10 +24,11 @@ import java.util.*;
  * 备注说明：null
  */
 @Repository
-public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
+public class StockDaoImp extends DependencyHandleDAO implements IStockDao {
     private static final String SOLD_QUANTITY_SUM = "SUM(CASE WHEN sold.quantity IS NULL THEN 0 ELSE sold.quantity END)";
 
-    private static final String[] STOCK_FIELDS_ARRAY = {"id", "day", "inventoryType", "inventoryTypeId", "online", "price", "quantity", "version"};
+    //private static final String[] STOCK_FIELDS_ARRAY = {"id", "day", "inventoryType", "inventoryId", "online", "price", "quantity", "version"};
+    private static final String[] STOCK_FIELDS_ARRAY = {"id", "day", "row_table", "row_id", "online", "quantity"};
 
     private static final String STOCK_FIELDS;
 
@@ -57,13 +57,13 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
     }
 
     @Override
-    public <T extends BaseDomain> T getStockDependency(final InventoryType inventoryType, final Long inventoryTypeId) {
+    public <T extends BaseDomain> T getStockDependency(final InventoryType inventoryType, final Long inventoryId) {
         Class<T> clazz = getInventoryClass(inventoryType);
-        return null == clazz ? null : getEntityById(clazz, inventoryTypeId);
+        return null == clazz ? null : getEntityById(clazz, inventoryId);
     }
 
     @Override
-    public <T extends BaseDomain> T getOnlineStockDependency(final InventoryType inventoryType, final Long inventoryTypeId) {
+    public <T extends BaseDomain> T getOnlineStockDependency(final InventoryType inventoryType, final Long inventoryId) {
         Class<T> clazz = getInventoryClass(inventoryType);
         if (null == clazz) {
             return null;
@@ -76,8 +76,8 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
             sb.append(" AND ").append(filterDelPattern);
         }
 
-        if (null != inventoryTypeId && 0 < inventoryTypeId) {
-            sb.append(" AND c.id = ").append(inventoryTypeId + " ");
+        if (null != inventoryId && 0 < inventoryId) {
+            sb.append(" AND c.id = ").append(inventoryId + " ");
         }
 
         if (InventoryType.bus_no == inventoryType) {
@@ -104,14 +104,14 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
         StringBuilder sb = new StringBuilder(String.format("select %s from %s c where 1 = 1", filedName, Stock.class.getName()));
         StockKey stockKey = stockQuery.getStockKey();
         InventoryType inventoryType = stockKey.getInventoryType();
-        Long inventoryTypeId = stockKey.getInventoryTypeId();
+        Long inventoryId = stockKey.getInventoryId();
 
         if (null != inventoryType) {
-            sb.append(" and c.inventoryType = '").append(inventoryType).append("'");
+            sb.append(" and c.row_table = '").append(inventoryType).append("'");
         }
 
-        if (null != inventoryTypeId) {
-            sb.append(" and c.inventoryTypeId = ").append(inventoryTypeId);
+        if (null != inventoryId) {
+            sb.append(" and c.row_id = ").append(inventoryId);
         }
 
         Boolean online = stockQuery.getOnline();
@@ -140,9 +140,9 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
     public Optional<Stock> getStockByConditions(final StockKey stockKey, final Date day, final Boolean online) {
         StringBuilder sb = new StringBuilder("select c from ");
         InventoryType inventoryType = stockKey.getInventoryType();
-        Long inventoryTypeId = stockKey.getInventoryTypeId();
+        Long inventoryId = stockKey.getInventoryId();
 
-        sb.append(Stock.class.getName()).append(" c where c.inventoryType = ?1 and c.inventoryTypeId = ?2 and c.day = ?3");
+        sb.append(Stock.class.getName()).append(" c where c.row_table = ?1 and c.row_id = ?2 and c.day = ?3");
 
         if (null != online) {
             sb.append(" and c.online = ?4 ");
@@ -150,7 +150,7 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
 
         Query query = em.createQuery(sb.toString());
         query.setParameter(1, inventoryType);
-        query.setParameter(2, inventoryTypeId);
+        query.setParameter(2, inventoryId);
         query.setParameter(3, day);
         query.setMaxResults(1);
 
@@ -168,13 +168,13 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
         return null == stock ? Optional.empty() : Optional.ofNullable((Stock)stock);
     }
 
-    @Override
-    public List<Stock> getStocksListByConditions(final StockKey stockKey, final Date startDate, final Date endDate, final Boolean online) {
-        String sql = "select c from " + Stock.class.getName() + " c where 1 = 1";
-        Query query = buildQuerySql(sql, stockKey, startDate, endDate, online, "day", SortBy.DESC, 0, 0);
-        List resultsList = query.getResultList();
-        return null == resultsList ? Collections.emptyList() : resultsList;
-    }
+//    @Override
+//    public List<Stock> getStocksListByConditions(final StockKey stockKey, final Date startDate, final Date endDate, final Boolean online) {
+//        String sql = "select c from " + Stock.class.getName() + " c where 1 = 1";
+//        Query query = buildQuerySql(sql, stockKey, startDate, endDate, online, "day", SortBy.DESC, 0, 0);
+//        List resultsList = query.getResultList();
+//        return null == resultsList ? Collections.emptyList() : resultsList;
+//    }
 
     @Override
     public Optional<Stock> getStockQuantitiesListByConditions(final StockKey stockKey, final Date day, final Boolean online) {
@@ -206,31 +206,31 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
         return stocks;
     }
 
-    @Override
-    public DomainPage getStocksQuantitiesPagesByConditions(final StockQuery stockQuery) {
-        StockQuery queryParm = (StockQuery)stockQuery.clone();
-        queryParm.setPageIndex(0);
-        queryParm.setPageSize(0);
-
-        String count = "SELECT COUNT(DISTINCT(stocks.id)) FROM";
-        StringBuilder slave = new StringBuilder();
-        buildSoldQuerySql(slave);
-
-        DomainPage domainPage = new DomainPage(stockQuery.getPageSize(), stockQuery.getPageIndex(), 0);
-        Query countQuery = buildFilterQuerySql(queryParm, count, slave.toString(), "c.*", 1, null);
-        if (null == countQuery) {
-            return domainPage;
-        }
-
-        Long totalCount = getTotalCount(countQuery);
-        if (0 < totalCount) {
-            List<Stock> stocks = getStocksQuantitiesListByConditions(stockQuery);
-            domainPage.getDomains().addAll(stocks);
-            domainPage.setDomainTotalCount(totalCount);
-        }
-
-        return domainPage;
-    }
+//    @Override
+//    public DomainPage getStocksQuantitiesPagesByConditions(final StockQuery stockQuery) {
+//        StockQuery queryParm = (StockQuery)stockQuery.clone();
+//        queryParm.setPageIndex(0);
+//        queryParm.setPageSize(0);
+//
+//        String count = "SELECT COUNT(DISTINCT(stocks.id)) FROM";
+//        StringBuilder slave = new StringBuilder();
+//        buildSoldQuerySql(slave);
+//
+//        DomainPage domainPage = new DomainPage(stockQuery.getPageSize(), stockQuery.getPageIndex(), 0);
+//        Query countQuery = buildFilterQuerySql(queryParm, count, slave.toString(), "c.*", 1, null);
+//        if (null == countQuery) {
+//            return domainPage;
+//        }
+//
+//        Long totalCount = getTotalCount(countQuery);
+//        if (0 < totalCount) {
+//            List<Stock> stocks = getStocksQuantitiesListByConditions(stockQuery);
+//            domainPage.getDomains().addAll(stocks);
+//            domainPage.setDomainTotalCount(totalCount);
+//        }
+//
+//        return domainPage;
+//    }
 
     @Override
     public DomainPage getStocksQuantitiesPagesByRelations(final StockQuery stockQuery) {
@@ -250,7 +250,7 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
 
         StringBuilder slave = new StringBuilder();
         buildSoldQuerySql(slave);
-        slave.append("GROUP BY ").append(STOCK_FIELDS).append(") stocks ON stocks.inventoryTypeId = inventory.inventoryTypeId ) stocks ");
+        slave.append("GROUP BY ").append(STOCK_FIELDS).append(") stocks ON stocks.row_id = inventory.row_id ) stocks ");
 
         int pageIndex = stockQuery.getPageIndex();
         int pageSize = stockQuery.getPageSize();
@@ -284,14 +284,14 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
      * @return
      */
     private List<Long> getInventoryTypeIds(final StockQuery stockQuery) {
-        StringBuilder master = new StringBuilder("SELECT stocks.inventoryTypeId FROM (");
+        StringBuilder master = new StringBuilder("SELECT stocks.row_id FROM (");
         int index = buildInventoryQuerySql(stockQuery, master, true);
         master.append(" ) inventory INNER JOIN");
 
-        StringBuilder slave = new StringBuilder("GROUP BY c.inventoryTypeId HAVING 0 < COUNT(c.inventoryTypeId) ) stocks ON stocks.inventoryTypeId = inventory.inventoryTypeId ORDER BY stocks.inventoryTypeId ");
+        StringBuilder slave = new StringBuilder("GROUP BY c.row_id HAVING 0 < COUNT(c.row_id) ) stocks ON stocks.row_id = inventory.row_id ORDER BY stocks.row_id ");
         slave.append(stockQuery.getOrderBy().name());
 
-        Query selectQuery = buildFilterQuerySql(stockQuery, master.toString(), slave.toString(), "c.inventoryTypeId", index, null);
+        Query selectQuery = buildFilterQuerySql(stockQuery, master.toString(), slave.toString(), "c.row_id", index, null);
         if (null == selectQuery) {
             return Collections.emptyList();
         }
@@ -312,7 +312,7 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
         master.append("SELECT ");
 
         if (isCountSql) {
-            master.append("COUNT(DISTINCT(stocks.inventoryTypeId))");
+            master.append("COUNT(DISTINCT(stocks.row_id))");
         } else {
             master.append(STOCK_FIELDS).append(", stocks.soldQuantity, stocks.availableQuantity, stocks.inventoryName, stocks.inventoryRemark");
             slave.append("ORDER BY stocks.").append(stockQuery.getOrderByFiledName()).append(" ").append(stockQuery.getOrderBy().name());
@@ -353,7 +353,7 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
             statusField += "online";
         }
 
-        master.append("SELECT inventory.id AS inventoryTypeId, ").append(nameField).append(" AS inventoryName, ").append(remarkField).append(" AS inventoryRemark FROM ");
+        master.append("SELECT inventory.id AS row_id, ").append(nameField).append(" AS inventoryName, ").append(remarkField).append(" AS inventoryRemark FROM ");
         master.append(inventoryType.getTabelName()).append(" inventory WHERE 1 = 1").append(getTenantIdFilterCondition(getInventoryClass(inventoryType)).replaceFirst("c.tenantId", "inventory.tenant_id"));
         if (byLike) {
             String inventoryName = stockQuery.getInventoryName();
@@ -383,8 +383,8 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
      * @param slave
      */
     private void buildSoldQuerySql(StringBuilder slave) {
-        slave.append(") stocks LEFT JOIN ( SELECT se.inventoryType, se.inventoryTypeId, se.day, se.quantity FROM inv_sold_entry se WHERE se.status = true or se.status IS NULL ) sold ");
-        slave.append("ON stocks.inventoryType = sold.inventoryType AND stocks.inventoryTypeId = sold.inventoryTypeId AND stocks.day = sold.day ");
+        slave.append(") stocks LEFT JOIN ( SELECT se.row_table, se.row_id, se.day, se.quantity FROM inv_sold_entry se WHERE se.valid = true) sold ");
+        slave.append("ON stocks.row_table = sold.row_table AND stocks.row_id = sold.row_id AND stocks.day = sold.day ");
     }
 
     /**
@@ -400,7 +400,7 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
     private Query buildFilterQuerySql(final StockQuery stockQuery, String head, String tail, String fields, int begin, List<Long> inventoryTypeIds) {
         StockKey stockKey = stockQuery.getStockKey();
         InventoryType inventoryType = stockKey.getInventoryType();
-        Long inventoryTypeId = stockKey.getInventoryTypeId();
+        Long inventoryId = stockKey.getInventoryId();
         String inventoryName = stockQuery.getInventoryName();
         Date startDate = stockQuery.getStartDate();
         Date endDate = stockQuery.getEndDate();
@@ -415,46 +415,31 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
             values.put(index++, inventoryTypeIds);
             sb.append(" AND 0 < c.quantity");  // 仅用在前端关联查询
 
+            String ids = inventoryTypeIds.toString().replace('[', '(').replace(']', ')');
             values.put(index, inventoryTypeIds);
-            sb.append(" AND c.inventoryTypeId in (?").append(index++).append(')');
+            sb.append(" AND c.row_id in (?").append(index++).append(')');
         } else {
             if (null != inventoryName && !inventoryName.isEmpty() && -1 != head.indexOf("AS inventoryName")) {
                 values.put(index++, '%' + inventoryName + '%');
                 sb.append(" AND 0 < c.quantity");  // 仅用在前端关联查询
             }
 
-            if (null != inventoryTypeId) {
-                sb.append(" AND c.inventoryTypeId = ").append(inventoryTypeId);
+            if (null != inventoryId) {
+                sb.append(" AND c.row_id = ").append(inventoryId);
             }
         }
 
         if (null != inventoryType) {
             values.put(index, inventoryType.name());
-            sb.append(" AND c.inventoryType = ?").append(index++);
+            sb.append(" AND c.row_table = ?").append(index++);
         }
-
-        /*
-        if (null != startDate && null != endDate && startDate.equals(endDate)) {
-            values.put(index, startDate);
-            sb.append(" AND c.day = ?").append(index++);
-        } else {
-            if (null != startDate) {
-                values.put(index, startDate);
-                sb.append(" AND c.day >= ?").append(index++);
-            }
-            if (null != endDate) {
-                values.put(index, endDate);
-                sb.append(" AND c.day <= ?").append(index++);
-            }
-        }
-        */
 
         if (null == buildDateRange(sb, "c.day", "yyyy-MM-dd", startDate, endDate)) {
             return null;
         }
 
         if (null != online) {
-            sb.append(true == online ? " AND (c.online IS NULL OR c.online = TRUE)" : " AND c.online = FALSE");
+            sb.append(" AND c.online = " + online);
         }
 
         if (null != tail && !tail.isEmpty()) {
@@ -487,15 +472,15 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
         Map<Integer, Object> values = new LinkedHashMap<>(5);
         StringBuilder sb = new StringBuilder(sql);
         InventoryType inventoryType = stockKey.getInventoryType();
-        Long inventoryTypeId = stockKey.getInventoryTypeId();
+        Long inventoryId = stockKey.getInventoryId();
 
         if (null != inventoryType) {
             values.put(index, inventoryType);
-            sb.append(" and c.inventoryType = ?").append(index++);
+            sb.append(" and c.row_table = ?").append(index++);
         }
 
-        if (null != inventoryTypeId) {
-            sb.append(" and c.inventoryTypeId = ").append(inventoryTypeId);
+        if (null != inventoryId) {
+            sb.append(" and c.row_id = ").append(inventoryId);
         }
 
         if (null != startDate) {
@@ -551,6 +536,14 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
                 for (Object obj : objs) {
                     name = fieldsList.get(index++);
 
+                    if (name.equals("row_table")) {
+                        name = "inventoryType";
+                    }
+
+                    if (name.equals("row_id")) {
+                        name = "inventoryId";
+                    }
+
                     Field field = getDeclaredField(clazz, name);
                     if (null == field) {
                         int MAX_INHERIT_NUM = 0;
@@ -596,7 +589,7 @@ public class StockDaoImp extends JPABaseDAO implements IStockDao, IBaseDao {
         try {
             field = clzz.getDeclaredField(name);
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             field = null;
         }
         return field;

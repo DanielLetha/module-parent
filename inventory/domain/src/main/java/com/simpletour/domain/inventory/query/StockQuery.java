@@ -15,6 +15,9 @@ public class StockQuery extends BaseQuery implements Cloneable {
     // 库存联合主键
     private StockKey stockKey;
 
+    // 库存当前日期
+    private Date day;
+
     // 库存查询起始日期
     private Date startDate;
 
@@ -56,15 +59,14 @@ public class StockQuery extends BaseQuery implements Cloneable {
     }
 
     /**
-     * 查询某天的库存
+     * 查询某一天的库存
      * @param stockKey
-     * @param stockDate
+     * @param day
      * @param online
      */
-    public StockQuery(StockKey stockKey, Date stockDate, Boolean online) {
+    public StockQuery(StockKey stockKey, Date day, Boolean online) {
         this.stockKey = stockKey;
-        this.startDate = stockDate;
-        this.endDate = stockDate;
+        this.startDate = this.endDate = this.day = day;
         this.online = online;
     }
 
@@ -83,18 +85,17 @@ public class StockQuery extends BaseQuery implements Cloneable {
     }
 
     /**
-     * 根据默认的排序和分页规则来查询某天的库存
+     * 根据默认的排序和分页规则来查询某一天的库存
      * @param stockKey
-     * @param stockDate
+     * @param day
      * @param online
      * @param inventoryName
      * @param pageIndex
      */
-    public StockQuery(StockKey stockKey, Date stockDate, Boolean online, InventoryStatus inventoryStatus, String inventoryName, int pageIndex) {
+    public StockQuery(StockKey stockKey, Date day, Boolean online, InventoryStatus inventoryStatus, String inventoryName, int pageIndex) {
         setPageIndex(pageIndex);
         this.stockKey = stockKey;
-        this.startDate = stockDate;
-        this.endDate = stockDate;
+        this.startDate = this.endDate = this.day = day;
         this.online = online;
         this.inventoryStatus = inventoryStatus;
         this.inventoryName = inventoryName;
@@ -120,9 +121,9 @@ public class StockQuery extends BaseQuery implements Cloneable {
     }
 
     /**
-     * 根据排序和分页规则来查询某天的库存
+     * 根据排序和分页规则来查询某一天的库存
      * @param stockKey
-     * @param stockDate
+     * @param day
      * @param online
      * @param inventoryName
      * @param orderByFiledName
@@ -130,11 +131,10 @@ public class StockQuery extends BaseQuery implements Cloneable {
      * @param pageSize
      * @param pageIndex
      */
-    public StockQuery(StockKey stockKey, Date stockDate, Boolean online, InventoryStatus inventoryStatus, String inventoryName, String orderByFiledName, IBaseDao.SortBy orderBy, int pageSize, int pageIndex) {
+    public StockQuery(StockKey stockKey, Date day, Boolean online, InventoryStatus inventoryStatus, String inventoryName, String orderByFiledName, IBaseDao.SortBy orderBy, int pageSize, int pageIndex) {
         super(orderByFiledName, orderBy, pageSize, pageIndex);
         this.stockKey = stockKey;
-        this.startDate = stockDate;
-        this.endDate = stockDate;
+        this.startDate = this.endDate = this.day = day;
         this.online = online;
         this.inventoryStatus = inventoryStatus;
         this.inventoryName = inventoryName;
@@ -168,6 +168,14 @@ public class StockQuery extends BaseQuery implements Cloneable {
 
     public void setStockKey(StockKey stockKey) {
         this.stockKey = stockKey;
+    }
+
+    public Date getDay() {
+        return day;
+    }
+
+    public void setDay(Date day) {
+        this.day = day;
     }
 
     public Date getStartDate() {
@@ -212,7 +220,7 @@ public class StockQuery extends BaseQuery implements Cloneable {
 
     @Override
     public Object clone() {
-        StockQuery stockQuery = null;
+        StockQuery stockQuery;
         try {
             stockQuery = (StockQuery)super.clone();
         } catch (CloneNotSupportedException exc) {
@@ -221,7 +229,8 @@ public class StockQuery extends BaseQuery implements Cloneable {
         }
 
         stockQuery.stockKey.setInventoryType(stockKey.getInventoryType());
-        stockQuery.stockKey.setInventoryTypeId(stockKey.getInventoryTypeId());
+        stockQuery.stockKey.setInventoryId(stockKey.getInventoryId());
+        stockQuery.day = null == day ? null : (Date)day.clone();
         stockQuery.startDate = null == startDate ? null : (Date)startDate.clone();
         stockQuery.endDate = null == endDate ? null : (Date)endDate.clone();
         stockQuery.online = online;

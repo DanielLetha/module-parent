@@ -2,30 +2,24 @@ package com.simpletour.biz.inventory.imp;
 
 import com.simpletour.biz.inventory.IStockBiz;
 import com.simpletour.biz.inventory.error.InventoryBizError;
-import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
-import com.simpletour.commons.data.domain.BaseDomain;
-import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.inventory.ISoldEntryDao;
 import com.simpletour.dao.inventory.IStockDao;
 import com.simpletour.domain.inventory.InventoryType;
 import com.simpletour.domain.inventory.Stock;
-import com.simpletour.domain.inventory.query.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.simpletour.domain.inventory.query.IStockTraceable;
+import com.simpletour.domain.inventory.query.StockAvailableKey;
+import com.simpletour.domain.inventory.query.StockKey;
+import com.simpletour.domain.inventory.query.StockQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-//import com.simpletour.domain.product.Product;
 
 /**
  * 文件描述：库存模块业务处理实现类
@@ -35,329 +29,333 @@ import java.util.stream.Stream;
  */
 @Component
 public class StockBizImp implements IStockBiz {
-    private static final Logger logger = LoggerFactory.getLogger(StockBizImp.class);
+//    @Autowired
+//    private IStockQueryBiz stockQueryBiz;
 
-    @Resource
+    @Autowired
     private IStockDao stockDao;
 
     @Resource
     private ISoldEntryDao soldEntryDao;
 
-    /*
-    static {
-        // 方式1：同一个项目工程可以读取到，外部工程引用时读取不到
-
-        String fileName = System.getProperty("user.dir") + File.separatorChar + "biz" + File.separatorChar + "target" + File.separatorChar + "classes" + File.separatorChar + "log4j.properties";
-        System.out.println("fileName = " + fileName);
-
-        if (!new File(fileName).exists()) {
-            fileName = StockBizImp.class.getClassLoader().getResource("log4j.properties").getFile().substring(1);
-            System.out.println("fileName = " + fileName);
-        }
-
-        if (new File(fileName).exists()) {
-            // 使用最外层调用模块中的log4j.properties
-            PropertyConfigurator.configure(fileName);
-        }
-
-        // 方式2：将属性配置文件放在src\main\java代码路径下，本工程和外部工程都能读取到
-//        InputStream in = StockBizImp.class.getClassLoader().getResourceAsStream("com/simpletour/biz/inventory/log4j.properties");
-//        PropertyConfigurator.configure(in);
-
-//        URL url = StockBizImp.class.getClassLoader().getResource("log4j.properties");
-//        URL url1 = StockBizImp.class.getResource("/log4j.properties");
-//        System.out.println("url = " + url + ", url1 = " + url1);
+//    @Override
+//    public boolean isExisted(Stock stock) throws BaseSystemException {
+//        StockParamsValidater.validateBoundParams(stock);
 //
-//        InputStream in = StockBizImp.class.getClassLoader().getResourceAsStream("log4j.properties");
-//        System.out.println("in = " + in.toString());
-//        PropertyConfigurator.configure(in);
-    }
-    */
+//        Long id = stock.getId();
+//        if (null != id && 0 < id) {
+//            return null != stockDao.getEntityById(Stock.class, id);
+//        }
+//
+//        return stockQueryBiz.hasOnlineStock(new StockKey(stock.getInventoryType(), stock.getInventoryId()), stock.getDay());
+//    }
 
     @Override
-    public Optional<Stock> addStock(final Stock stock) throws BaseSystemException {
-        if (null == stock) {
-            throw new BaseSystemException(InventoryBizError.EMPTY_ENTITY);
+    public Optional<Stock> addStock(Stock stock) throws BaseSystemException {
+        StockParamsValidater.validateBoundParams(stock);
+
+        if (null != stock.getId()) {
+            throw new BaseSystemException(InventoryBizError.INVALID_ID);
         }
 
-        InventoryType inventoryType = stock.getInventoryType();
-        Long inventoryTypeId = stock.getInventoryTypeId();
-        Date day = stock.getDay();
-
-        // 检查库存关键参数是否有效
-        StockParamsValidater.validateStockParam(inventoryType, inventoryTypeId, day);
-
+        // TODO: 放在库存的服务层来处理
         // 检查是否存在同样的库存记录
-        if (isExist(stock)) {
-            throw new BaseSystemException(InventoryBizError.STOCK_IS_EXISTING);
-        }
+//        if (isExisted(stock)) {
+//            throw new BaseSystemException(InventoryBizError.STOCK_IS_EXISTING);
+//        }
 
+        // TODO: 放在库存托管对象的服务层来处理
         // 检查库存依赖是否存在
-        List<StockKey> dependencies = getStockDependencies(new StockKey(inventoryType, inventoryTypeId), day);
-        dependencies.forEach(dependency -> {
-            Optional<Stock> stockOptional = getStock(dependency, day, true, false);
-            if (!stockOptional.isPresent() || null == stockDao.getOnlineStockDependency(dependency.getInventoryType(), dependency.getInventoryTypeId())) {
-                throw new BaseSystemException(InventoryBizError.STOCK_DEPENDENCY_NOT_EXIST);
-            }
-        });
+//        List<StockKey> dependencies = getStockDependencies(new StockKey(inventoryType, inventoryTypeId), day);
+//        dependencies.forEach(dependency -> {
+//            Optional<Stock> stockOptional = getStock(dependency, day, true, false);
+//            if (!stockOptional.isPresent() || null == stockDao.getOnlineStockDependency(dependency.getInventoryType(), dependency.getInventoryId())) {
+//                throw new BaseSystemException(InventoryBizError.STOCK_DEPENDENCY_NOT_EXIST);
+//            }
+//        });
 
         return Optional.ofNullable(stockDao.save(stock));
     }
 
-    @Override
-    public List<Stock> addStocks(final List<Stock> stocks) throws BaseSystemException {
-        if (null != stocks && !stocks.isEmpty()) {
-            List<Stock> stocksList = new ArrayList<>(stocks.size());
-            stocks.forEach(stock -> stocksList.add(addStock(stock).get()));
-            return stocksList;
-        }
-        return stocks;
-    }
+//    @Override
+//    public List<Stock> addStocks(final List<Stock> stocks) throws BaseSystemException {
+//        if (null != stocks && !stocks.isEmpty()) {
+//            List<Stock> stocksList = new ArrayList<>(stocks.size());
+//            stocks.forEach(stock -> stocksList.add(addStock(stock).get()));
+//            return stocksList;
+//        }
+//        return stocks;
+//    }
 
     @Override
     public Optional<Stock> updateStock(final Stock stock) throws BaseSystemException {
-        if (null == stock) {
-            throw new BaseSystemException(InventoryBizError.EMPTY_ENTITY);
+        StockParamsValidater.validateBoundParams(stock);
+
+        if (null == stock.getId()) {
+            throw new BaseSystemException(InventoryBizError.INVALID_ID);
         }
 
-        InventoryType inventoryType = stock.getInventoryType();
-        Long inventoryTypeId = stock.getInventoryTypeId();
-        Date day = stock.getDay();
-
-        // 检查库存关键参数是否有效
-        StockParamsValidater.validateStockParam(inventoryType, inventoryTypeId, day);
-
+        // TODO: 放在库存的服务层来处理
         // 检查是否存在同样的库存记录
-        if (!isExist(stock)) {
-            throw new BaseSystemException(InventoryBizError.STOCK_NOT_EXIST);
-        }
+//        if (!isExisted(stock)) {
+//            throw new BaseSystemException(InventoryBizError.STOCK_NOT_EXIST);
+//        }
 
+        // TODO: 放在库存托管对象的服务层来处理
         // 检查库存托管对象是否下架
-        if (null == stockDao.getOnlineStockDependency(inventoryType, inventoryTypeId)) {
-            throw new BaseSystemException(InventoryBizError.STOCK_SOLD_OUT);
-        }
+//        if (null == stockDao.getOnlineStockDependency(inventoryType, inventoryTypeId)) {
+//            throw new BaseSystemException(InventoryBizError.STOCK_SOLD_OUT);
+//        }
 
+        // TODO: 放在库存托管对象的服务层来处理
         // 检查库存数量的有效性
-        int soldQuantity = soldEntryDao.getSoldQuantity(inventoryType, inventoryTypeId, day, true);
-        if (stock.getQuantity() < soldQuantity) {
-            throw new BaseSystemException(InventoryBizError.INVALID_STOCK_QUANTITY);
-        }
+//        int soldQuantity = soldEntryDao.getSoldQuantity(inventoryType, inventoryTypeId, day, true);
+//        if (stock.getQuantity() < soldQuantity) {
+//            throw new BaseSystemException(InventoryBizError.INVALID_STOCK_QUANTITY);
+//        }
 
         return Optional.ofNullable(stockDao.save(stock));
     }
 
-    @Override
-    public List<Stock> updateStocks(final List<Stock> stocks) throws BaseSystemException {
-        if (null != stocks && !stocks.isEmpty()) {
-            List<Stock> stocksList = new ArrayList<>(stocks.size());
-            stocks.forEach(stock -> stocksList.add(updateStock(stock).get()));
-            return stocksList;
-        }
-        return stocks;
-    }
+//    @Override
+//    public List<Stock> updateStocks(final List<Stock> stocks) throws BaseSystemException {
+//        if (null != stocks && !stocks.isEmpty()) {
+//            List<Stock> stocksList = new ArrayList<>(stocks.size());
+//            stocks.forEach(stock -> stocksList.add(updateStock(stock).get()));
+//            return stocksList;
+//        }
+//        return stocks;
+//    }
+
 
     @Override
-    public void deleteStock(long id) {
-        stockDao.remove(stockDao.getEntityById(Stock.class, id));
+    public void deleteStock(Stock stock) {
+        stockDao.remove(stock);
     }
 
-    @Override
-    public void deleteStocks(final List<Long> ids) {
-        if (null != ids) {
-            ids.forEach(id -> stockDao.remove(stockDao.getEntityById(Stock.class, id)));
-        }
-    }
+//    @Override
+//    public void deleteStock(Long id) throws BaseSystemException {
+//        Optional<Stock> optional = getStockById(id);
+//        if (!optional.isPresent()) {
+//            throw new BaseSystemException(InventoryBizError.STOCK_NOT_EXIST);
+//        }
+//        stockDao.remove(optional.get());
+//    }
+
+//    @Override
+//    public void deleteStocks(List<Long> ids) {
+//        if (null != ids && !ids.isEmpty()) {
+//            ids.stream().filter(id -> null != id).forEach(id -> deleteStock(id));
+//        }
+//    }
+
+//    @Override
+//    public void deleteStocks(List<Stock> stocks) {
+//        if (null != stocks) {
+//            stocks.forEach(stock -> stockDao.remove(stock));
+//        }
+//    }
+
+//    @Override
+//    public Optional<Stock> getStockById(Long id) {
+//        if (null == id || 0 >= id) {
+//            throw new BaseSystemException(InventoryBizError.INVALID_ID);
+//        }
+//        return Optional.ofNullable(stockDao.getEntityById(Stock.class, id));
+//    }
 
     @Transactional
-    public void deleteStocksByInventoryTypeId(InventoryType type, Long id) {
+    public void deleteStocksByInventoryId(InventoryType type, Long id) {
         AndConditionSet conditionSet = new AndConditionSet();
         conditionSet.addCondition("inventoryType", type);
         conditionSet.addCondition("inventoryTypeId", id);
         stockDao.removeEntityByConditions(Stock.class, conditionSet);
     }
 
-    @Override
-    public Optional<Stock> getStockRecordById(long id) {
-        return Optional.ofNullable(stockDao.getEntityById(Stock.class, id));
-    }
-
-    @Override
-    public BaseDomain getStockWithDependencies(final StockKey stockKey, final Date day) throws BaseSystemException {
-        InventoryType inventoryType = stockKey.getInventoryType();
-        Long inventoryTypeId = stockKey.getInventoryTypeId();
-        BaseDomain baseDomain = stockDao.getStockDependency(inventoryType, inventoryTypeId);
-        if (null == baseDomain) {
-            throw new BaseSystemException(InventoryBizError.STOCK_DEPENDENCY_NOT_EXIST);
-        }
-
-        return baseDomain;
-    }
-
-    @Override
-    public List<StockKey> getStockDependencies(final StockKey stockKey, final Date day) throws BaseSystemException {
-        List<StockKey> dependencies = Collections.emptyList();
-        BaseDomain baseDomain = getStockWithDependencies(stockKey, day);
+//    @Override
+//    public BaseDomain getStockWithDependencies(final StockKey stockKey, final Date day) throws BaseSystemException {
+//        InventoryType inventoryType = stockKey.getInventoryType();
+//        Long inventoryTypeId = stockKey.getInventoryId();
+//        BaseDomain baseDomain = stockDao.getStockDependency(inventoryType, inventoryTypeId);
+//        if (null == baseDomain) {
+//            throw new BaseSystemException(InventoryBizError.STOCK_DEPENDENCY_NOT_EXIST);
+//        }
+//
+//        return baseDomain;
+//    }
+//
+//    @Override
+//    public List<StockKey> getStockDependencies(final StockKey stockKey, final Date day) throws BaseSystemException {
+//        List<StockKey> dependencies = Collections.emptyList();
+//        BaseDomain baseDomain = getStockWithDependencies(stockKey, day);
 //        if (null != baseDomain) {
 //            if (baseDomain instanceof Product) {
 //                dependencies = ((Product) baseDomain).getDependentStockKeys();
 //            }
 //        }
-        return dependencies;
-    }
+//        return dependencies;
+//    }
+//
+//    @Override
+//    public boolean hasOnlineStock(final StockKey stockKey, Date day) {
+//        if (null == stockKey) {
+//            return false;
+//        }
+//
+//        Map fieldNameValueMap = new HashMap<String, Object>(4);
+//        fieldNameValueMap.put("online", true);
+//        fieldNameValueMap.put("inventoryType", stockKey.getInventoryType());
+//        fieldNameValueMap.put("inventoryTypeId", stockKey.getInventoryId());
+//
+//        if (null != day) {
+//            Date date = (Date)day.clone();
+//            int offset = stockKey.getOffset();
+//            if (0 < offset) {
+//                date = Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
+//            }
+//            fieldNameValueMap.put("day", date);
+//        }
+//
+//        return 0 < stockDao.getEntityTotalCount(Stock.class, fieldNameValueMap);
+//    }
 
-    @Override
-    public boolean hasOnlineStock(final StockKey stockKey, Date day) {
-        if (null == stockKey) {
-            return false;
-        }
+//    @Override
+//    public DomainPage getStocksPagesByConditions(final StockKey stockKey, final Date startDate, final Date endDate, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize) {
+//        if (null == stockKey) {
+//            return new DomainPage();
+//        }
+//
+//        // 计算某一时间段范围内的库存量
+//        // 方式1：通过嵌套调用SQL来查询
+////        DomainPage domainPage = stockDao.getStocksPagesByConditions(stockKey, startDate, endDate, true, orderByFiledName, orderBy, pageIndex, pageSize);
+////        List<Stock> stocksList = domainPage.getDomains();
+////        stocksList.forEach(stock -> calculateStockQuantity(stock));
+//
+//        // 方式2：通过关联SQL来查询
+//        StockQuery stockQuery = new StockQuery(stockKey, startDate, endDate, true, null, null, orderByFiledName, orderBy, pageSize, pageIndex);
+//        //DomainPage domainPage = stockDao.getStocksQuantitiesPagesByConditions(stockQuery);
+//        return new DomainPage();
+//    }
 
-        Map fieldNameValueMap = new HashMap<String, Object>(3);
-        fieldNameValueMap.put("online", true);
-        fieldNameValueMap.put("inventoryType", stockKey.getInventoryType());
-        fieldNameValueMap.put("inventoryTypeId", stockKey.getInventoryTypeId());
-        if (null != day) {
-            fieldNameValueMap.put("day", day);
-        }
-
-        return 0 < stockDao.getEntityTotalCount(Stock.class, fieldNameValueMap);
-    }
-
-    @Override
-    public DomainPage getStocksPagesByConditions(final StockKey stockKey, final Date startDate, final Date endDate, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize) {
-        if (null == stockKey) {
-            return new DomainPage();
-        }
-
-        // 计算某一时间段范围内的库存量
-        // 方式1：通过嵌套调用SQL来查询
-//        DomainPage domainPage = stockDao.getStocksPagesByConditions(stockKey, startDate, endDate, true, orderByFiledName, orderBy, pageIndex, pageSize);
+//    @Override
+//    public DomainPage getStocksQuantitiesPagesByRelations(final StockQuery stockQuery) throws BaseSystemException {
+//        DomainPage domainPage = stockDao.getStocksQuantitiesPagesByRelations(stockQuery);
 //        List<Stock> stocksList = domainPage.getDomains();
-//        stocksList.forEach(stock -> calculateStockQuantity(stock));
-
-        // 方式2：通过关联SQL来查询
-        StockQuery stockQuery = new StockQuery(stockKey, startDate, endDate, true, null, null, orderByFiledName, orderBy, pageSize, pageIndex);
-        DomainPage domainPage = stockDao.getStocksQuantitiesPagesByConditions(stockQuery);
-        return domainPage;
-    }
-
-    @Override
-    public DomainPage getStocksQuantitiesPagesByRelations(final StockQuery stockQuery) throws BaseSystemException {
-        DomainPage domainPage = stockDao.getStocksQuantitiesPagesByRelations(stockQuery);
-        List<Stock> stocksList = domainPage.getDomains();
-        // 根据依赖库存目前的最小库存量来设置当前库存数量
-        stocksList.forEach(stock -> {
-            List<StockKey> dependencies = getStockDependencies(new StockKey(stock.getInventoryType(), stock.getInventoryTypeId()), stock.getDay());
-            setStockAvailableQuantity(dependencies, stock);
-        });
-        return domainPage;
-    }
-
-    @Override
-    public BigDecimal getStocksPriceInTimeframe(StockQuery stockQuery, boolean isLowest) throws BaseSystemException {
-        Optional<Object> optional = stockDao.getFieldValueByConditions(stockQuery, isLowest ? "MIN(price)" : "MAX(price)");
-        if (!optional.isPresent()) {
-            throw new BaseSystemException(InventoryBizError.GET_STOCK_PRICE_FAILED);
-        }
-        return (BigDecimal) optional.get();
-    }
-
-    @Override
-    public Optional<Stock> getStock(IStockTraceable trace, Date day, Boolean online) throws BaseSystemException {
-        Optional<Stock> stockOptional = getStock(trace.getStockKey(), day, online, true);
-        if (stockOptional.isPresent()) {
-            setStockAvailableQuantity(trace.getDependentStockKeys(), stockOptional.get());  // 根据库存依赖来计算可用库存量
-        }
-        return stockOptional;
-    }
-
-    @Override
-    public Optional<Stock> getOnlineStock(IStockTraceable trace, Date day) throws BaseSystemException {
-        return getStock(trace, day, true);
-    }
-
-    @Override
-    public Optional<Stock> getRelationalStock(IStockTraceable trace, Date day) throws BaseSystemException {
-        return getStock(trace, day, true);
-    }
-
-    @Override
-    public List<Stock> getStocks(IStockTraceable trace, Date startDate, Date endDate, Boolean online) throws BaseSystemException {
-        List<Stock> stocksList = getStocksList(trace, startDate, endDate, online);
-        if (!stocksList.isEmpty()) {
-            // 根据依赖库存的可用库存量来设置当前的库存数量
-            List<StockKey> dependencies = trace.getDependentStockKeys();
-            stocksList.forEach(stock -> setStockAvailableQuantity(dependencies, stock));
-        }
-        return stocksList;
-    }
-
-    @Override
-    public List<Stock> getOnlineStocks(IStockTraceable trace, Date startDate, Date endDate) throws BaseSystemException {
-        return getStocksList(trace, startDate, endDate, true);
-    }
-
-    @Override
-    public List<Stock> getRelationalStocks(IStockTraceable trace, Date startDate, Date endDate) throws BaseSystemException {
-        return getStocks(trace, startDate, endDate, true);
-    }
-
-    @Override
-    public void checkDemandQuantity(IStockAvailable stockCheckable) throws BaseSystemException {
-        logger.info("enter checkDemandQuantity...");
-
-        if (null == stockCheckable) {
-            throw new BaseSystemException(InventoryBizError.EMPTY_ENTITY);
-        }
-
-        List<StockAvailableKey> stockAvailableEntries = stockCheckable.getStockAvailableEntries();
-        if (null == stockAvailableEntries || stockAvailableEntries.isEmpty()) {
-            throw new BaseSystemException(InventoryBizError.INVALID_STOCK_PARAM);
-        }
-
-        // 预先统计每个订单项在下单后剩余的库存量
-        Stream<Integer> stockAvailableQuantities = stockAvailableEntries.stream().map(item -> {
-            Optional<Stock> stockOptional = getStock(item.getStockTraceable(), item.getDay(), true);
-            if (stockOptional.isPresent()) {
-                Stock stock = stockOptional.get();
-                logger.info("prepare to check the order item: " + item.toString() + ", stock data: " + stock.toString());
-                return stock.getAvailableQuantity() - item.getDemandQuantity();
-            }
-            return 0;
-            //return stockOptional.isPresent() ? stockOptional.get().getAvailableQuantity() - item.getDemandQuantity() : 0;
-        });
-        if (stockAvailableQuantities.anyMatch(left -> left < 0)) {   // 库存已售罄，无法完成本次订单
-            throw new BaseSystemException(InventoryBizError.STOCK_SOLD_OUT);
-        }
-
-        stockAvailableEntries = stockAvailableEntries.stream().filter(stockAvailableKey -> null != stockAvailableKey && null != stockAvailableKey.getStockTraceable()).collect(Collectors.toList());
-        List<StockAvailableKey> mergedStockAvailableKeys = new ArrayList<>(stockAvailableEntries.size());
-        stockAvailableEntries.forEach(stockAvailableKey -> {
-            StockAvailableKey existence = getSameStockDependency(mergedStockAvailableKeys, stockAvailableKey);
-            if (null != existence) {
-                logger.info("the existing order item: " + existence.toString());
-                existence.setDemandQuantity(existence.getDemandQuantity() + stockAvailableKey.getDemandQuantity());
-            } else {
-                logger.info("the current order item: " + stockAvailableKey.toString());
-                mergedStockAvailableKeys.add(stockAvailableKey);
-            }
-        });
-
-        // 检查合并后的下单库存量是否够用
-        Stream<Integer> dependStockAvailables = mergedStockAvailableKeys.stream().map(item -> {
-            Optional<Stock> stockOptional = getStock(item.getStockTraceable(), item.getDay(), true);
-            if (stockOptional.isPresent()) {
-                Stock stock = stockOptional.get();
-                logger.info("merged stock data: " + stock.toString());
-                return stock.getAvailableQuantity() - item.getDemandQuantity();
-            }
-            return 0;
-        });
-        if (dependStockAvailables.anyMatch(left -> left < 0)) {   // 库存量不足，无法完成本次订单
-            throw new BaseSystemException(InventoryBizError.DEPENDENT_STOCK_SHORTAGE);
-        }
-
-        logger.info("exit checkDemandQuantity.");
-    }
+//        // 根据依赖库存目前的最小库存量来设置当前库存数量
+//        stocksList.forEach(stock -> {
+//            List<StockKey> dependencies = getStockDependencies(new StockKey(stock.getInventoryType(), stock.getInventoryId()), stock.getDay());
+//            setStockAvailableQuantity(dependencies, stock);
+//        });
+//        return domainPage;
+//    }
+//
+//    @Override
+//    public BigDecimal getStocksPriceInTimeframe(StockQuery stockQuery, boolean isLowest) throws BaseSystemException {
+//        Optional<Object> optional = stockDao.getFieldValueByConditions(stockQuery, isLowest ? "MIN(price)" : "MAX(price)");
+//        if (!optional.isPresent()) {
+//            throw new BaseSystemException(InventoryBizError.GET_STOCK_PRICE_FAILED);
+//        }
+//        return (BigDecimal) optional.get();
+//    }
+//
+//    @Override
+//    public Optional<Stock> getStock(IStockTraceable trace, Date day, Boolean online) throws BaseSystemException {
+//        Optional<Stock> stockOptional = getStock(trace.getStockKey(), day, online, true);
+//        if (stockOptional.isPresent()) {
+//            // 根据库存依赖来计算可用库存量
+//            setStockAvailableQuantity(trace.getDependentStockKeys(), stockOptional.get());
+//        }
+//        return stockOptional;
+//    }
+//
+//    @Override
+//    public Optional<Stock> getOnlineStock(IStockTraceable trace, Date day) throws BaseSystemException {
+//        return getStock(trace, day, true);
+//    }
+//
+//    @Override
+//    public Optional<Stock> getRelationalStock(IStockTraceable trace, Date day) throws BaseSystemException {
+//        return getStock(trace, day, true);
+//    }
+//
+//    @Override
+//    public List<Stock> getStocks(IStockTraceable trace, Date startDate, Date endDate, Boolean online) throws BaseSystemException {
+//        List<Stock> stocksList = getStocksList(trace, startDate, endDate, online);
+//        if (!stocksList.isEmpty()) {
+//            // 根据依赖库存的可用库存量来设置当前的库存数量
+//            List<StockKey> dependencies = trace.getDependentStockKeys();
+//            stocksList.forEach(stock -> setStockAvailableQuantity(dependencies, stock));
+//        }
+//        return stocksList;
+//    }
+//
+//    @Override
+//    public List<Stock> getOnlineStocks(IStockTraceable trace, Date startDate, Date endDate) throws BaseSystemException {
+//        return getStocksList(trace, startDate, endDate, true);
+//    }
+//
+//    @Override
+//    public List<Stock> getRelationalStocks(IStockTraceable trace, Date startDate, Date endDate) throws BaseSystemException {
+//        return getStocks(trace, startDate, endDate, true);
+//    }
+//
+//    @Override
+//    public void checkDemandQuantity(IStockAvailable stockCheckable) throws BaseSystemException {
+//        //logger.info("enter checkDemandQuantity...");
+//
+//        if (null == stockCheckable) {
+//            throw new BaseSystemException(InventoryBizError.EMPTY_ENTITY);
+//        }
+//
+//        List<StockAvailableKey> stockAvailableEntries = stockCheckable.getStockAvailableEntries();
+//        if (null == stockAvailableEntries || stockAvailableEntries.isEmpty()) {
+//            throw new BaseSystemException(InventoryBizError.INVALID_STOCK_PARAM);
+//        }
+//
+//        // 预先统计每个订单项在下单后剩余的库存量
+//        Stream<Integer> stockAvailableQuantities = stockAvailableEntries.stream().map(item -> {
+//            Optional<Stock> stockOptional = getStock(item.getStockTraceable(), item.getDay(), true);
+//            if (stockOptional.isPresent()) {
+//                Stock stock = stockOptional.get();
+//                //logger.info("prepare to check the order item: " + item.toString() + ", stock data: " + stock.toString());
+//                return stock.getAvailableQuantity() - item.getDemandQuantity();
+//            }
+//            return 0;
+//            //return stockOptional.isPresent() ? stockOptional.get().getAvailableQuantity() - item.getDemandQuantity() : 0;
+//        });
+//        if (stockAvailableQuantities.anyMatch(left -> left < 0)) {   // 库存已售罄，无法完成本次订单
+//            throw new BaseSystemException(InventoryBizError.STOCK_SOLD_OUT);
+//        }
+//
+//        stockAvailableEntries = stockAvailableEntries.stream().filter(stockAvailableKey -> null != stockAvailableKey && null != stockAvailableKey.getStockTraceable()).collect(Collectors.toList());
+//        List<StockAvailableKey> mergedStockAvailableKeys = new ArrayList<>(stockAvailableEntries.size());
+//        stockAvailableEntries.forEach(stockAvailableKey -> {
+//            StockAvailableKey existence = getSameStockDependency(mergedStockAvailableKeys, stockAvailableKey);
+//            if (null != existence) {
+//                //logger.info("the existing order item: " + existence.toString());
+//                existence.setDemandQuantity(existence.getDemandQuantity() + stockAvailableKey.getDemandQuantity());
+//            } else {
+//                //logger.info("the current order item: " + stockAvailableKey.toString());
+//                mergedStockAvailableKeys.add(stockAvailableKey);
+//            }
+//        });
+//
+//        // 检查合并后的下单库存量是否够用
+//        Stream<Integer> dependStockAvailables = mergedStockAvailableKeys.stream().map(item -> {
+//            Optional<Stock> stockOptional = getStock(item.getStockTraceable(), item.getDay(), true);
+//            if (stockOptional.isPresent()) {
+//                Stock stock = stockOptional.get();
+//                //logger.info("merged stock data: " + stock.toString());
+//                return stock.getAvailableQuantity() - item.getDemandQuantity();
+//            }
+//            return 0;
+//        });
+//        if (dependStockAvailables.anyMatch(left -> left < 0)) {   // 库存量不足，无法完成本次订单
+//            throw new BaseSystemException(InventoryBizError.DEPENDENT_STOCK_SHORTAGE);
+//        }
+//
+//        //logger.info("exit checkDemandQuantity.");
+//    }
 
     private StockAvailableKey getSameStockDependency(final List<StockAvailableKey> stockAvailableKeys, final StockAvailableKey stockAvailableKey) {
         IStockTraceable orderStockTraceable = stockAvailableKey.getStockTraceable();
@@ -427,7 +425,7 @@ public class StockBizImp implements IStockBiz {
      */
     private Optional<Stock> getStock(final StockKey stockKey, final Date day, Boolean online, boolean calculateQuantities) throws BaseSystemException {
         if (null != stockKey) {
-            StockParamsValidater.validateStockParam(stockKey.getInventoryType(), stockKey.getInventoryTypeId(), day);
+            StockParamsValidater.validateStockParam(stockKey.getInventoryType(), stockKey.getInventoryId(), day);
             int offset = stockKey.getOffset();
             Date date = 0 >= offset ? day : Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
             return calculateQuantities ? stockDao.getStockQuantitiesListByConditions(stockKey, date, online) : stockDao.getStockByConditions(stockKey, date, online);
@@ -446,7 +444,7 @@ public class StockBizImp implements IStockBiz {
     private List<Stock> getStocksList(IStockTraceable trace, Date startDate, Date endDate, Boolean online) throws BaseSystemException {
         StockKey stockKey = trace.getStockKey();
         if (null != stockKey) {
-            StockParamsValidater.validateStockParam(stockKey.getInventoryType(), stockKey.getInventoryTypeId(), startDate, endDate);
+            StockParamsValidater.validateStockParam(stockKey.getInventoryType(), stockKey.getInventoryId(), startDate, endDate);
             return stockDao.getStocksQuantitiesListByConditions(new StockQuery(stockKey, startDate, endDate, online));
         }
         return Collections.emptyList();
@@ -463,7 +461,7 @@ public class StockBizImp implements IStockBiz {
             return;
         }
 
-        Boolean online = stock.getOnline();
+        Boolean online = stock.isOnline();
         if (null != online && !online) {
             stock.setAvailableQuantity(0);
             return;
@@ -483,7 +481,7 @@ public class StockBizImp implements IStockBiz {
                     return;
                 } else {
                     Optional<Stock> stockOptional = getStock(dependency, DAY, null, true);
-                    Integer availableQuantity = !stockOptional.isPresent() || !stockOptional.get().getOnline() ? 0 : stockOptional.get().getAvailableQuantity();
+                    Integer availableQuantity = !stockOptional.isPresent() || !stockOptional.get().isOnline() ? 0 : stockOptional.get().getAvailableQuantity();
                     availableStocks.put(dependency, new HashMap<Integer, Integer>() {{
                         put(availableQuantity, 1);
                     }});
@@ -500,24 +498,4 @@ public class StockBizImp implements IStockBiz {
             stock.setAvailableQuantity(Integer.min(stock.getAvailableQuantity(), min));
         }
     }
-
-    /**
-     * 检查库存信息是否存在
-     *
-     * @param stock 库存信息
-     *              return true：存在，false：不存在
-     */
-    private boolean isExist(Stock stock) {
-        Long id = stock.getId();
-        if (null != id && 0 < id) {
-            return null != stockDao.getEntityById(Stock.class, id);
-        }
-
-        Map fieldNameValueMap = new HashMap<String, Object>(3);
-        fieldNameValueMap.put("inventoryType", stock.getInventoryType());
-        fieldNameValueMap.put("inventoryTypeId", stock.getInventoryTypeId());
-        fieldNameValueMap.put("day", stock.getDay());
-        return 0 < stockDao.getEntityTotalCount(Stock.class, fieldNameValueMap);
-    }
-
 }
