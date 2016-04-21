@@ -65,7 +65,7 @@ public interface IAgreementProductPriceBiz {
      */
     DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike);
 
-    boolean isAgreementProductPriceExist(Long agreeId,Long productId,Date date);
+    boolean isAgreementProductPriceExist(Long agreeId,Long productId,Date date,String type);
 
 
 }

@@ -52,11 +52,12 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     }
 
     @Override
-    public boolean isAgreementProductPriceExist(Long agreeId, Long productId, Date date) {
+    public boolean isAgreementProductPriceExist(Long agreeId, Long productId, Date date,String type) {
         Map<String, Object> condition = new HashMap<>();
         condition.put("productId", productId);
         condition.put("agreeId", agreeId);
         condition.put("date", date);
+        condition.put("type",type);
         DomainPage<AgreementProductPrice> domainPage = queryAgreementProductPricePageByCondition(condition, "id", IBaseDao.SortBy.DESC, 1, 10, false);
         if (domainPage.getDomains().isEmpty() || domainPage.getDomains().size() == 0) {
             return false;
