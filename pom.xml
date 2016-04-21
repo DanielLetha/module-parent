@@ -16,7 +16,7 @@
         <module>transport</module>
         <module>resources</module>
         <module>order</module>
-        <!--<module>sale</module>-->
+        <module>sale</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
