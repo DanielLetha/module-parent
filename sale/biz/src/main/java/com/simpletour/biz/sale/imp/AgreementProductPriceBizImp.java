@@ -4,15 +4,14 @@ import com.simpletour.biz.sale.IAgreementProductPriceBiz;
 import com.simpletour.biz.sale.error.AgreementProductPriceBizError;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
+import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.dao.sale.IAgreementDao;
 import com.simpletour.dao.sale.IAgreementProductPriceDao;
 import com.simpletour.domain.sale.AgreementProductPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,14 +51,16 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     }
 
     @Override
-    public boolean isAgreementProductPriceExist(Long agreeId, Long productId, Date date,String type) {
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("productId", productId);
-        condition.put("agreeId", agreeId);
-        condition.put("date", date);
-        condition.put("type",type);
-        DomainPage<AgreementProductPrice> domainPage = queryAgreementProductPricePageByCondition(condition, "id", IBaseDao.SortBy.DESC, 1, 10, false);
-        if (domainPage.getDomains().isEmpty() || domainPage.getDomains().size() == 0) {
+    public boolean isAgreementProductPriceExist(Long agreementId, Long productId, Date date, String type) {
+        ConditionOrderByQuery conditionOrderByQuery = new ConditionOrderByQuery();
+        AndConditionSet condition = new AndConditionSet();
+        condition.addCondition("productId", productId);
+        condition.addCondition("agreementId", agreementId);
+        condition.addCondition("date", date);
+        condition.addCondition("type", type);
+        conditionOrderByQuery.setCondition(condition);
+        List<AgreementProductPrice> agreementProductPriceList = getAgreementProductList(conditionOrderByQuery);
+        if (agreementProductPriceList.isEmpty() || agreementProductPriceList.size() == 0) {
             return false;
         }
         return true;
