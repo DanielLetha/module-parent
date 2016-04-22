@@ -14,5 +14,5 @@ public interface IItemBiz {
      * @param item 订单项实体
      * @return 订单项实体
      */
-    Optional<Item> addItem(Item item);
+    Item validateItem(Item item);
 }

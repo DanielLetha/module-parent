@@ -12,11 +12,13 @@
     <artifactId>product-biz</artifactId>
 
     <dependencies>
+        <!--self-->
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>product-dao</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <!--module-->
         <dependency>
             <groupId>com.simpletour.module</groupId>
             <artifactId>inventory-biz</artifactId>
@@ -31,6 +33,16 @@
             <groupId>com.simpletour.module</groupId>
             <artifactId>resources-dao</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>transport-dao</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>order-dao</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.simpletour.commons</groupId>
