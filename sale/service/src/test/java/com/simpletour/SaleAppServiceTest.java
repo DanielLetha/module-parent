@@ -147,7 +147,7 @@ public class SaleAppServiceTest extends AbstractTransactionalTestNGSpringContext
      */
     @Test(priority = 8)
     public void querySaleApp() {
-        DomainPage<SaleApp> saleAppDomainPage =   saleAppService.querySaleAppsPagesByConditions(null,"id", IBaseDao.SortBy.ASC,1,10,true);
+        DomainPage<SaleApp> saleAppDomainPage =   saleAppService.querySaleAppPagesByConditions(null,"id", IBaseDao.SortBy.ASC,1,10,true);
         Assert.assertTrue(saleAppDomainPage.getDomains().size()>0);
     }
 
@@ -165,7 +165,7 @@ public class SaleAppServiceTest extends AbstractTransactionalTestNGSpringContext
 
     @AfterTest
     public void clearData() {
-        DomainPage<SaleApp> saleAppDomainPage = saleAppService.querySaleAppsPagesByConditions(null, "id", IBaseDao.SortBy.ASC, 1, 10, false);
+        DomainPage<SaleApp> saleAppDomainPage = saleAppService.querySaleAppPagesByConditions(null, "id", IBaseDao.SortBy.ASC, 1, 10, false);
         for (SaleApp saleApp : saleAppDomainPage.getDomains()) {
             saleAppDao.remove(saleApp);
 

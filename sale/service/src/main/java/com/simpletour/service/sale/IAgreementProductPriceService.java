@@ -6,6 +6,7 @@ import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.sale.AgreementProductPrice;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -44,6 +45,13 @@ public interface IAgreementProductPriceService {
      * @return
      */
     DomainPage<AgreementProductPrice> queryAgreementProductPrice(ConditionOrderByQuery query);
+
+    /**
+     * 根据条件获取销售协议价格的list
+     * @param query
+     * @return
+     */
+    List<AgreementProductPrice> getAgreementProductPriceList(ConditionOrderByQuery query);
 
     /**
      * 分页查询销售协议价格

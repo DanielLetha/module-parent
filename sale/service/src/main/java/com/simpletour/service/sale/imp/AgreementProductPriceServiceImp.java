@@ -74,6 +74,11 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
         return Optional.ofNullable(agreementProductPriceBiz.findAgreementProductPriceById(id));
     }
 
+    @Override
+    public List<AgreementProductPrice> getAgreementProductPriceList(ConditionOrderByQuery query) {
+        return agreementProductPriceBiz.getAgreementProductPriceList(query);
+    }
+
     private void checkNull(AgreementProductPrice agreementProductPrice) {
         if (agreementProductPrice == null)
             throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_NULL);
