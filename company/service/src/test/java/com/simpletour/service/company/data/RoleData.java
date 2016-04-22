@@ -122,7 +122,7 @@ public class RoleData {
     public void cleanUpAllData(Long roleId) {
         jdbcTemplate.execute("DELETE FROM SYS_R_ROLE_PERMISSION WHERE rid = " + roleId);
         jdbcTemplate.execute("DELETE FROM SYS_ROLE WHERE id = " + roleId);
-        jdbcTemplate.execute("DELETE FROM SYS_R_COMPANY_PERMISSION WHERE cid = 10000 OR cid = 10001");
+        jdbcTemplate.execute("DELETE FROM SYS_R_COMPANY_PERMISSION WHERE cid = 1 OR cid = 10000 OR cid = 10001");
 
         modulesList.forEach(module -> {
             Long id = module.getId();
