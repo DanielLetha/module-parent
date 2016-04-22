@@ -307,8 +307,7 @@ public class AgreementServiceTest extends AbstractTransactionalTestNGSpringConte
     public void testUpdateStatus() {
         Agreement original = (Agreement) agreementData.getDomains().get(0);
         Boolean enabled = original.isEnabled();
-        original.setEnabled(!original.isEnabled());
-        Optional<Agreement> agreement = agreementService.updateStatus(original);
+        Optional<Agreement> agreement = agreementService.updateStatus(original.getId(), !original.isEnabled());
         Assert.assertTrue(agreement.isPresent());
         Assert.assertFalse(enabled.equals(agreement.get().isEnabled()));
     }
@@ -324,7 +323,7 @@ public class AgreementServiceTest extends AbstractTransactionalTestNGSpringConte
     @Test(priority = 16)
     public void testUpdateStatusWithNullAgreement() {
         try {
-            agreementService.updateStatus(null);
+            agreementService.updateStatus(null, Boolean.TRUE);
             Assert.fail();
         } catch (BaseSystemException e) {
             Assert.assertEquals(e.getMessage(), AgreementServiceError.AGREEMENT_EMPTY.getErrorMessage());
@@ -342,9 +341,7 @@ public class AgreementServiceTest extends AbstractTransactionalTestNGSpringConte
     @Test(priority = 17)
     public void testUpdateStatusWithNotExistedAgreement() {
         try {
-            Agreement agreement = new Agreement();
-            agreement.setId(Long.MAX_VALUE);
-            agreementService.updateStatus(agreement);
+            agreementService.updateStatus(Long.MAX_VALUE, Boolean.TRUE);
             Assert.fail();
         } catch (BaseSystemException e) {
             Assert.assertEquals(e.getMessage(), AgreementServiceError.AGREEMENT_NOT_EXIST.getErrorMessage());
@@ -363,14 +360,14 @@ public class AgreementServiceTest extends AbstractTransactionalTestNGSpringConte
     public void testUpdateAgreementWithRepeatStatus() {
         try {
             Agreement agreement1 = (Agreement) agreementData.getDomains().get(0);
-            agreementService.updateStatus(agreement1);
+            agreementService.updateStatus(agreement1.getId(), agreement1.isEnabled());
             Assert.fail();
         } catch (BaseSystemException e) {
             Assert.assertEquals(e.getMessage(), AgreementServiceError.AGREEMENT_STATUS_ENABLED.getErrorMessage());
         }
         try {
             Agreement agreement2 = (Agreement) agreementData.getDomains().get(1);
-            agreementService.updateStatus(agreement2);
+            agreementService.updateStatus(agreement2.getId(), agreement2.isEnabled());
             Assert.fail();
         } catch (BaseSystemException e) {
             Assert.assertEquals(e.getMessage(), AgreementServiceError.AGREEMENT_STATUS_DISABLED.getErrorMessage());
