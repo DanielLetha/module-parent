@@ -15,19 +15,18 @@ import java.util.Date;
  * @Remark: ${Remark}
  */
 @Entity
-@Table(name="sale_agree_product_price")
-public class AgreementProductPrice  extends BaseDomain {
+@Table(name = "sale_agree_product_price")
+public class AgreementProductPrice extends BaseDomain {
 
 
-    public enum Type{
-        CHILD("child","儿童"),
-        ADULT("adult","成人")
-        ;
-        private String remark,value;
+    public enum Type {
+        CHILD("child", "儿童"),
+        ADULT("adult", "成人");
+        private String value,remark;
 
-        Type(String remark, String value) {
-            this.remark = remark;
+        Type(String value, String remark) {
             this.value = value;
+            this.remark = remark;
         }
 
         public String getRemark() {
@@ -56,21 +55,15 @@ public class AgreementProductPrice  extends BaseDomain {
     private Long id;
 
     /**
-     * 协议
+     * 销售协议产品主键
      */
     @ManyToOne
-    @JoinColumn(name = "agreement_id")
-    private Agreement agreement;
-    /**
-     * 产品
-     */
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "agreement_product_id")
+    private AgreementProduct agreementProduct;
 
 
     /**
-     *类型
+     * 类型
      */
     @Column
     @Enumerated(EnumType.STRING)
@@ -119,9 +112,8 @@ public class AgreementProductPrice  extends BaseDomain {
     public AgreementProductPrice() {
     }
 
-    public AgreementProductPrice(Agreement agreement, Product product, Type type, Date date, Integer cost, Integer settlement, Integer retail, String remark, Integer version) {
-        this.agreement = agreement;
-        this.product = product;
+    public AgreementProductPrice(AgreementProduct agreementProduct, Product product, Type type, Date date, Integer cost, Integer settlement, Integer retail, String remark, Integer version) {
+        this.agreementProduct = agreementProduct;
         this.type = type;
         this.date = date;
         this.cost = cost;
@@ -139,20 +131,12 @@ public class AgreementProductPrice  extends BaseDomain {
         this.id = id;
     }
 
-    public Agreement getAgreement() {
-        return agreement;
+    public AgreementProduct getAgreementProduct() {
+        return agreementProduct;
     }
 
-    public void setAgreement(Agreement agreement) {
-        this.agreement = agreement;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setAgreementProduct(AgreementProduct agreementProduct) {
+        this.agreementProduct = agreementProduct;
     }
 
     public Type getType() {

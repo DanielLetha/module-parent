@@ -49,7 +49,13 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     @Override
     public Optional<AgreementProductPrice> updateAgreementProductPrice(AgreementProductPrice agreementProductPrice) throws BaseSystemException {
         checkNull(agreementProductPrice);
-        List<AgreementProductPrice> list = getAgreementProductPriceList(agreementProductPrice.getAgreement().getId(), agreementProductPrice.getProduct().getId(), agreementProductPrice.getDate(), agreementProductPrice.getType().name());
+        ConditionOrderByQuery query = new ConditionOrderByQuery();
+        AndConditionSet andConditionSet = new AndConditionSet();
+        andConditionSet.addCondition("agreementProductId",agreementProductPrice.getAgreementProduct().getId());
+        andConditionSet.addCondition("date",agreementProductPrice.getDate());
+        andConditionSet.addCondition("type",agreementProductPrice.getType().name());
+        query.setCondition(andConditionSet);
+        List<AgreementProductPrice> list = getAgreementProductPriceList(query);
         if (list.size() > 0 && !list.get(0).getId().equals(agreementProductPrice.getId())) {
             throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_MUST_ONLY);
         }
@@ -85,7 +91,7 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     }
 
     private void checkExist(AgreementProductPrice agreementProductPrice) {
-        boolean bool = agreementProductPriceBiz.isExisted(agreementProductPrice.getAgreement().getId(), agreementProductPrice.getProduct().getId(), agreementProductPrice.getDate(), agreementProductPrice.getType().name());
+        boolean bool = agreementProductPriceBiz.isExisted(agreementProductPrice.getAgreementProduct().getId(), agreementProductPrice.getDate(), agreementProductPrice.getType().name());
         if (bool)
             throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_EXIST);
     }
@@ -101,16 +107,6 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     }
 
 
-    private List<AgreementProductPrice> getAgreementProductPriceList(Long agreementId, Long productId, Date date, String type) {
-        ConditionOrderByQuery conditionOrderByQuery = new ConditionOrderByQuery();
-        AndConditionSet condition = new AndConditionSet();
-        condition.addCondition("productId", productId);
-        condition.addCondition("agreementId", agreementId);
-        condition.addCondition("date", date);
-        condition.addCondition("type", type);
-        conditionOrderByQuery.setCondition(condition);
-        return agreementProductPriceBiz.getAgreementProductPriceList(conditionOrderByQuery);
-    }
 
 
 }

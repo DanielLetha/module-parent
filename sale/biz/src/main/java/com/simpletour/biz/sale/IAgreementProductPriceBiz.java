@@ -69,13 +69,12 @@ public interface IAgreementProductPriceBiz {
 
     /**
      * 依据协议id,产品id,日期以及类型判断销售协议产品价格是否存在
-     * @param agreementId
-     * @param productId
+     * @param agreementProductId
      * @param date
      * @param type
      * @return
      */
-    boolean isExisted(Long agreementId,Long productId,Date date,String type);
+    boolean isExisted(Long agreementProductId,Date date,String type);
 
 
 }
