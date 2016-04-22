@@ -13,7 +13,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -56,9 +59,9 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
 
         PERMISSION_FIELDS_LIST.add("id as permission_id");
         //PERMISSION_FIELDS_LIST.add("createdtime as permission_createdtime");
-        PERMISSION_FIELDS_LIST.add("code as permission_code");
+        //PERMISSION_FIELDS_LIST.add("code as permission_code");
         PERMISSION_FIELDS_LIST.add("name as permission_name");
-        PERMISSION_FIELDS_LIST.add("path as permission_path");
+        //PERMISSION_FIELDS_LIST.add("path as permission_path");
 //        PERMISSION_FIELDS_LIST.add("version as permission_version");
         PERMISSION_FIELDS_LIST.add("module_id as permission_module_id");
 //        PERMISSION_FIELDS_LIST.add("del as permission_del");
@@ -68,7 +71,7 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
 
         MODULE_FIELDS_LIST.add("id as module_id");
         //MODULE_FIELDS_LIST.add("createdtime as module_createdtime");
-        MODULE_FIELDS_LIST.add("domain as module_domain");
+        //MODULE_FIELDS_LIST.add("domain as module_domain");
         MODULE_FIELDS_LIST.add("name as module_name");
 //        MODULE_FIELDS_LIST.add("version as module_version");
 //        MODULE_FIELDS_LIST.add("del as module_del");
@@ -133,7 +136,10 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
 
         String orderBy = query.getOrderByFiledName();
         if (null != orderBy && !orderBy.isEmpty()) {
-            orderBy = " ORDER BY " + orderBy;
+            if ("id".equals(orderBy)) {
+                orderBy = "role_id";
+            }
+            orderBy = " ORDER BY " + orderBy + " DESC";
         }
 
         sb.delete(0, sb.length());
@@ -166,14 +172,14 @@ public class RoleDaoImp extends DependencyHandleDAO implements IRoleDao {
 
             Permission permission = new Permission();
             permission.setId(Long.valueOf(fields[4].toString()));
-            permission.setCode(fields[5].toString());
-            permission.setName(fields[6].toString());
-            permission.setPath(fields[7].toString());
+            //permission.setCode(fields[5].toString());
+            permission.setName(fields[5].toString());
+            //permission.setPath(fields[7].toString());
 
             Module module = new Module();
-            module.setId(Long.valueOf(fields[8].toString()));
-            module.setDomain(fields[10].toString());
-            module.setName(fields[11].toString());
+            module.setId(Long.valueOf(fields[6].toString()));
+            //module.setDomain(fields[10].toString());
+            module.setName(fields[8].toString());
 
             permission.setModule(module);
             permissionsList.add(permission);

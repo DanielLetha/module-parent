@@ -6,6 +6,7 @@ import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.error.DefaultError;
 import com.simpletour.commons.data.error.IError;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.commons.data.util.ThreadLocalUtil;
 import com.simpletour.dao.company.query.RoleQuery;
 import com.simpletour.domain.company.Company;
 import com.simpletour.domain.company.Module;
@@ -61,11 +62,14 @@ public class RoleBizTest extends AbstractTestNGSpringContextTests {
     public void beforeClass() {
         System.out.println("enter RoleBizTest beforeClass");
 
+        ThreadLocalUtil.setTenantId(1L);
+
         companiesList = new ArrayList<>();
         modulesList = new ArrayList<>();
         rolesList = new ArrayList<>();
 
         roleData = new RoleData(companyBiz, moduleBiz, jdbcTemplate, companiesList, modulesList);
+        roleData.generateCompanies(1L, "简途旅行", "成都天府软件园C区", "杨老板", "13987654321");
         roleData.generateCompanies(10000L, "成都简途", "成都天府软件园C区", "杨老板", "13353329876");
         roleData.generateCompanies(10001L, "成都放贷", "成都天府广场锦江区", "张哥", "13353398765");
         roleData.generateModulesAndPermissions();
@@ -240,27 +244,30 @@ public class RoleBizTest extends AbstractTestNGSpringContextTests {
     public void deleteRoles() {
         System.out.println("enter RoleBizTest deleteRoles");
 
-        Role role = new Role("临时角色", 0, null, "非真实存在", null);
-        role.setId(10099213L);
-        rolesList.add(role);
+        if (deleteAll) {
 
-        rolesList.forEach(item -> {
-            try {
-                roleBiz.deleteRoleById(item.getId());
-                System.out.println("excute RoleBizTest.deleteRoles successfully");
-            } catch (BaseSystemException bse) {
-                IError error = bse.getError();
-                System.err.println(bse.getMessage());
-                if (RoleBizError.INVALID_TENANT_ID.equals(error) || RoleBizError.INVALID_COMPANY.equals(error) ||
-                    RoleBizError.DELETE_FAILD.equals(error) || DefaultError.NOT_SAME_TENANT_ID.equals(error)) {
-                    System.out.println("catch an error: " + error.getErrorCode());
-                } else {
-                    System.err.println("cause: " + item.getRemark());
-                    bse.printStackTrace();
-                    Assert.fail("excute RoleBizTest.deleteRoles failed");
+            Role role = new Role("临时角色", 0, null, "非真实存在", null);
+            role.setId(10099213L);
+            rolesList.add(role);
+
+            rolesList.forEach(item -> {
+                try {
+                    roleBiz.deleteRoleById(item.getId());
+                    System.out.println("excute RoleBizTest.deleteRoles successfully");
+                } catch (BaseSystemException bse) {
+                    IError error = bse.getError();
+                    System.err.println(bse.getMessage());
+                    if (RoleBizError.INVALID_TENANT_ID.equals(error) || RoleBizError.INVALID_COMPANY.equals(error) ||
+                            RoleBizError.DELETE_FAILD.equals(error) || DefaultError.NOT_SAME_TENANT_ID.equals(error)) {
+                        System.out.println("catch an error: " + error.getErrorCode());
+                    } else {
+                        System.err.println("cause: " + item.getRemark());
+                        bse.printStackTrace();
+                        Assert.fail("excute RoleBizTest.deleteRoles failed");
+                    }
                 }
-            }
-        });
+            });
+        }
 
         rolesList.clear();
 
