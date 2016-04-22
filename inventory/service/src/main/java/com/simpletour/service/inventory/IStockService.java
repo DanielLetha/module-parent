@@ -78,7 +78,7 @@ public interface IStockService {
      *
      * return void
      */
-    void deleteStock(Long id) throws BaseSystemException;
+    //void deleteStock(Long id) throws BaseSystemException;
 
     /**
      * 功能：根据ID来批量删除库存信息
@@ -91,7 +91,7 @@ public interface IStockService {
      *
      * return void
      */
-    void deleteStocks(List<Long> ids);
+    //void deleteStocks(List<Long> ids);
 
 //    /**
 //     * 功能：根据库存ID获取库存记录

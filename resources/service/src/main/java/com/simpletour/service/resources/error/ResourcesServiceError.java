@@ -26,6 +26,8 @@ public enum ResourcesServiceError implements IError {
     PROCUREMENT_RESOURCE_NOT_EXIST("0014", "元素所对应的资源不存在"),
     PROCUREMENT_NOT_EXIST("0015", "元素不存在"),
     PROCUREMENT_OSP_NOT_EXIST("0016", "供应商不存在"),
+
+    EMPTY_PROCUREMENT_STOCK_PARAMS("0020", "元素库存参数为空"),
     ;
 
     String errorCode;

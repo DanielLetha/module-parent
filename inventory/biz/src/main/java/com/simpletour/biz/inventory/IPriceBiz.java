@@ -17,13 +17,13 @@ public interface IPriceBiz {
      * 功能：检查库存价格信息是否存在
      * 作者：石广路
      * 新增：2016-4-20
-     * 备注：检查同种类型的库存价格信息在相同日期上的记录是否已存在，如果库存价格信息无效则抛出BaseSystemException
+     * 备注：检查同种类型的库存价格信息在相同的日期上是否已存在，如果库存价格信息无效则抛出BaseSystemException
      *
      * @param price 库存价格实体
      *
      * return true - 存在，false - 不存在
      */
-    //boolean isExisting(Price price) throws BaseSystemException;
+    boolean isExisted(Price price) throws BaseSystemException;
 
     /**
      * 功能：添加库存价格信息
@@ -51,19 +51,19 @@ public interface IPriceBiz {
      */
     Optional<Price> updatePrice(Price price) throws BaseSystemException;
 
-    /**
-     * 功能：删除库存价格信息
-     * 作者：石广路
-     * 新增：2016-4-21
-     * 修改：null
-     * 备注：如果删除失败则抛出BaseSystemException异常
-     *
-     * @param id     主键ID
-     *
-     * return void
-     */
-    //void deletePrice(Long id) throws BaseSystemException;
-    void deletePrice(Price price);
+//    /**
+//     * 功能：删除库存价格信息
+//     * 作者：石广路
+//     * 新增：2016-4-21
+//     * 修改：null
+//     * 备注：如果删除失败则抛出BaseSystemException异常
+//     *
+//     * @param id     主键ID
+//     *
+//     * return void
+//     */
+//    //void deletePrice(Long id) throws BaseSystemException;
+//    void deletePrice(Price price);
 
     /**
      * 功能：批量删除库存价格信息

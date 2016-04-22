@@ -37,19 +37,19 @@ public interface ISoldEntryBiz {
      */
     Optional<SoldEntry> updateSoldEntry(SoldEntry soldEntry) throws BaseSystemException;
 
-    /**
-     * 功能：删除库存销售记录信息
-     * 作者：石广路
-     * 新增：2016-4-21
-     * 修改：null
-     * 备注：如果删除失败则抛出BaseSystemException异常
-     *
-     * @param id     主键ID
-     *
-     * return void
-     */
-    //void deleteSoldEntry(Long id) throws BaseSystemException;
-    void deleteSoldEntry(SoldEntry soldEntry);
+//    /**
+//     * 功能：删除库存销售记录信息
+//     * 作者：石广路
+//     * 新增：2016-4-21
+//     * 修改：null
+//     * 备注：如果删除失败则抛出BaseSystemException异常
+//     *
+//     * @param id     主键ID
+//     *
+//     * return void
+//     */
+//    //void deleteSoldEntry(Long id) throws BaseSystemException;
+//    void deleteSoldEntry(SoldEntry soldEntry);
 
     /**
      * 功能：批量删除库存销售记录信息

@@ -2,9 +2,7 @@ package com.simpletour.biz.inventory;
 
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.domain.inventory.Price;
-import com.simpletour.domain.inventory.SoldEntry;
-import com.simpletour.domain.inventory.Stock;
+import com.simpletour.domain.inventory.*;
 import com.simpletour.domain.inventory.query.*;
 
 import java.math.BigDecimal;
@@ -21,6 +19,20 @@ import java.util.Optional;
  * @since 2.0-SNAPSHOT
  */
 public interface IStockQueryBiz {
+    /**
+     * 功能：检查库存必填字段有效性
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 备注：null
+     *
+     * @param inventoryType     库存元素类型
+     * @param inventoryId       库存元素ID
+     * @param day               库存日期
+     *
+     * return 库存实体
+     */
+    //void validateStockParam(InventoryType inventoryType, Long inventoryId, Date day) throws BaseSystemException;
+
     /////////////////////////////////////////////////////////////////////////////////////////////
     // 库存信息相关查询接口
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +46,7 @@ public interface IStockQueryBiz {
      *
      * return 库存实体
      */
-    Optional<Stock> getStockById(Long id);
+    //Optional<Stock> getStockById(Long id);
 
     /**
      * 功能：根据指定的库存类型和库存主体ID来获取某一天的库存依托对象及其自身的库存依赖
@@ -65,16 +77,16 @@ public interface IStockQueryBiz {
     //List<StockKey> getStockDependencies(StockKey stockKey, Date day);
 
     /**
-     * 功能：检查库存实体是否已存在
+     * 功能：检查库存实体及对应的库存价格信息是否已存在
      * 作者：石广路
      * 新增：2016-4-20
-     * 备注：仅对库存实体的存在性做检查，如果库存的基本信息无效则抛出BaseSystemException
+     * 备注：库存实体及对应的库存价格信息必须要同时存在才会返回true，如果库存的基本信息无效则抛出BaseSystemException
      *
-     * @param stock     库存实体
+     * @param stockBound    库存基本信息
      *
      * return true - 存在，false - 不存在
      */
-    boolean stockIsExisted(Stock stock) throws BaseSystemException;
+    //boolean isExisted(StockBound stockBound) throws BaseSystemException;
 
     /**
      * 功能：检查指定的库存元素在某一天上是否有库存
@@ -87,7 +99,23 @@ public interface IStockQueryBiz {
      *
      * return true：库存元素存在，false：库存元素不存在
      */
-    boolean hasOnlineStock(StockKey stockKey, Date day);
+    //boolean hasOnlineStock(StockKey stockKey, Date day);
+
+
+    /**
+     * 功能：根据库存组合键来查找某一天上特定类型的库存价格信息
+     * 作者：石广路
+     * 新增：2016-4-22
+     * 备注：库存价格信息列表通常包含了成人和儿童的库存价格信息，如果指定了库存价格类型，则只查询单个类型的库存价格信息，否则，进行不分区类型查找
+     *
+     * @param stockKey  库存联合主键
+     * @param day       库存日期
+     * @param type      库存价格类型，null - 不区分库存价格类型，其他值则表示是成人价还是儿童价
+     *
+     * return 库存价格信息列表
+     */
+    List<Price> getPrices(StockKey stockKey, Date day, Price.Type type);
+
 
     /**
      * 功能：根据库存关联关系（如依托的具体库存对象）来查询指定时间段内的库存及其关联的库存销售记录
@@ -113,6 +141,21 @@ public interface IStockQueryBiz {
      * return 库存最低或最高价格
      */
     BigDecimal getStocksPriceInTimeframe(StockQuery stockQuery, boolean isLowest) throws BaseSystemException;
+
+    /**
+     * 功能：根据库存组合键来查找某一天上特定状态的库存信息
+     * 作者：石广路
+     * 新增：2016-4-22
+     * 备注：如果查询字段为空，则不使用该字段进行过滤
+     *
+     * @param stockKey      库存联合主键
+     * @param day           库存日期
+     * @param online        库存上线状态，true - 获取上线的库存，false - 获取下线的库存，null - 获取所有的库存
+     * @param calcQuantity  是否计算可售库存以及已售库存的数量的标志，true - 计算，false - 不计算
+     *
+     * return 库存实体
+     */
+    Optional<Stock> getStock(StockKey stockKey, Date day, Boolean online, boolean calcQuantity) throws BaseSystemException;
 
     /**
      * 功能：根据库存依托对象的组合键字段参数来查找某一天且指定在线状态的库存
@@ -169,7 +212,7 @@ public interface IStockQueryBiz {
      *
      * return true - 存在，false - 不存在
      */
-    boolean priceIsExisting(Price price) throws BaseSystemException;
+    //boolean priceIsExisting(Price price) throws BaseSystemException;
 
     /**
      * 功能：根据ID获取库存价格信息

@@ -6,10 +6,7 @@ import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.inventory.ISoldEntryDao;
 import com.simpletour.dao.inventory.IStockDao;
-import com.simpletour.domain.inventory.InventoryType;
-import com.simpletour.domain.inventory.Price;
-import com.simpletour.domain.inventory.SoldEntry;
-import com.simpletour.domain.inventory.Stock;
+import com.simpletour.domain.inventory.*;
 import com.simpletour.domain.inventory.query.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,25 +34,41 @@ public class StockQueryBizImp implements IStockQueryBiz {
     @Autowired
     private ISoldEntryDao soldEntryDao;
 
-    @Override
-    public Optional<Stock> getStockById(Long id) throws BaseSystemException {
-        if (null == id || 0 >= id) {
-            throw new BaseSystemException(InventoryBizError.INVALID_ID);
-        }
-        return Optional.ofNullable(stockDao.getEntityById(Stock.class, id));
-    }
+//    @Override
+//    public Optional<Stock> getStockById(Long id) throws BaseSystemException {
+//        if (null == id || 0 >= id) {
+//            throw new BaseSystemException(InventoryBizError.INVALID_ID);
+//        }
+//        return Optional.ofNullable(stockDao.getEntityById(Stock.class, id));
+//    }
 
-    @Override
-    public boolean stockIsExisted(Stock stock) throws BaseSystemException {
-        StockParamsValidater.validateBoundParams(stock);
+//    @Override
+//    public void validateStockParam(InventoryType inventoryType, Long inventoryId, Date day) throws BaseSystemException {
+//        StockParamsValidater.validateBoundParams(inventoryType, inventoryId, day);
+//    }
 
-        Long id = stock.getId();
-        if (null != id && 0 < id) {
-            return null != stockDao.getEntityById(Stock.class, id);
-        }
-
-        return hasOnlineStock(new StockKey(stock.getInventoryType(), stock.getInventoryId()), stock.getDay());
-    }
+//    @Override
+//    public boolean isExisted(StockBound stockBound) throws BaseSystemException {
+//        StockParamsValidater.validateBoundParams(stockBound);
+//
+//        Class<? extends StockBound> clazz = stockBound instanceof Stock ? Stock.class : Price.class;
+//
+//        Long id = stockBound.getId();
+//        if (null != id && 0 < id) {
+//            return null != stockDao.getEntityById(clazz, id);
+//        }
+//
+//        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
+//        fieldNameValueMap.put("inventoryType", stockBound.getInventoryType());
+//        fieldNameValueMap.put("inventoryId", stockBound.getInventoryId());
+//        fieldNameValueMap.put("day", stockBound.getDay());
+//
+//        if (Stock.class == clazz) {
+//            fieldNameValueMap.put("online", true);
+//        }
+//
+//        return 0 < stockDao.getEntityTotalCount(clazz, fieldNameValueMap);
+//    }
 
 //    @Override
 //    public BaseDomain getStockWithDependencies(StockKey stockKey, Date day) throws BaseSystemException {
@@ -81,28 +94,28 @@ public class StockQueryBizImp implements IStockQueryBiz {
 //        return dependencies;
 //    }
 
-    @Override
-    public boolean hasOnlineStock(StockKey stockKey, Date day) {
-        if (null == stockKey) {
-            return false;
-        }
-
-        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
-        fieldNameValueMap.put("online", true);
-        fieldNameValueMap.put("inventoryType", stockKey.getInventoryType());
-        fieldNameValueMap.put("inventoryId", stockKey.getInventoryId());
-
-        if (null != day) {
-            Date date = (Date)day.clone();
-            int offset = stockKey.getOffset();
-            if (0 < offset) {
-                date = Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
-            }
-            fieldNameValueMap.put("day", date);
-        }
-
-        return 0 < stockDao.getEntityTotalCount(Stock.class, fieldNameValueMap);
-    }
+//    @Override
+//    public boolean hasOnlineStock(StockKey stockKey, Date day) {
+//        if (null == stockKey) {
+//            return false;
+//        }
+//
+//        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
+//        fieldNameValueMap.put("inventoryType", stockKey.getInventoryType());
+//        fieldNameValueMap.put("inventoryId", stockKey.getInventoryId());
+//        fieldNameValueMap.put("online", true);
+//
+//        if (null != day) {
+//            Date date = (Date)day.clone();
+//            int offset = stockKey.getOffset();
+//            if (0 < offset) {
+//                date = Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
+//            }
+//            fieldNameValueMap.put("day", date);
+//        }
+//
+//        return 0 < stockDao.getEntityTotalCount(Stock.class, fieldNameValueMap);
+//    }
 
 //    @Override
 //    public DomainPage getStocksPagesByConditions(final StockKey stockKey, final Date startDate, final Date endDate, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize) {
@@ -123,6 +136,32 @@ public class StockQueryBizImp implements IStockQueryBiz {
 //    }
 
     @Override
+    public List<Price> getPrices(StockKey stockKey, Date day, Price.Type type) {
+        if (null == stockKey) {
+            return Collections.emptyList();
+        }
+
+        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
+        fieldNameValueMap.put("inventoryType", stockKey.getInventoryType());
+        fieldNameValueMap.put("inventoryId", stockKey.getInventoryId());
+
+        if (null != type) {
+            fieldNameValueMap.put("type", type);
+        }
+
+        if (null != day) {
+            Date date = (Date)day.clone();
+            int offset = stockKey.getOffset();
+            if (0 < offset) {
+                date = Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
+            }
+            fieldNameValueMap.put("day", date);
+        }
+
+        return stockDao.getEntitiesByFieldList(Price.class, fieldNameValueMap);
+    }
+
+    @Override
     public DomainPage getStocksQuantitiesPagesByRelations(StockQuery stockQuery) throws BaseSystemException {
         DomainPage domainPage = stockDao.getStocksQuantitiesPagesByRelations(stockQuery);
         List<Stock> stocksList = domainPage.getDomains();
@@ -141,6 +180,24 @@ public class StockQueryBizImp implements IStockQueryBiz {
             throw new BaseSystemException(InventoryBizError.GET_STOCK_PRICE_FAILED);
         }
         return (BigDecimal) optional.get();
+    }
+
+    @Override
+    public Optional<Stock> getStock(StockKey stockKey, Date day, Boolean online, boolean calcQuantity) throws BaseSystemException {
+        Optional<Stock> stockOptional = stockDao.getStockByConditions(stockKey, day, online);
+        if (stockOptional.isPresent() && calcQuantity) {
+            Stock stock = stockOptional.get();
+            int soldQuantity = soldEntryDao.getSoldQuantity(stockKey, day, true);
+            int availableQuantity = stock.getQuantity() - soldQuantity;
+            if (0 > availableQuantity) {
+                availableQuantity = 0;
+            }
+
+            stock.setAvailableQuantity(availableQuantity);
+            stock.setSoldQuantity(soldQuantity);
+        }
+
+        return stockOptional;
     }
 
     @Override
@@ -242,23 +299,23 @@ public class StockQueryBizImp implements IStockQueryBiz {
         //logger.info("exit checkDemandQuantity.");
     }
 
-    @Override
-    public boolean priceIsExisting(Price price) throws BaseSystemException {
-        StockParamsValidater.validateBoundParams(price);
-
-        Long id = price.getId();
-        if (null != id && 0 < id) {
-            return null != stockDao.getEntityById(Price.class, id);
-        }
-
-        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
-        fieldNameValueMap.put("inventoryType", price.getInventoryType());
-        fieldNameValueMap.put("inventoryId", price.getInventoryId());
-        fieldNameValueMap.put("day", price.getDay());
-        fieldNameValueMap.put("type", price.getType());
-
-        return 0 < stockDao.getEntityTotalCount(Price.class, fieldNameValueMap);
-    }
+//    @Override
+//    public boolean priceIsExisting(Price price) throws BaseSystemException {
+//        StockParamsValidater.validateBoundParams(price);
+//
+//        Long id = price.getId();
+//        if (null != id && 0 < id) {
+//            return null != stockDao.getEntityById(Price.class, id);
+//        }
+//
+//        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
+//        fieldNameValueMap.put("inventoryType", price.getInventoryType());
+//        fieldNameValueMap.put("inventoryId", price.getInventoryId());
+//        fieldNameValueMap.put("day", price.getDay());
+//        fieldNameValueMap.put("type", price.getType());
+//
+//        return 0 < stockDao.getEntityTotalCount(Price.class, fieldNameValueMap);
+//    }
 
     @Override
     public Optional<Price> getPriceById(Long id) {
@@ -278,7 +335,7 @@ public class StockQueryBizImp implements IStockQueryBiz {
 
     @Override
     public List<SoldEntry> getSoldEntriesByUnionKeys(SoldEntryKey soldEntryKey) {
-        return soldEntryDao.getSoldEntriesByUnionKeys(soldEntryKey);
+        return soldEntryDao.getSoldEntriesByUnionKeys(soldEntryKey, null);
     }
 
     @Override
@@ -293,10 +350,11 @@ public class StockQueryBizImp implements IStockQueryBiz {
 
         InventoryType inventoryType = soldEntryKey.getInventoryType();
         Long inventoryId = soldEntryKey.getInventoryId();
-        StockParamsValidater.validateStockParam(inventoryType, inventoryId, day);
+        StockParamsValidater.validateBoundParams(inventoryType, inventoryId, day);
 
         // 只查询有效状态的销售库存
-        return soldEntryDao.getSoldQuantity(inventoryType, inventoryId, day, true);
+        //return soldEntryDao.getSoldQuantity(inventoryType, inventoryId, day, true);
+        return soldEntryDao.getSoldQuantity(soldEntryKey, day, true);
     }
 
 
@@ -366,15 +424,15 @@ public class StockQueryBizImp implements IStockQueryBiz {
      * @param online              库存上线状态
      * @param calculateQuantities 计算已售库存和可售库存
      */
-    private Optional<Stock> getStock(final StockKey stockKey, final Date day, Boolean online, boolean calculateQuantities) throws BaseSystemException {
-        if (null != stockKey) {
-            StockParamsValidater.validateStockParam(stockKey.getInventoryType(), stockKey.getInventoryId(), day);
-            int offset = stockKey.getOffset();
-            Date date = 0 >= offset ? day : Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
-            return calculateQuantities ? stockDao.getStockQuantitiesListByConditions(stockKey, date, online) : stockDao.getStockByConditions(stockKey, date, online);
-        }
-        return Optional.empty();
-    }
+//    private Optional<Stock> getStock(StockKey stockKey, Date day, Boolean online, boolean calculateQuantities) throws BaseSystemException {
+//        if (null != stockKey) {
+//            StockParamsValidater.validateBoundParams(stockKey.getInventoryType(), stockKey.getInventoryId(), day);
+//            int offset = stockKey.getOffset();
+//            Date date = 0 >= offset ? day : Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
+//            return calculateQuantities ? stockDao.getStockQuantitiesListByConditions(stockKey, date, online) : stockDao.getStockByConditions(stockKey, date, online);
+//        }
+//        return Optional.empty();
+//    }
 
     /**
      * 根据库存组合字段来获取某个时间段内的指定在线状态的库存列表
@@ -387,7 +445,7 @@ public class StockQueryBizImp implements IStockQueryBiz {
     private List<Stock> getStocksList(IStockTraceable trace, Date startDate, Date endDate, Boolean online) throws BaseSystemException {
         StockKey stockKey = trace.getStockKey();
         if (null != stockKey) {
-            StockParamsValidater.validateStockParam(stockKey.getInventoryType(), stockKey.getInventoryId(), startDate, endDate);
+            StockParamsValidater.validateBoundParams(stockKey.getInventoryType(), stockKey.getInventoryId(), startDate, endDate);
             return stockDao.getStocksQuantitiesListByConditions(new StockQuery(stockKey, startDate, endDate, online));
         }
         return Collections.emptyList();

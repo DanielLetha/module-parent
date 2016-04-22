@@ -3,7 +3,7 @@ package com.simpletour.domain.inventory.query;
 import com.simpletour.domain.inventory.InventoryType;
 
 /**
- * 文件描述：库存所依赖字段的封装类
+ * 文件描述：库存组合键字段参数封装类
  * 创建人员：石广路
  * 创建日期：2015/11/30 15:27
  * 备注说明：null

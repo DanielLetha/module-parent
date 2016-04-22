@@ -137,26 +137,24 @@ public class StockDaoImp extends DependencyHandleDAO implements IStockDao {
     }
 
     @Override
-    public Optional<Stock> getStockByConditions(final StockKey stockKey, final Date day, final Boolean online) {
+    public Optional<Stock> getStockByConditions(StockKey stockKey, Date day, Boolean online) {
         StringBuilder sb = new StringBuilder("select c from ");
-        InventoryType inventoryType = stockKey.getInventoryType();
-        Long inventoryId = stockKey.getInventoryId();
-
-        sb.append(Stock.class.getName()).append(" c where c.row_table = ?1 and c.row_id = ?2 and c.day = ?3");
+        sb.append(Stock.class.getName()).append(" c where c.inventoryType = ?1 and c.inventoryId = ?2 and c.day = ?3");
 
         if (null != online) {
-            sb.append(" and c.online = ?4 ");
+            sb.append(" and c.online = ?4");
         }
 
         Query query = em.createQuery(sb.toString());
-        query.setParameter(1, inventoryType);
-        query.setParameter(2, inventoryId);
+        query.setParameter(1, stockKey.getInventoryType());
+        query.setParameter(2, stockKey.getInventoryId());
         query.setParameter(3, day);
-        query.setMaxResults(1);
 
         if (null != online) {
             query.setParameter(4, online);
         }
+
+        query.setMaxResults(1);
 
         Object stock;
         try {
@@ -165,7 +163,7 @@ public class StockDaoImp extends DependencyHandleDAO implements IStockDao {
             return Optional.empty();
         }
 
-        return null == stock ? Optional.empty() : Optional.ofNullable((Stock)stock);
+        return null == stock ? Optional.empty() : Optional.of((Stock)stock);
     }
 
 //    @Override
@@ -176,8 +174,12 @@ public class StockDaoImp extends DependencyHandleDAO implements IStockDao {
 //        return null == resultsList ? Collections.emptyList() : resultsList;
 //    }
 
+//    private Optional<Stock> getStockQuantitiesListByConditions(StockKey stockKey, Date day, Boolean online) {
+//
+//    }
+
     @Override
-    public Optional<Stock> getStockQuantitiesListByConditions(final StockKey stockKey, final Date day, final Boolean online) {
+    public Optional<Stock> getStockQuantitiesListByConditions(StockKey stockKey, Date day, Boolean online) {
         List<Stock> stocks = getStocksQuantitiesListByConditions(new StockQuery(stockKey, day, online));
         return stocks.isEmpty() ? Optional.empty() : Optional.ofNullable(stocks.get(0));
     }

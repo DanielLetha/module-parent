@@ -245,6 +245,7 @@ public class Procurement extends LogicalDeletableDomain implements IDependTracab
     @Override
     public List<Dependency> getDependencies() {
         Class clazz;
+
         if (ResourceType.hotel == resourceType) {
             clazz = Hotel.class;
         } else if (ResourceType.scenic == resourceType) {
@@ -256,9 +257,11 @@ public class Procurement extends LogicalDeletableDomain implements IDependTracab
         } else {
             return Collections.emptyList();
         }
+
         List<Dependency> dependencyList = new ArrayList<>(2);
         dependencyList.add(new Dependency(QueryUtil.getTableName(clazz), resourceId));
         dependencyList.add(new Dependency(osp.getEntityKey()));
+
         return dependencyList;
     }
 }

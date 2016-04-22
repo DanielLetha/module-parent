@@ -53,10 +53,10 @@ public class SoldEntryBizImp implements ISoldEntryBiz {
         return Optional.ofNullable(soldEntryDao.save(soldEntry));
     }
 
-    @Override
-    public void deleteSoldEntry(SoldEntry soldEntry) {
-        soldEntryDao.remove(soldEntry);
-    }
+//    @Override
+//    public void deleteSoldEntry(SoldEntry soldEntry) {
+//        soldEntryDao.remove(soldEntry);
+//    }
 
 //    @Override
 //    public void deleteSoldEntry(Long id) throws BaseSystemException {

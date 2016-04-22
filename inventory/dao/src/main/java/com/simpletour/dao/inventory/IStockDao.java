@@ -72,7 +72,7 @@ public interface IStockDao extends IBaseDao {
      *
      * return 库存实体
      */
-    Optional<Stock> getStockByConditions(final StockKey stockKey, final Date day, final Boolean online);
+    Optional<Stock> getStockByConditions(StockKey stockKey, Date day, Boolean online);
 
     /**
      * 功能：根据库存字段条件来获取库存列表

@@ -5,8 +5,14 @@ import com.simpletour.biz.resources.vo.ProcurementVo;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.domain.inventory.Price;
+import com.simpletour.domain.inventory.Stock;
+import com.simpletour.domain.inventory.StockPrice;
+import com.simpletour.domain.inventory.query.StockKey;
 import com.simpletour.domain.resources.*;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,10 +21,10 @@ import java.util.Optional;
  * 创建人员：石广路
  * 创建日期：2015/11/25 14:27
  * 备注说明：将资源包名从travelresources改为resources
+ * 修改记录：添加增删改查元素库存的接口
  */
 public interface IResourcesService {
     int DEFAULT_PAGE_SIZE = 10;
-
 
     /**
      * 添加osp
@@ -28,7 +34,6 @@ public interface IResourcesService {
      * @throws IllegalArgumentException
      */
     Optional<OfflineServiceProvider> addOfflineServiceProvider(OfflineServiceProvider offlineServiceProvider);
-
 
     /**
      * @param id
@@ -293,81 +298,6 @@ public interface IResourcesService {
     //endregion
 
     /**
-     * 功能：新增元素
-     * 作者：石广路
-     * 新增：2015-11-23 10:58
-     * 修改：null
-     *
-     * @param procurement 元素实体（必须要提供有效的元素供应商信息，即osp）
-     *                    <p>
-     *                    return 元素实体
-     */
-    Optional<Procurement> addProcurement(Procurement procurement) throws BaseSystemException;
-
-    /**
-     * 功能：更新元素
-     * 作者：石广路
-     * 新增：2015-11-23 10:59
-     * 修改：null
-     *
-     * @param procurement 元素实体
-     *                    <p>
-     *                    return 元素实体
-     */
-    Optional<Procurement> updateProcurement(Procurement procurement) throws BaseSystemException;
-
-    /**
-     * 功能：删除元素
-     * 作者：石广路
-     * 新增：2015-11-23 11:01
-     * 修改：null
-     *
-     * @param id     主键ID
-     */
-    void deleteProcurement(Long id) throws BaseSystemException;
-
-    /**
-     * 功能：根据ID获取元素
-     * 作者：石广路
-     * 新增：2015-11-23 11:02
-     * 修改：null
-     *
-     * @param id 主键ID
-     *           <p>
-     *           return procurement   元素实体
-     */
-    Optional<Procurement> getProcurementById(long id);
-
-    /**
-     * 功能：根据资源类型、状态、名称、所在地等查询条件来获取元素分页列表
-     * 作者：石广路
-     * 新增：2015-11-23 11:05
-     * 修改：null
-     *
-     * @param conditions       组合查询条件(resourceType：资源类型（如all，hotel，scenic，catering，entertainment）, online：上线状态（true表示上线，false表示下线），name：名称, destination.name: 所在地)
-     * @param orderByFiledName 根据哪个字段进行排序
-     * @param orderBy          DESC：降序，ASC：升序
-     * @param pageIndex        页面索引
-     * @param pageSize         分页大小
-     * @param byLike           true：使用模糊查询，false：使用精确查询
-     *                         <p>
-     *                         return 元素分页列表
-     */
-    DomainPage<Procurement> queryProcurementsPagesByConditions(final Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike);
-
-    /**
-     * 功能：根据资源类型、状态、名称、所在地、所属资源等查询条件来模糊查询元素分页列表
-     *
-     * @param conditions       组合查询条件(resourceType：资源类型（如all，hotel，scenic，catering，entertainment）, online：上线状态（true表示上线，false表示下线），name：名称, destination.name: 所在地,resourceName：所属资源名称)
-     * @param orderByFiledName 根据哪个字段进行排序
-     * @param orderBy          DESC：降序，ASC：升序
-     * @param pageIndex        页面索引
-     * @param pageSize         分页大小
-     * @return 元素分页列表
-     */
-    DomainPage<ProcurementVo> queryProcurementVoPagesByConditions(final Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize);
-
-    /**
      * 根据id获取area
      *
      * @param id
@@ -494,5 +424,151 @@ public interface IResourcesService {
      * @return
      */
     DomainPage<Entertainment> getEntertainmentsByConditionPage(String type, String name, String destinationName, int page, int pageSize);
+    //endregion
+
+    //region ------------------------------------procurement--------------------------------
+    /**
+     * 功能：新增元素
+     * 作者：石广路
+     * 新增：2015-11-23 10:58
+     * 修改：null
+     *
+     * @param procurement 元素实体（必须要提供有效的元素供应商信息，即osp）
+     *                    <p>
+     *                    return 元素实体
+     */
+    Optional<Procurement> addProcurement(Procurement procurement) throws BaseSystemException;
+
+    /**
+     * 功能：更新元素
+     * 作者：石广路
+     * 新增：2015-11-23 10:59
+     * 修改：null
+     *
+     * @param procurement 元素实体
+     *                    <p>
+     *                    return 元素实体
+     */
+    Optional<Procurement> updateProcurement(Procurement procurement) throws BaseSystemException;
+
+    /**
+     * 功能：删除元素
+     * 作者：石广路
+     * 新增：2015-11-23 11:01
+     * 修改：null
+     *
+     * @param id     主键ID
+     */
+    void deleteProcurement(Long id) throws BaseSystemException;
+
+    /**
+     * 功能：根据ID获取元素
+     * 作者：石广路
+     * 新增：2015-11-23 11:02
+     * 修改：null
+     *
+     * @param id 主键ID
+     *           <p>
+     *           return procurement   元素实体
+     */
+    Optional<Procurement> getProcurementById(Long id);
+
+    /**
+     * 功能：根据资源类型、状态、名称、所在地等查询条件来获取元素分页列表
+     * 作者：石广路
+     * 新增：2015-11-23 11:05
+     * 修改：null
+     *
+     * @param conditions       组合查询条件(resourceType：资源类型（如all，hotel，scenic，catering，entertainment）, online：上线状态（true表示上线，false表示下线），name：名称, destination.name: 所在地)
+     * @param orderByFiledName 根据哪个字段进行排序
+     * @param orderBy          DESC：降序，ASC：升序
+     * @param pageIndex        页面索引
+     * @param pageSize         分页大小
+     * @param byLike           true：使用模糊查询，false：使用精确查询
+     *                         <p>
+     *                         return 元素分页列表
+     */
+    DomainPage<Procurement> queryProcurementsPagesByConditions(final Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike);
+
+    /**
+     * 功能：根据资源类型、状态、名称、所在地、所属资源等查询条件来模糊查询元素分页列表
+     *
+     * @param conditions       组合查询条件(resourceType：资源类型（如all，hotel，scenic，catering，entertainment）, online：上线状态（true表示上线，false表示下线），name：名称, destination.name: 所在地,resourceName：所属资源名称)
+     * @param orderByFiledName 根据哪个字段进行排序
+     * @param orderBy          DESC：降序，ASC：升序
+     * @param pageIndex        页面索引
+     * @param pageSize         分页大小
+     * @return 元素分页列表
+     */
+    DomainPage<ProcurementVo> queryProcurementVoPagesByConditions(final Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize);
+    //endregion
+
+    //region ------------------------------------procurement stock--------------------------------
+    /**
+     * 功能：添加元素库存
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     * 备注：库存信息中必须要包含有效的库存元素和具体某一天的日期，如果添加库存失败则会抛出BaseSystemException异常
+     *
+     * @param stockPrice   元素库存及价格信息
+     *
+     * return 库存实体对象
+     */
+    Optional<Stock> addProcurementStock(StockPrice stockPrice) throws BaseSystemException;
+
+    /**
+     * 功能：批量添加元素库存
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     * 备注：库存信息中必须要包含有效的库存元素和具体某一时间段的日期，如果添加库存失败则会抛出BaseSystemException异常
+     *
+     * @param stockPrice   元素库存及价格信息
+     *
+     * return 库存实体对象
+     */
+    List<Stock> addProcurementStocks(StockPrice stockPrice) throws BaseSystemException;
+
+    /**
+     * 功能：更新元素库存
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     * 备注：库存信息中必须要包含有效的库存元素和具体某一天的日期，如果添加库存失败则会抛出BaseSystemException异常
+     *
+     * @param stockPrice   元素库存及价格信息
+     *
+     * return 库存实体对象
+     */
+    Optional<Stock> updateProcurementStock(StockPrice stockPrice) throws BaseSystemException;
+
+    /**
+     * 功能：批量更新元素库存
+     * 作者：石广路
+     * 新增：2016-4-21
+     * 修改：null
+     * 备注：库存信息中必须要包含有效的库存元素和具体某一时间段的日期，如果添加库存失败则会抛出BaseSystemException异常
+     *
+     * @param stockPrice   元素库存及价格信息
+     *
+     * return 库存实体对象
+     */
+    List<Stock> updateProcurementStocks(StockPrice stockPrice) throws BaseSystemException;
+
+    /**
+     * 功能：根据库存组合键来查找某一天上特定类型的元素库存价格信息
+     * 作者：石广路
+     * 新增：2016-4-22
+     * 备注：库存价格信息列表通常包含了成人和儿童的库存价格信息，如果指定了库存价格类型，则只查询单个类型的库存价格信息，否则，进行不分区类型查找
+     *
+     * @param stockKey  库存联合主键
+     * @param day       库存日期
+     * @param type      库存价格类型，null - 不区分库存价格类型，其他值则表示是成人价还是儿童价
+     *
+     * return 元素库存价格信息列表
+     */
+    List<Price> getProcurementPrices(StockKey stockKey, Date day, Price.Type type);
+
     //endregion
 }

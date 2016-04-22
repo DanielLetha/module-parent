@@ -52,10 +52,12 @@ public class ProcurementBizImp implements IProcurementBiz {
     }
 
     @Override
-    public Procurement getProcurementById(long id) {
-        Procurement procurement = resourcesDao.getEntityById(Procurement.class, id);
-        if (procurement != null && (!procurement.getDel())) {
-            return procurement;
+    public Procurement getProcurementById(Long id) {
+        if (null != id && 0 < id) {
+            Procurement procurement = resourcesDao.getEntityById(Procurement.class, id);
+            if (null != procurement && !procurement.getDel()) {
+                return procurement;
+            }
         }
         return null;
     }

@@ -1,7 +1,6 @@
 package com.simpletour.service.inventory.imp;
 
 import com.simpletour.biz.inventory.IStockBiz;
-import com.simpletour.biz.inventory.IStockQueryBiz;
 import com.simpletour.biz.inventory.error.InventoryBizError;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.Stock;
@@ -21,15 +20,15 @@ import java.util.Optional;
  */
 @Service
 public class StockServiceImp implements IStockService {
-    @Autowired
-    private IStockQueryBiz stockQueryBiz;
+//    @Autowired
+//    private IStockQueryBiz stockQueryBiz;
 
     @Autowired
     private IStockBiz stockBiz;
 
     @Override
     public Optional<Stock> addStock(Stock stock) throws BaseSystemException {
-        if (stockQueryBiz.stockIsExisted(stock)) {
+        if (stockBiz.isExisted(stock)) {
             throw new BaseSystemException(InventoryBizError.STOCK_IS_EXISTING);
         }
         return stockBiz.addStock(stock);
@@ -47,7 +46,7 @@ public class StockServiceImp implements IStockService {
 
     @Override
     public Optional<Stock> updateStock(Stock stock) throws BaseSystemException {
-        if (!stockQueryBiz.stockIsExisted(stock)) {
+        if (!stockBiz.isExisted(stock)) {
             throw new BaseSystemException(InventoryBizError.STOCK_NOT_EXIST);
         }
         return stockBiz.updateStock(stock);
@@ -63,21 +62,21 @@ public class StockServiceImp implements IStockService {
         return stocks;
     }
 
-    @Override
-    public void deleteStock(Long id) throws BaseSystemException {
-        Optional<Stock> optional = stockQueryBiz.getStockById(id);
-        if (!optional.isPresent()) {
-            throw new BaseSystemException(InventoryBizError.STOCK_NOT_EXIST);
-        }
-        stockBiz.deleteStock(optional.get());
-    }
-
-    @Override
-    public void deleteStocks(List<Long> ids) {
-        if (null != ids && !ids.isEmpty()) {
-            ids.stream().filter(id -> null != id && 0 < id).forEach(id -> deleteStock(id));
-        }
-    }
+//    @Override
+//    public void deleteStock(Long id) throws BaseSystemException {
+//        Optional<Stock> optional = stockQueryBiz.getStockById(id);
+//        if (!optional.isPresent()) {
+//            throw new BaseSystemException(InventoryBizError.STOCK_NOT_EXIST);
+//        }
+//        stockBiz.deleteStock(optional.get());
+//    }
+//
+//    @Override
+//    public void deleteStocks(List<Long> ids) {
+//        if (null != ids && !ids.isEmpty()) {
+//            ids.stream().filter(id -> null != id && 0 < id).forEach(id -> deleteStock(id));
+//        }
+//    }
 
 //    @Override
 //    public Optional<Stock> getStockById(long id) {

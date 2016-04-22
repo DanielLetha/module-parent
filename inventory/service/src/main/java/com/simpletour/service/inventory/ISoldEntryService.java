@@ -72,7 +72,7 @@ public interface ISoldEntryService {
      *
      * return void
      */
-    void deleteSoldEntry(Long id) throws BaseSystemException;
+    //void deleteSoldEntry(Long id) throws BaseSystemException;
 
     /**
      * 功能：批量删除库存销售记录信息
@@ -85,7 +85,7 @@ public interface ISoldEntryService {
      *
      * return void
      */
-    void deleteSoldEntries(List<Long> ids);
+    //void deleteSoldEntries(List<Long> ids);
 
     /**
      * 功能：使指定订单号的所有销售库存的状态都变为无效

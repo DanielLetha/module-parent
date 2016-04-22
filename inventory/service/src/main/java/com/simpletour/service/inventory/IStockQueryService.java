@@ -33,7 +33,7 @@ public interface IStockQueryService {
      *
      * return 库存实体
      */
-    Optional<Stock> getStockById(long id);
+    //Optional<Stock> getStockById(long id);
 
     /**
      * 功能：根据指定的库存类型和库存主体ID来获取某一天的库存依托对象及其自身的库存依赖
@@ -71,7 +71,7 @@ public interface IStockQueryService {
      *
      * return true - 存在，false - 不存在
      */
-    boolean stockIsExisted(Stock stock) throws BaseSystemException;
+    //boolean isExisted(Stock stock) throws BaseSystemException;
 
     /**
      * 功能：检查指定的库存元素在某一天上是否有库存
