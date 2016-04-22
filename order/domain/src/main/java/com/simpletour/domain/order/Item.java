@@ -132,25 +132,37 @@ public class Item extends BaseDomain implements IStockAvailable {
     private Integer quantity;
 
     /**
-     * 成本单价,销售协议中规定的产品的成本价格
+     * 成人成本单价,销售协议中规定的成人类型产品的成本价格
      */
-    @Column
-    private Integer cost;
+    @Column(name = "adult_cost")
+    private Integer adultCost;
 
     /**
-     * 结算单价,该产品在该销售端售卖的单价价格
+     * 儿童成本单价,销售协议中规定的儿童类型产品的成本价格
      */
-    @Column
-    private Integer settlement;
+    @Column(name = "child_cost")
+    private Integer childCost;
 
     /**
-     * 成本总价:成本单价*订购产品数量 = cost*quantity
+     * 成人结算单价,该产品在该销售端售卖的成人单价价格
+     */
+    @Column(name = "adult_settlement")
+    private Integer adultSettlement;
+
+    /**
+     * 儿童结算单价,该产品在该销售端售卖的儿童单价价格
+     */
+    @Column(name = "child_settlement")
+    private Integer childSettlement;
+
+    /**
+     * 成本总价:成本单价*订购产品数量 = (adultCost + childCost)*quantity
      */
     @Column(name = "total_cost")
     private Integer totalCost;
 
     /**
-     * 结算总价:结算单价*订购产品数量 = settlement*quantity
+     * 结算总价:结算单价*订购产品数量 = (adultSettlement + childSettlement)*quantity
      */
     @Column(name = "total_settlement")
     private Integer totalSettlement;
@@ -268,20 +280,36 @@ public class Item extends BaseDomain implements IStockAvailable {
         this.quantity = quantity;
     }
 
-    public Integer getCost() {
-        return cost;
+    public Integer getAdultCost() {
+        return adultCost;
     }
 
-    public void setCost(Integer cost) {
-        this.cost = cost;
+    public void setAdultCost(Integer adultCost) {
+        this.adultCost = adultCost;
     }
 
-    public Integer getSettlement() {
-        return settlement;
+    public Integer getChildCost() {
+        return childCost;
     }
 
-    public void setSettlement(Integer settlement) {
-        this.settlement = settlement;
+    public void setChildCost(Integer childCost) {
+        this.childCost = childCost;
+    }
+
+    public Integer getAdultSettlement() {
+        return adultSettlement;
+    }
+
+    public void setAdultSettlement(Integer adultSettlement) {
+        this.adultSettlement = adultSettlement;
+    }
+
+    public Integer getChildSettlement() {
+        return childSettlement;
+    }
+
+    public void setChildSettlement(Integer childSettlement) {
+        this.childSettlement = childSettlement;
     }
 
     public Integer getTotalCost() {
