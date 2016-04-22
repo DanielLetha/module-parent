@@ -2,7 +2,7 @@ package com.simpletour.domain.sale;
 
 
 import com.simpletour.commons.data.domain.BaseDomain;
-import com.simpletour.domain.product.Product;
+import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -91,11 +91,7 @@ public class AgreementProductPrice extends BaseDomain {
      */
     @Column(name = "retail")
     private Integer retail;
-    /**
-     * 备注
-     */
-    @Column(name = "remark")
-    private String remark;
+
     /**
      * 版本号
      */
@@ -112,14 +108,13 @@ public class AgreementProductPrice extends BaseDomain {
     public AgreementProductPrice() {
     }
 
-    public AgreementProductPrice(AgreementProduct agreementProduct, Product product, Type type, Date date, Integer cost, Integer settlement, Integer retail, String remark, Integer version) {
+    public AgreementProductPrice(AgreementProduct agreementProduct, Type type, Date date, Integer cost, Integer settlement, Integer retail, Integer version) {
         this.agreementProduct = agreementProduct;
         this.type = type;
         this.date = date;
         this.cost = cost;
         this.settlement = settlement;
         this.retail = retail;
-        this.remark = remark;
         this.version = version;
     }
 
@@ -177,14 +172,6 @@ public class AgreementProductPrice extends BaseDomain {
 
     public void setRetail(Integer retail) {
         this.retail = retail;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     public Integer getVersion() {

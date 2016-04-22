@@ -1,6 +1,7 @@
 package com.simpletour.biz.sale.imp;
 
 import com.simpletour.biz.sale.IAgreementProductPriceBiz;
+import com.simpletour.biz.sale.bo.AgreementPriceBo;
 import com.simpletour.biz.sale.error.AgreementProductPriceBizError;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
@@ -8,13 +9,16 @@ import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.sale.IAgreementProductPriceDao;
+import com.simpletour.domain.sale.AgreementProduct;
 import com.simpletour.domain.sale.AgreementProductPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Brief :  产品价格的实现类
@@ -31,61 +35,49 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
 
 
     @Override
-    public AgreementProductPrice addAgreementProductPrice(AgreementProductPrice agreementProductPrice) throws BaseSystemException {
-        checkNull(agreementProductPrice);
-        return agreementProductPriceDao.save(agreementProductPrice);
+    public AgreementPriceBo addAgreementProductPrice(AgreementPriceBo agreementPriceBo) throws BaseSystemException {
+        checkNull(agreementPriceBo);
+        List<AgreementProductPrice> prices = agreementPriceBo.asList().stream().map(
+                agreementPrice -> agreementProductPriceDao.save(agreementPrice)).collect(Collectors.toList());
+        return AgreementPriceBo.from(prices).get(0);
     }
 
     @Override
-    public AgreementProductPrice updateAgreementProductPrice(AgreementProductPrice agreementProductPrice) throws BaseSystemException {
-        checkNull(agreementProductPrice);
-        return agreementProductPriceDao.save(agreementProductPrice);
+    public AgreementPriceBo updateAgreementProductPrice(AgreementPriceBo agreementPriceBo) throws BaseSystemException {
+        checkNull(agreementPriceBo);
+        List<AgreementProductPrice> prices = agreementPriceBo.asList().stream().map(
+                agreementPrice -> agreementProductPriceDao.save(agreementPrice)).collect(Collectors.toList());
+        return AgreementPriceBo.from(prices).get(0);
     }
 
     @Override
-    public AgreementProductPrice findAgreementProductPriceById(Long id) {
-        return agreementProductPriceDao.getEntityById(AgreementProductPrice.class, id);
-    }
-
-    @Override
-    public DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(ConditionOrderByQuery query) {
-        return agreementProductPriceDao.getEntitiesPagesByQuery(AgreementProductPrice.class, query);
-    }
-
-    @Override
-    public boolean isExisted(Long agreementProductId, Date date, String type) {
+    public void deleteAgreementProductPrice(Long agreementId, Date date) throws BaseSystemException {
         ConditionOrderByQuery conditionOrderByQuery = new ConditionOrderByQuery();
-        AndConditionSet condition = new AndConditionSet();
-        condition.addCondition("agreementProductId", agreementProductId);
-        condition.addCondition("date", date);
-        condition.addCondition("type", type);
-        conditionOrderByQuery.setCondition(condition);
-        List<AgreementProductPrice> agreementProductPriceList = getAgreementProductPriceList(conditionOrderByQuery);
-        if (agreementProductPriceList.isEmpty() || agreementProductPriceList.size() == 0) {
-            return false;
+        AndConditionSet conditionSet = new AndConditionSet();
+        conditionSet.addCondition("agreementId", agreementId);
+        conditionSet.addCondition("date", date);
+        conditionOrderByQuery.setCondition(conditionSet);
+        List<AgreementPriceBo> agreementPriceBos = getAgreementProductPriceList(conditionOrderByQuery);
+        if (agreementPriceBos.size() == 1) {
+            agreementPriceBos.get(0).asList().stream().forEach(agrementPrice -> agreementProductPriceDao.remove(agrementPrice));
         }
-        return true;
-    }
 
-    @Override
-    public List<AgreementProductPrice> getAgreementProductPriceList(ConditionOrderByQuery query) {
-        return agreementProductPriceDao.getEntitiesByQuery(AgreementProductPrice.class, query);
     }
-
 
 
     @Override
-    public DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike) {
-        return agreementProductPriceDao.queryEntitiesPagesByFieldList(AgreementProductPrice.class, conditions, orderByFiledName, orderBy, pageIndex, pageSize, byLike);
+    public List<AgreementPriceBo> getAgreementProductPriceList(ConditionOrderByQuery query) {
+        List<AgreementProductPrice> prices = agreementProductPriceDao.getEntitiesByQuery(AgreementProductPrice.class, query);
+        return AgreementPriceBo.from(prices);
     }
 
-    private void checkNull(AgreementProductPrice agreementProductPrice) {
+
+    private void checkNull(AgreementPriceBo agreementProductPrice) {
         if (agreementProductPrice == null)
             throw new BaseSystemException(AgreementProductPriceBizError.AGREEMENT_PRODUCT_PRICE_EMPTY);
-        if (agreementProductPrice.getAgreementProduct() == null || agreementProductPrice.getAgreementProduct().getId() == null)
+        if (agreementProductPrice == null || agreementProductPrice.getAgreementProduct().getId() == null)
             throw new BaseSystemException(AgreementProductPriceBizError.AGREEMENT_PRODUCT_NULL);
 
 
     }
-
 }

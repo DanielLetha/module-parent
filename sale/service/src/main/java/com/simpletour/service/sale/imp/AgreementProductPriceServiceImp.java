@@ -2,7 +2,9 @@ package com.simpletour.service.sale.imp;
 
 import com.simpletour.biz.product.IProductBiz;
 import com.simpletour.biz.sale.IAgreementBiz;
+import com.simpletour.biz.sale.IAgreementProductBiz;
 import com.simpletour.biz.sale.IAgreementProductPriceBiz;
+import com.simpletour.biz.sale.bo.AgreementPriceBo;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
@@ -10,6 +12,7 @@ import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.sale.AgreementProductPrice;
 import com.simpletour.service.sale.IAgreementProductPriceService;
+import com.simpletour.service.sale.IAgreementProductService;
 import com.simpletour.service.sale.error.AgreementProductPriceServiceError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,79 +35,58 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     @Autowired
     private IAgreementProductPriceBiz agreementProductPriceBiz;
     @Autowired
-    private IAgreementBiz agreementBiz;
-    @Autowired
-    private IProductBiz productBiz;
+    private IAgreementProductBiz agreementProductBiz;
 
 
-    @Override
-    public Optional<AgreementProductPrice> addAgreementProductPrice(AgreementProductPrice agreementProductPrice) throws BaseSystemException {
-        checkNull(agreementProductPrice);
-        checkExist(agreementProductPrice);
-        checkAgreementAvailable(agreementProductPrice);
-        checkProductAvailable(agreementProductPrice);
-        return Optional.ofNullable(agreementProductPriceBiz.addAgreementProductPrice(agreementProductPrice));
-    }
 
     @Override
-    public Optional<AgreementProductPrice> updateAgreementProductPrice(AgreementProductPrice agreementProductPrice) throws BaseSystemException {
-        checkNull(agreementProductPrice);
-        ConditionOrderByQuery query = new ConditionOrderByQuery();
-        AndConditionSet andConditionSet = new AndConditionSet();
-        andConditionSet.addCondition("agreementProductId",agreementProductPrice.getAgreementProduct().getId());
-        andConditionSet.addCondition("date",agreementProductPrice.getDate());
-        andConditionSet.addCondition("type",agreementProductPrice.getType().name());
-        query.setCondition(andConditionSet);
-        List<AgreementProductPrice> list = getAgreementProductPriceList(query);
-        if (list.size() > 0 && !list.get(0).getId().equals(agreementProductPrice.getId())) {
-            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_MUST_ONLY);
-        }
-        checkAgreementAvailable(agreementProductPrice);
-        checkAgreementAvailable(agreementProductPrice);
-        checkProductAvailable(agreementProductPrice);
-        return Optional.ofNullable(agreementProductPriceBiz.addAgreementProductPrice(agreementProductPrice));
-    }
-
-    @Override
-    public DomainPage<AgreementProductPrice> queryAgreementProductPrice(ConditionOrderByQuery query) {
-        return agreementProductPriceBiz.queryAgreementProductPricePageByCondition(query);
-    }
-
-    @Override
-    public DomainPage<AgreementProductPrice> queryAgreementProductPriceByCondtion(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike) {
-        return agreementProductPriceBiz.queryAgreementProductPricePageByCondition(conditions, orderByFiledName, orderBy, pageIndex, pageSize, byLike);
-    }
-
-    @Override
-    public Optional<AgreementProductPrice> findAgreementProductPriceById(Long id) {
-        return Optional.ofNullable(agreementProductPriceBiz.findAgreementProductPriceById(id));
-    }
-
-    @Override
-    public List<AgreementProductPrice> getAgreementProductPriceList(ConditionOrderByQuery query) {
+    public List<AgreementPriceBo> getAgreementProductPriceList(ConditionOrderByQuery query) {
         return agreementProductPriceBiz.getAgreementProductPriceList(query);
     }
 
-    private void checkNull(AgreementProductPrice agreementProductPrice) {
-        if (agreementProductPrice == null)
+    @Override
+    public Optional<AgreementPriceBo> addAgreementProductPrice(AgreementPriceBo agreementPriceBo) throws BaseSystemException {
+        checkNull(agreementPriceBo);
+        checkAgreementProductAvailable(agreementPriceBo);
+        return Optional.ofNullable(agreementProductPriceBiz.addAgreementProductPrice(agreementPriceBo));
+    }
+
+    @Override
+    public Optional<AgreementPriceBo> updateAgreementProductPrice(AgreementPriceBo agreementPriceBo) throws BaseSystemException {
+        checkNull(agreementPriceBo);
+
+        ConditionOrderByQuery query = new ConditionOrderByQuery();
+        AndConditionSet andConditionSet = new AndConditionSet();
+        andConditionSet.addCondition("agreementProductId",agreementPriceBo.getAgreementProduct().getId());
+        andConditionSet.addCondition("date",agreementPriceBo.getDate());
+        query.setCondition(andConditionSet);
+        List<AgreementPriceBo> list = getAgreementProductPriceList(query);
+        if(list.size() >2){
+            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_MUST_ONLY);
+        }
+        list.stream().filter(p -> !p.getAgreementProduct().equals(agreementPriceBo.getAgreementProduct())||!p.getDate().equals(agreementPriceBo.getDate()));
+        return Optional.ofNullable(agreementProductPriceBiz.addAgreementProductPrice(agreementPriceBo));
+    }
+
+    @Override
+    public void batchInsert(List<AgreementPriceBo> agreementPriceBos) throws BaseSystemException {
+        agreementPriceBos.stream().forEach(price -> agreementProductPriceBiz.deleteAgreementProductPrice(price.getAgreementProduct().getId(),price.getDate()));
+        agreementPriceBos.stream().forEach(price -> agreementProductPriceBiz.addAgreementProductPrice(price));
+    }
+
+
+    private void checkNull(AgreementPriceBo agreementPriceBo) {
+        if (agreementPriceBo == null)
             throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_NULL);
     }
 
-    private void checkExist(AgreementProductPrice agreementProductPrice) {
-        boolean bool = agreementProductPriceBiz.isExisted(agreementProductPrice.getAgreementProduct().getId(), agreementProductPrice.getDate(), agreementProductPrice.getType().name());
-        if (bool)
-            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_EXIST);
-    }
 
-    private void checkAgreementAvailable(AgreementProductPrice agreementProductPrice) {
-        if (!agreementBiz.isAvailable(agreementProductPrice.getId()))
+
+    private void checkAgreementProductAvailable(AgreementPriceBo agreementPriceBo) {
+        if (!agreementProductBiz.isExisted(agreementPriceBo.getAgreementProduct().getId()))
             throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_NOT_EXIST);
     }
 
-    private void checkProductAvailable(AgreementProductPrice agreementProductPrice) {
-        if (!productBiz.isExist(agreementProductPrice.getId()))
-            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_NOT_EXIST);
-    }
 
 
 
