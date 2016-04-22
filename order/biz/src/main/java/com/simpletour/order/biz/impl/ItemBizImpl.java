@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * Created by Mario on 2016/4/20.
  */
 @Repository
-public class IItemBizImpl extends JPABaseDAO implements IItemBiz {
+public class ItemBizImpl extends JPABaseDAO implements IItemBiz {
 
     @Autowired
     private IAgreementProductBiz agreementProductBiz;
@@ -124,7 +124,7 @@ public class IItemBizImpl extends JPABaseDAO implements IItemBiz {
         andConditionSet.addCondition("product.id", item.getProductId(), Condition.MatchType.eq);
         andConditionSet.addCondition("agreement.saleApp.id", item.getSaleApp().getId(), Condition.MatchType.eq);
         conditionOrderByQuery.setCondition(andConditionSet);
-        List<AgreementProductPrice> agreementProductPrices = agreementProductPriceBiz.getAgreementProductList(conditionOrderByQuery);
+        List<AgreementProductPrice> agreementProductPrices = agreementProductPriceBiz.getAgreementProductPriceList(conditionOrderByQuery);
         if (agreementProductPrices == null || agreementProductPrices.isEmpty())
             throw new BaseSystemException(OrderBizError.ORDER_ITEM_SALEAPP_PRODUCT_PRICE_NULL);
         if (agreementProductPrices.size() > 2)

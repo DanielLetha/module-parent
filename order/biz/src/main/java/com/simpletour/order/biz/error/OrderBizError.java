@@ -19,6 +19,7 @@ public enum OrderBizError implements IError {
     ORDER_ITEM_CUSTOMER_NULL("0010", "订单项关联的订购人数不能为空"),
     ORDER_ITEM_SALEAPP_PRODUCT_PRICE_NULL("0011", "订单项关联产品的销售价格列表为空"),
     ORDER_ITEM_SALEAPP_PRODUCT_PRICE_LIST_SIZE_EXCEPTION("0012", "订单项关联产品的销售价格列表异常"),
+    ORDER_NULL("0013","订单实体为空"),
 
     ORDER_SYSTEM_EXCEPTION("10000", "程序异常");
 
