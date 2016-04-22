@@ -61,7 +61,7 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
         condition.addCondition("date", date);
         condition.addCondition("type", type);
         conditionOrderByQuery.setCondition(condition);
-        List<AgreementProductPrice> agreementProductPriceList = getAgreementProductList(conditionOrderByQuery);
+        List<AgreementProductPrice> agreementProductPriceList = getAgreementProductPriceList(conditionOrderByQuery);
         if (agreementProductPriceList.isEmpty() || agreementProductPriceList.size() == 0) {
             return false;
         }
@@ -69,7 +69,7 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     }
 
     @Override
-    public List<AgreementProductPrice> getAgreementProductList(ConditionOrderByQuery query) {
+    public List<AgreementProductPrice> getAgreementProductPriceList(ConditionOrderByQuery query) {
         return agreementProductPriceDao.getEntitiesByQuery(AgreementProductPrice.class, query);
     }
 

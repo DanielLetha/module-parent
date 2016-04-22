@@ -104,7 +104,7 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
         condition.addCondition("date", date);
         condition.addCondition("type", type);
         conditionOrderByQuery.setCondition(condition);
-        return agreementProductPriceBiz.getAgreementProductList(conditionOrderByQuery);
+        return agreementProductPriceBiz.getAgreementProductPriceList(conditionOrderByQuery);
     }
 
 

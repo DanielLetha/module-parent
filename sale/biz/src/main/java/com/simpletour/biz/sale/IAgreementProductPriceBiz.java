@@ -46,7 +46,7 @@ public interface IAgreementProductPriceBiz {
 
 
 
-    List<AgreementProductPrice> getAgreementProductList(ConditionOrderByQuery query);
+    List<AgreementProductPrice> getAgreementProductPriceList(ConditionOrderByQuery query);
 
     /**
      * 分页查询产品价格分页
