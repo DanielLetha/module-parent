@@ -112,7 +112,7 @@ public class AgreementProductPrice extends BaseDomain {
     public AgreementProductPrice() {
     }
 
-    public AgreementProductPrice(AgreementProduct agreementProduct, Product product, Type type, Date date, Integer cost, Integer settlement, Integer retail, String remark, Integer version) {
+    public AgreementProductPrice(AgreementProduct agreementProduct, Type type, Date date, Integer cost, Integer settlement, Integer retail, String remark, Integer version) {
         this.agreementProduct = agreementProduct;
         this.type = type;
         this.date = date;
