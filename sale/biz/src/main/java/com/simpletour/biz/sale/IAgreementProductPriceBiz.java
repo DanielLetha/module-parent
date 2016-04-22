@@ -1,5 +1,6 @@
 package com.simpletour.biz.sale;
 
+import com.simpletour.biz.sale.bo.AgreementPriceBo;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
@@ -23,58 +24,36 @@ import java.util.Map;
 public interface IAgreementProductPriceBiz {
     /**
      * 添加协议产品价格
-     * @param agreementProductPrice
+     * @param agreementPricebo
      * @return
      * @throws BaseSystemException
      */
-    AgreementProductPrice addAgreementProductPrice(AgreementProductPrice agreementProductPrice) throws BaseSystemException;
+    AgreementPriceBo addAgreementProductPrice(AgreementPriceBo agreementPricebo) throws BaseSystemException;
 
     /**
      * 更新协议产品价格
-     * @param agreementProductPrice
+     * @param agreementPricebo
      * @return
      * @throws BaseSystemException
      */
-    AgreementProductPrice updateAgreementProductPrice(AgreementProductPrice agreementProductPrice) throws BaseSystemException;
+    AgreementPriceBo updateAgreementProductPrice(AgreementPriceBo agreementPricebo) throws BaseSystemException;
+
+
 
     /**
-     * 根据id查询协议产品价格
-     * @param id
-     * @return
+     * 删除价格
+     * @param agreementId
+     * @param date
+     * @throws BaseSystemException
      */
-    AgreementProductPrice findAgreementProductPriceById(Long id);
-
-
-
-    List<AgreementProductPrice> getAgreementProductPriceList(ConditionOrderByQuery query);
+     void deleteAgreementProductPrice(Long agreementId,Date date) throws BaseSystemException;
 
     /**
-     * 分页查询产品价格分页
+     * 根据条件查询产品价格的list
      * @param query
      * @return
      */
-    DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(ConditionOrderByQuery query);
-
-    /**
-     * 分页查询产品价格分页
-     * @param conditions
-     * @param orderByFiledName
-     * @param orderBy
-     * @param pageIndex
-     * @param pageSize
-     * @param byLike
-     * @return
-     */
-    DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike);
-
-    /**
-     * 依据协议id,产品id,日期以及类型判断销售协议产品价格是否存在
-     * @param agreementProductId
-     * @param date
-     * @param type
-     * @return
-     */
-    boolean isExisted(Long agreementProductId,Date date,String type);
+    List<AgreementPriceBo> getAgreementProductPriceList(ConditionOrderByQuery query);
 
 
 }
