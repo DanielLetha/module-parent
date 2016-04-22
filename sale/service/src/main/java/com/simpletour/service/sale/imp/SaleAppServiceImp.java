@@ -2,6 +2,7 @@ package com.simpletour.service.sale.imp;
 
 import com.simpletour.biz.sale.ISaleAppBiz;
 import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.sale.SaleApp;
@@ -10,6 +11,7 @@ import com.simpletour.service.sale.error.SaleAppServiceError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -62,7 +64,12 @@ public class SaleAppServiceImp implements ISaleAppService {
     }
 
     @Override
-    public DomainPage<SaleApp> querySaleAppsPagesByConditions(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike) {
+    public List<SaleApp> querySaleAppList(ConditionOrderByQuery query) {
+        return saleAppBiz.querySaleAppList(query);
+    }
+
+    @Override
+    public DomainPage<SaleApp> querySaleAppPagesByConditions(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike) {
         return saleAppBiz.querySaleAppByCondition(conditions, orderByFiledName, orderBy, pageIndex, pageSize, byLike);
     }
 

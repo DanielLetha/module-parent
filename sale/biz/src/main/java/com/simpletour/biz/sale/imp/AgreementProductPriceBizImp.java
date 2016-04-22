@@ -73,6 +73,8 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
         return agreementProductPriceDao.getEntitiesByQuery(AgreementProductPrice.class, query);
     }
 
+
+
     @Override
     public DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike) {
         return agreementProductPriceDao.queryEntitiesPagesByFieldList(AgreementProductPrice.class, conditions, orderByFiledName, orderBy, pageIndex, pageSize, byLike);

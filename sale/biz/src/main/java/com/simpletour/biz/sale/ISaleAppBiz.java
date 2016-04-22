@@ -1,10 +1,12 @@
 package com.simpletour.biz.sale;
 
 import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.sale.SaleApp;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,6 +60,12 @@ public interface ISaleAppBiz {
      */
     DomainPage<SaleApp> querySaleAppByCondition(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike);
 
+    /**
+     * 根据条件查询销售端的list
+     * @param query
+     * @return
+     */
+    List<SaleApp> querySaleAppList(ConditionOrderByQuery query);
     /**
      * 判断销售端是否存在
      * @param id

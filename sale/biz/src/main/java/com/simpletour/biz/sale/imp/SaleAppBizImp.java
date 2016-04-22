@@ -4,6 +4,7 @@ package com.simpletour.biz.sale.imp;
 import com.simpletour.biz.sale.ISaleAppBiz;
 import com.simpletour.biz.sale.error.SaleAppBizError;
 import com.simpletour.commons.data.dao.IBaseDao;
+import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.sale.ISaleAppDao;
@@ -90,6 +91,12 @@ public class SaleAppBizImp implements ISaleAppBiz {
     private void checkNull(SaleApp saleApp) {
         if (saleApp == null)
             throw new BaseSystemException(SaleAppBizError.SALE_APP_EMPTY);
+    }
+
+
+    @Override
+    public List<SaleApp> querySaleAppList(ConditionOrderByQuery query) {
+        return saleAppDao.getEntitiesByQuery(SaleApp.class,query);
     }
 
     private void checkDel(SaleApp saleApp) {
