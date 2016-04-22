@@ -99,9 +99,10 @@ public interface IAgreementService {
      * Author: YY/yuanyuan@simpletour.com
      * Time:   2016-04-19 16:27
      *
-     * @param agreement 待更新销售协议对象
+     * @param id      销售协议ID
+     * @param enabled 销售协议状态
      * @return 销售协议实体
      * @since 2.0-SNAPSHOT
      */
-    Optional<Agreement> updateStatus(Agreement agreement);
+    Optional<Agreement> updateStatus(Long id, Boolean enabled);
 }

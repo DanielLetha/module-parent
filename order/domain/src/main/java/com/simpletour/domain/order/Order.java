@@ -60,25 +60,42 @@ public class Order extends BaseDomain {
         }
     }
 
-
+    /**
+     * 主键id
+     */
     @Id()
     @Column(name = "ID")
     private Long id;
 
+    /**
+     * 关联的销售端
+     */
     @JoinColumn(name = "app_id")
     @ManyToOne
     private SaleApp saleApp;
 
+    /**
+     * 交易金额
+     */
     @Column
     private Integer amount;
 
+    /**
+     * 关联的订单状态
+     */
     @Column
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    /**
+     * 订单预留时间
+     */
     @Column(name = "reserve_time")
     private Long reserveTime;
 
+    /**
+     * 关联的订单项
+     */
     @OneToMany(mappedBy = "order", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<Item> items;
 

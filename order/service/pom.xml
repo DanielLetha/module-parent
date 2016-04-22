@@ -12,5 +12,14 @@
 
     <artifactId>order-service</artifactId>
 
-
+    <dependencies>
+        <!--self-->
+        <dependency>
+            <groupId>com.simpletour.module</groupId>
+            <artifactId>order-biz</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--module-->
+        <!--other-->
+    </dependencies>
 </project>

@@ -75,6 +75,19 @@ public class RefundPolicyBizTest extends AbstractTransactionalTestNGSpringContex
         }
     }
 
+    //测试：添加存在时间重叠
+    @Test
+    public void testAddRefundRuleError(){
+        RefundPolicy refundPolicy=refundPolicyData.generateRefundPolicy("add2");
+        refundPolicy.getRefundRules().get(1).setTiming(refundPolicy.getRefundRules().get(0).getTiming());
+        try {
+            RefundPolicy refundPolicy1 = refundPolicyBiz.addRefundPolicy(refundPolicy);
+            Assert.fail();
+        } catch (BaseSystemException e) {
+            Assert.assertEquals(e.getError(), RefundPolicyBizError.REFUND_POLICY_REFUND_RULE_ERROR);
+        }
+    }
+
     //测试：正常更新
     @Test
     public void testUpdateRefundPolicy() {
@@ -98,6 +111,19 @@ public class RefundPolicyBizTest extends AbstractTransactionalTestNGSpringContex
             Assert.fail();
         } catch (BaseSystemException e) {
             Assert.assertEquals(e.getError(), RefundPolicyBizError.REFUND_POLICY_NAME_EXIST);
+        }
+    }
+
+    //测试：更新存在时间重叠
+    @Test
+    public void testUpdateAddRefundRuleError(){
+        RefundPolicy refundPolicy= (RefundPolicy) refundPolicyData.getDomains().get(0);
+        refundPolicy.getRefundRules().get(1).setTiming(refundPolicy.getRefundRules().get(0).getTiming());
+        try {
+            RefundPolicy refundPolicy2 = refundPolicyBiz.updateRefundPolicy(refundPolicy);
+            Assert.fail();
+        } catch (BaseSystemException e) {
+            Assert.assertEquals(e.getError(), RefundPolicyBizError.REFUND_POLICY_REFUND_RULE_ERROR);
         }
     }
 
@@ -157,14 +183,6 @@ public class RefundPolicyBizTest extends AbstractTransactionalTestNGSpringContex
         RefundPolicy refundPolicy1 = (RefundPolicy) refundPolicyData.getDomains().get(0);
         Assert.assertTrue(refundPolicyBiz.isRefundPolicyExisted(refundPolicy1.getId()));
         Assert.assertFalse(refundPolicyBiz.isRefundPolicyExisted(Long.MAX_VALUE));
-    }
-
-    //测试：根据id判断退款细则是否存在
-    @Test
-    public void testIsRunleIsExisted(){
-        RefundPolicy refundPolicy= (RefundPolicy) refundPolicyData.getDomains().get(0);
-        Assert.assertTrue(refundPolicyBiz.isRefundRuleExisted(refundPolicy.getRefundRules().get(0).getId()));
-        Assert.assertFalse(refundPolicyBiz.isRefundRuleExisted(Long.MAX_VALUE));
     }
 
 }

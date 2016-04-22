@@ -1,5 +1,6 @@
 package com.simpletour.biz.product.imp;
 
+import com.simpletour.biz.inventory.IStockBiz;
 import com.simpletour.biz.product.IProductBiz;
 import com.simpletour.biz.product.error.ProductBizError;
 import com.simpletour.commons.data.dao.IBaseDao;
@@ -10,6 +11,7 @@ import com.simpletour.commons.data.util.TypeConverter;
 import com.simpletour.dao.product.IProductDao;
 import com.simpletour.dao.traveltrans.ITransportDao;
 import com.simpletour.domain.inventory.InventoryType;
+import com.simpletour.domain.order.Cert;
 import com.simpletour.domain.product.Product;
 import com.simpletour.domain.product.ProductPackage;
 import com.simpletour.domain.product.TourismRoute;
@@ -18,6 +20,7 @@ import com.simpletour.domain.resources.Procurement;
 import com.simpletour.domain.traveltrans.BusNo;
 import com.simpletour.domain.traveltrans.BusNoPlan;
 import com.simpletour.domain.traveltrans.Line;
+import com.smpletour.order.dao.IOrderDao;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -263,10 +266,10 @@ public class ProductBizImp implements IProductBiz {
         return productDao.save(product);
     }
 
-    public void deleteProductById(Long id) {
-        productDao.removeEntityById(Product.class, id);
-        stockBiz.deleteStocksByInventoryTypeId(InventoryType.product, id);
-    }
+//    public void deleteProductById(Long id) {
+//        productDao.removeEntityById(Product.class, id);
+//        stockBiz.deleteStocksByInventoryTypeId(InventoryType.product, id);
+//    }
 
     public Product updateProduct(Product product) throws BaseSystemException {
         if (product == null || product.getId() == null)
@@ -415,7 +418,7 @@ public class ProductBizImp implements IProductBiz {
 
                 // 查询已销售的凭证书作为已消耗的容量
                 List<BusNo.BusCapacity> capacities = busNoPlans.stream().map(busNoPlan -> {
-                    List<CertIdentity> certIdentities = orderDao.getCertIdentitiesByConditions(busNo, busNoPlan.getBus(),
+                    List<Cert> certIdentities = orderDao.getCertIdentitiesByConditions(busNo, busNoPlan.getBus(),
                             Date.from(offDay.toInstant().plus(busNoSerial.getDay(), ChronoUnit.DAYS)));
                     return new BusNo.BusCapacity(busNoPlan.getBus(), busNoPlan.getCapacity(), (!(certIdentities == null || certIdentities.isEmpty()) ? certIdentities.size() : 0));
                 }).collect(Collectors.toList());

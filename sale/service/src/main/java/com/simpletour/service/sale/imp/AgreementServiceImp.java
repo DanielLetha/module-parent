@@ -65,18 +65,19 @@ public class AgreementServiceImp implements IAgreementService {
     }
 
     @Override
-    public Optional<Agreement> updateStatus(Agreement agreement) {
-        if (agreement == null)
+    public Optional<Agreement> updateStatus(Long id, Boolean enabled) {
+        if (id == null)
             throw new BaseSystemException(AgreementServiceError.AGREEMENT_EMPTY);
-        Agreement original = agreementBiz.getAgreementById(agreement.getId());
-        if (original == null)
+        Agreement agreement = agreementBiz.getAgreementById(id);
+        if (agreement == null)
             throw new BaseSystemException(AgreementServiceError.AGREEMENT_NOT_EXIST);
-        if (original.isEnabled().equals(agreement.isEnabled())) {
-            if (original.isEnabled())
+        if (agreement.isEnabled().equals(enabled)) {
+            if (agreement.isEnabled())
                 throw new BaseSystemException(AgreementServiceError.AGREEMENT_STATUS_ENABLED);
             else
                 throw new BaseSystemException(AgreementServiceError.AGREEMENT_STATUS_DISABLED);
         }
+        agreement.setEnabled(enabled);
         return Optional.ofNullable(agreementBiz.updateStatus(agreement));
     }
 

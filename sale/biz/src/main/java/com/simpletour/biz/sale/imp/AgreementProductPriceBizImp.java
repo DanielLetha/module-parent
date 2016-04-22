@@ -53,15 +53,14 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     }
 
     @Override
-    public boolean isExisted(Long agreementId, Long productId, Date date, String type) {
+    public boolean isExisted(Long agreementProductId, Date date, String type) {
         ConditionOrderByQuery conditionOrderByQuery = new ConditionOrderByQuery();
         AndConditionSet condition = new AndConditionSet();
-        condition.addCondition("productId", productId);
-        condition.addCondition("agreementId", agreementId);
+        condition.addCondition("agreementProductId", agreementProductId);
         condition.addCondition("date", date);
         condition.addCondition("type", type);
         conditionOrderByQuery.setCondition(condition);
-        List<AgreementProductPrice> agreementProductPriceList = getAgreementProductList(conditionOrderByQuery);
+        List<AgreementProductPrice> agreementProductPriceList = getAgreementProductPriceList(conditionOrderByQuery);
         if (agreementProductPriceList.isEmpty() || agreementProductPriceList.size() == 0) {
             return false;
         }
@@ -69,9 +68,11 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     }
 
     @Override
-    public List<AgreementProductPrice> getAgreementProductList(ConditionOrderByQuery query) {
+    public List<AgreementProductPrice> getAgreementProductPriceList(ConditionOrderByQuery query) {
         return agreementProductPriceDao.getEntitiesByQuery(AgreementProductPrice.class, query);
     }
+
+
 
     @Override
     public DomainPage<AgreementProductPrice> queryAgreementProductPricePageByCondition(Map<String, Object> conditions, String orderByFiledName, IBaseDao.SortBy orderBy, int pageIndex, int pageSize, boolean byLike) {
@@ -81,10 +82,9 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     private void checkNull(AgreementProductPrice agreementProductPrice) {
         if (agreementProductPrice == null)
             throw new BaseSystemException(AgreementProductPriceBizError.AGREEMENT_PRODUCT_PRICE_EMPTY);
-        if (agreementProductPrice.getAgreement() == null || agreementProductPrice.getAgreement().getId() == null)
-            throw new BaseSystemException(AgreementProductPriceBizError.AGREEMENT_NULL);
-        if (agreementProductPrice.getProduct() == null || agreementProductPrice.getProduct().getId() == null)
+        if (agreementProductPrice.getAgreementProduct() == null || agreementProductPrice.getAgreementProduct().getId() == null)
             throw new BaseSystemException(AgreementProductPriceBizError.AGREEMENT_PRODUCT_NULL);
+
 
     }
 
