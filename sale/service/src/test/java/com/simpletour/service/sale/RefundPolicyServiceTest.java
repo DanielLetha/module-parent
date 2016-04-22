@@ -73,17 +73,6 @@ public class RefundPolicyServiceTest extends AbstractTransactionalTestNGSpringCo
             Assert.assertEquals(e.getError(), RefundPolicyServiceError.REFUND_POLICY_NULL);
         }
 
-        //添加模板id不为空
-        refundPolicy=refundPolicyData.generateRefundPolicy("add2");
-        refundPolicy.setId(2L);
-        try{
-            refundPolicyService.addRefundPolicy(refundPolicy);
-            Assert.fail();
-        }catch (BaseSystemException e){
-            Assert.assertEquals(e.getError(), RefundPolicyServiceError.REFUND_POLICY_DATA_ERROR);
-        }
-        refundPolicy.setId(null);
-
         //添加模板中细则为空
         List<RefundRule> refundRuleList=refundPolicy.getRefundRules();
         refundPolicy.setRefundRules(null);
@@ -94,25 +83,6 @@ public class RefundPolicyServiceTest extends AbstractTransactionalTestNGSpringCo
             Assert.assertEquals(e.getError(), RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_NULL);
         }
         refundPolicy.setRefundRules(refundRuleList);
-
-        //添加模板中细则id不为空
-        refundPolicy.getRefundRules().get(0).setId(2L);
-        try{
-            refundPolicyService.addRefundPolicy(refundPolicy);
-            Assert.fail();
-        }catch (BaseSystemException e){
-            Assert.assertEquals(e.getError(), RefundPolicyServiceError.REFUND_POLICY_DATA_ERROR);
-        }
-        refundPolicy.getRefundRules().get(0).setId(null);
-
-        //细则时间重叠
-        refundPolicy.getRefundRules().get(0).setTiming(refundPolicy.getRefundRules().get(1).getTiming());
-        try{
-            refundPolicyService.addRefundPolicy(refundPolicy);
-            Assert.fail();
-        }catch (BaseSystemException e){
-            Assert.assertEquals(e.getError(), RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_ERROR);
-        }
     }
 
     //测试：正常更新
@@ -167,27 +137,6 @@ public class RefundPolicyServiceTest extends AbstractTransactionalTestNGSpringCo
             Assert.assertEquals(e.getError(),RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_NULL);
         }
         refundPolicy.setRefundRules(refundRules);
-
-        //更新细则存在覆盖
-        refundPolicy.getRefundRules().get(0).setTiming(refundPolicy.getRefundRules().get(1).getTiming());
-        try{
-            refundPolicyService.updateRefundPolicy(refundPolicy);
-            Assert.fail();
-        }catch (BaseSystemException e){
-            Assert.assertEquals(e.getError(),RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_ERROR);
-        }
-        refundPolicy.getRefundRules().get(0).setTiming(1);
-
-        //存在更新细则id不为空，但不存在。
-        Long ruleId=refundPolicy.getRefundRules().get(0).getId();
-        refundPolicy.getRefundRules().get(0).setId(Long.MAX_VALUE);
-        try{
-            refundPolicyService.updateRefundPolicy(refundPolicy);
-            Assert.fail();
-        }catch (BaseSystemException e){
-            Assert.assertEquals(e.getError(),RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_NOT_EXIST);
-        }
-        refundPolicy.getRefundRules().get(0).setId(ruleId);
     }
 
     //测试：依据id获取退款规则模板

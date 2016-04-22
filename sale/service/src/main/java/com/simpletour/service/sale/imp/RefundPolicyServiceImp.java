@@ -25,33 +25,12 @@ public class RefundPolicyServiceImp implements IRefundPolicyService {
     @Autowired
     private IRefundPolicyBiz refundPolicyBiz;
 
-    //判断退款细则是否重复
-    private boolean isRuleAvaliable(List<RefundRule> refundRules){
-        for(int i=1;i<refundRules.size();i++){
-            if (refundRules.get(i-1).getTiming()>=refundRules.get(i).getTiming())
-                return false;
-        }
-        return true;
-    }
-
     @Override
     public Optional<RefundPolicy> addRefundPolicy(RefundPolicy refundPolicy) {
         if(refundPolicy==null)
             throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_NULL);
-        if(refundPolicy.getId()!=null)
-            throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_DATA_ERROR);
         if(refundPolicy.getRefundRules()==null||refundPolicy.getRefundRules().isEmpty())
             throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_NULL);
-        if(refundPolicy.getRefundRules().stream().anyMatch(tmp->tmp.getId()!=null))
-            throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_DATA_ERROR);
-        if(!isRuleAvaliable(refundPolicy.getRefundRules()))
-            throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_ERROR);
-
-        refundPolicy.getRefundRules().forEach(tmp->{
-            if (tmp.getRefundPolicy()==null)
-                tmp.setRefundPolicy(refundPolicy);
-        });
-
         return Optional.ofNullable(refundPolicyBiz.addRefundPolicy(refundPolicy));
     }
 
@@ -65,18 +44,6 @@ public class RefundPolicyServiceImp implements IRefundPolicyService {
             throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_NOT_EXIST);
         if(refundPolicy.getRefundRules()==null||refundPolicy.getRefundRules().isEmpty())
             throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_NULL);
-        if(!isRuleAvaliable(refundPolicy.getRefundRules()))
-            throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_ERROR);
-
-        refundPolicy.getRefundRules().forEach(tmp->{
-            if (tmp.getId()!=null&&!refundPolicyBiz.isRefundRuleExisted(tmp.getId())){
-                throw new BaseSystemException(RefundPolicyServiceError.REFUND_POLICY_REFUND_RULE_NOT_EXIST);
-            }
-        });
-        refundPolicy.getRefundRules().forEach(tmp->{
-            if (tmp.getRefundPolicy()==null)
-                tmp.setRefundPolicy(refundPolicy);
-        });
         return Optional.ofNullable(refundPolicyBiz.updateRefundPolicy(refundPolicy));
     }
 

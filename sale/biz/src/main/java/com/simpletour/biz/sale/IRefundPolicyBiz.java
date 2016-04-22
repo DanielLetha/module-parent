@@ -61,10 +61,4 @@ public interface IRefundPolicyBiz {
      */
     boolean isRefundPolicyExisted(long id);
 
-    /**
-     * 根据id判断退款细则是否存在
-     * @param id
-     * @return
-     */
-    boolean isRefundRuleExisted(long id);
 }
