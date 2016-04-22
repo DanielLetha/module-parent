@@ -41,6 +41,12 @@ public class RefundPolicyBizImp implements IRefundPolicyBiz {
         RefundPolicy refundPolicyExisted=findRefundPolicyByName(refundPolicy.getName());
         if(refundPolicyExisted!=null)
             throw new BaseSystemException(RefundPolicyBizError.REFUND_POLICY_NAME_EXIST);
+        if(!isRefundRuleListAvailable(refundPolicy.getRefundRules()))
+            throw new BaseSystemException(RefundPolicyBizError.REFUND_POLICY_REFUND_RULE_ERROR);
+        refundPolicy.getRefundRules().forEach(tmp->{
+            if (tmp.getRefundPolicy()==null)
+                tmp.setRefundPolicy(refundPolicy);
+        });
         return refundPolicyDao.save(refundPolicy);
     }
 
@@ -49,6 +55,8 @@ public class RefundPolicyBizImp implements IRefundPolicyBiz {
         RefundPolicy refundPolicyExisted=findRefundPolicyByName(refundPolicy.getName());
         if(refundPolicyExisted!=null&&refundPolicyExisted.getId()!=refundPolicy.getId())
             throw new BaseSystemException(RefundPolicyBizError.REFUND_POLICY_NAME_EXIST);
+        if(!isRefundRuleListAvailable(refundPolicy.getRefundRules()))
+            throw new BaseSystemException(RefundPolicyBizError.REFUND_POLICY_REFUND_RULE_ERROR);
         return refundPolicyDao.save(refundPolicy);
     }
 
@@ -79,9 +87,11 @@ public class RefundPolicyBizImp implements IRefundPolicyBiz {
         return refundPolicy!=null;
     }
 
-    @Override
-    public boolean isRefundRuleExisted(long id) {
-        RefundRule refundRule=refundRuleDao.getEntityById(RefundRule.class,id);
-        return refundRule!=null;
+    private boolean isRefundRuleListAvailable(List<RefundRule> refundRules) {
+        for(int i=1;i<refundRules.size();i++){
+            if (refundRules.get(i-1).getTiming()>=refundRules.get(i).getTiming())
+                return false;
+        }
+        return true;
     }
 }

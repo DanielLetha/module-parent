@@ -11,6 +11,7 @@ public enum RefundPolicyBizError implements IError {
     REFUND_POLICY_NULL("0001","退款模板为空"),
     REFUND_POLICY_DATA_ERROR("0002","数据库异常"),
     REFUND_POLICY_NAME_EXIST("0003","退款模板名称已存在"),
+    REFUND_POLICY_REFUND_RULE_ERROR("0004","退款规则时间范围应完全闭合且不重叠"),
     ;
 
 
