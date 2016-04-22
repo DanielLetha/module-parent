@@ -10,6 +10,7 @@ import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.sale.IAgreementProductPriceDao;
 import com.simpletour.domain.sale.AgreementProductPrice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @Since ： ${VERSION}
  * @Remark: ${Remark}
  */
+@Component
 public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
 
     @Autowired
