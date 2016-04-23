@@ -2,9 +2,11 @@ package com.simpletour.service.order.impl;
 
 import com.simpletour.biz.sale.ISaleAppBiz;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.domain.order.Item;
 import com.simpletour.domain.order.Order;
 import com.simpletour.domain.sale.SaleApp;
 import com.simpletour.order.biz.IItemBiz;
+import com.simpletour.order.biz.IOrderBiz;
 import com.simpletour.service.order.IOrderService;
 import com.simpletour.service.order.error.OrderServiceError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     private IItemBiz itemBiz;
+
+    @Autowired
+    private IOrderBiz orderBiz;
 
     /**
      * 校验订单关联的销售端是否存在,并设置订单关联的销售端
@@ -63,10 +68,7 @@ public class OrderServiceImpl implements IOrderService {
             throw new BaseSystemException(OrderServiceError.ORDER_NULL);
         validateSaleApp(order);
         validateItem(order);
-        //检查库存
-        //设置订单价格
-//        order.setAmount(order.getItems().stream().);
-        //设置订单状态
-        return null;
+        //TODO...检查库存
+        return Optional.ofNullable(orderBiz.addOrder(order));
     }
 }

@@ -78,7 +78,7 @@ public interface IPriceService {
      *
      * return void
      */
-    void deletePrice(Long id) throws BaseSystemException;
+    //void deletePrice(Long id) throws BaseSystemException;
 
     /**
      * 功能：批量删除库存价格信息
@@ -91,5 +91,5 @@ public interface IPriceService {
      *
      * return void
      */
-    void deletePrices(List<Long> ids);
+    //void deletePrices(List<Long> ids);
 }

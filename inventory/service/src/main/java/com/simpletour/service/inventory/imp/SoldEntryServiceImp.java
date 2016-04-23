@@ -2,18 +2,13 @@ package com.simpletour.service.inventory.imp;
 
 import com.simpletour.biz.inventory.ISoldEntryBiz;
 import com.simpletour.biz.inventory.IStockQueryBiz;
-import com.simpletour.biz.inventory.error.InventoryBizError;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.SoldEntry;
-import com.simpletour.domain.inventory.Stock;
-import com.simpletour.domain.inventory.query.SoldEntryKey;
 import com.simpletour.service.inventory.ISoldEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,23 +56,23 @@ public class SoldEntryServiceImp implements ISoldEntryService {
         return soldEntries;
     }
 
-    @Override
-    public void deleteSoldEntry(Long id) throws BaseSystemException {
-        //soldEntryBiz.deleteSoldEntry(id);
-
-        Optional<SoldEntry> optional = stockQueryBiz.getSoldEntryById(id);
-        if (!optional.isPresent()) {
-            throw new BaseSystemException(InventoryBizError.SOLD_ENTRY_NOT_EXIST);
-        }
-        soldEntryBiz.deleteSoldEntry(optional.get());
-    }
-
-    @Override
-    public void deleteSoldEntries(List<Long> ids) {
-        if (null != ids) {
-            ids.stream().filter(id -> null != id && 0 < id).forEach(id -> deleteSoldEntry(id));
-        }
-    }
+//    @Override
+//    public void deleteSoldEntry(Long id) throws BaseSystemException {
+//        //soldEntryBiz.deleteSoldEntry(id);
+//
+//        Optional<SoldEntry> optional = stockQueryBiz.getSoldEntryById(id);
+//        if (!optional.isPresent()) {
+//            throw new BaseSystemException(InventoryBizError.SOLD_ENTRY_NOT_EXIST);
+//        }
+//        soldEntryBiz.deleteSoldEntry(optional.get());
+//    }
+//
+//    @Override
+//    public void deleteSoldEntries(List<Long> ids) {
+//        if (null != ids) {
+//            ids.stream().filter(id -> null != id && 0 < id).forEach(id -> deleteSoldEntry(id));
+//        }
+//    }
 
     @Override
     public void invalidateSoldEntriesByOrderId(Long oid) {

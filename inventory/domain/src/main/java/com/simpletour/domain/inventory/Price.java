@@ -35,19 +35,19 @@ public class Price extends StockBound {
     private Type type = Type.adult;
 
     /**
-     * 成本价
+     * 成本价，价格精确到分，即12295等同于122元9角5分
      */
     @Column
     private Integer cost;
 
     /**
-     * 结算价
+     * 结算价，价格精确到分，即12295等同于122元9角5分
      */
     @Column
     private Integer settlement;
 
     /**
-     * 建议售价
+     * 建议售价，价格精确到分，即12295等同于122元9角5分
      */
     @Column
     private Integer retail;

@@ -38,15 +38,15 @@
         <property name="packagesToScan">
             <array>
                 <value>com.simpletour.domain</value>
-                <value>com.simpletour.common.core.domain</value>
+                <value>com.simpletour.commons.data.domain</value>
             </array>
         </property>
         <!-- 指定JPA属性；如Hibernate中指定是否显示SQL的是否显示、方言等 -->
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">com.simpletour.common.core.hibernate.dialect.LongArrayPostgreSQLDialect</prop>
+                <prop key="hibernate.dialect">com.simpletour.commons.data.dialect.LongArrayPostgreSQLDialect</prop>
                 <!--<prop key="hibernate.dialect">org.hibernate.dialect.DerbyDialect</prop>-->
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>

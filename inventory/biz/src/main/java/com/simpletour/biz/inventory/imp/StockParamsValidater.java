@@ -37,13 +37,13 @@ final class StockParamsValidater {
         }
     }
 
-    static void validateStockParam(InventoryType inventoryType, Long inventoryTypeId, Date day) throws BaseSystemException {
+    static void validateBoundParams(InventoryType inventoryType, Long inventoryTypeId, Date day) throws BaseSystemException {
         if (null == inventoryType || null == inventoryTypeId || 0 >= inventoryTypeId || null == day) {
             throw new BaseSystemException(InventoryBizError.INVALID_STOCK_PARAM);
         }
     }
 
-    static void validateStockParam(InventoryType inventoryType, Long inventoryTypeId, Date startDate, Date endDate) throws BaseSystemException {
+    static void validateBoundParams(InventoryType inventoryType, Long inventoryTypeId, Date startDate, Date endDate) throws BaseSystemException {
         if (null == inventoryType || null == inventoryTypeId || 0 >= inventoryTypeId) {
             throw new BaseSystemException(InventoryBizError.INVALID_STOCK_PARAM);
         }

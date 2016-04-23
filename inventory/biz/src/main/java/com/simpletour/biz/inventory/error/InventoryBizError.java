@@ -29,8 +29,14 @@ public enum InventoryBizError implements IError {
     DEPENDENT_STOCK_SHORTAGE("0010", "依赖库存量已不足"),
     GET_STOCK_PRICE_FAILED("0011", "获取库存价格失败，请检查查询参数是否正确，以及库存是否还存在"),
 
+    STOCK_ADD_FAILED("0100", "库存基本信息添加失败"),
+    STOCK_UPDATE_FAILED("0100", "库存基本信息更新失败"),
+
+    PRICE_IS_EMPTY("1000", "库存价格信息不能为空"),
     PRICE_IS_EXISTING("1001", "库存价格信息已存在"),
     PRICE_NOT_EXIST("1002", "库存价格信息不存在"),
+    PRICE_ADD_FAILED("1003", "库存价格信息添加失败"),
+    PRICE_UPDATE_FAILED("1003", "库存价格信息更新失败"),
 
     SOLD_ENTRY_IS_EXISTING("2001", "库存销售记录信息已存在"),
     SOLD_ENTRY_NOT_EXIST("2002", "库存销售记录信息不存在"),

@@ -59,7 +59,7 @@ public interface IProcurementBiz {
      * @param id 主键ID
      * @return procurement 元素实体
      */
-    Procurement getProcurementById(long id);
+    Procurement getProcurementById(Long id);
 
     /**
      * 功能：根据资源类型、状态、名称、所在地等查询条件来获取元素列表(精确查找)

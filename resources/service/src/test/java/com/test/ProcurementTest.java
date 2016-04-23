@@ -1,28 +1,32 @@
 package com.test;
 
+import com.simpletour.biz.inventory.IStockQueryBiz;
 import com.simpletour.biz.resources.*;
 import com.simpletour.biz.resources.vo.ProcurementVo;
 import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.commons.data.util.ThreadLocalUtil;
 import com.simpletour.dao.resources.IResourcesDao;
+import com.simpletour.domain.inventory.Price;
+import com.simpletour.domain.inventory.Stock;
+import com.simpletour.domain.inventory.StockPrice;
+import com.simpletour.domain.inventory.query.StockKey;
 import com.simpletour.domain.resources.*;
 import com.simpletour.service.resources.IResourcesService;
 import com.simpletour.service.resources.error.ResourcesServiceError;
-import org.junit.Assert;
+import org.junit.Ignore;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Brief : 元素测试
@@ -30,7 +34,9 @@ import java.util.Optional;
  * Date  : 2016/3/24
  */
 @ContextConfiguration({"classpath:applicationContext.xml"})
-public class ProcurementTest extends AbstractTransactionalTestNGSpringContextTests {
+public class ProcurementTest extends AbstractTransactionalTestNGSpringContextTests
+//public class ProcurementTest extends AbstractTestNGSpringContextTests
+{
 
     @Resource
     private IOspBiz ospBiz;
@@ -50,6 +56,9 @@ public class ProcurementTest extends AbstractTransactionalTestNGSpringContextTes
     @Resource
     private IResourcesService resourcesService;
 
+    @Resource
+    IStockQueryBiz stockQueryBiz;
+
     private Area area = null;
     private Destination destination = null;
     private Hotel hotel = null;
@@ -58,7 +67,8 @@ public class ProcurementTest extends AbstractTransactionalTestNGSpringContextTes
     private Entertainment entertainment = null;
     private OfflineServiceProvider osp = null;
 
-    @BeforeClass
+    @Ignore
+    //@BeforeClass
     public void setup() {
 //        new EncryptedToken("1", "1", "1", "127.0.0.1", Token.ClientType.BROWSER);
 
@@ -90,7 +100,8 @@ public class ProcurementTest extends AbstractTransactionalTestNGSpringContextTes
         Assert.assertNotNull(osp);
     }
 
-    @AfterClass
+    @Ignore
+    //@AfterClass
     public void teardown() {
         removeCatchException(hotel);
         removeCatchException(osp);
@@ -815,6 +826,171 @@ public class ProcurementTest extends AbstractTransactionalTestNGSpringContextTes
         Optional<Procurement> dbProcurementOpt = resourcesService.addProcurement(tempProcurement);
         Assert.assertNotNull(resourcesService.getProcurementById(dbProcurementOpt.get().getId()));
     }
+
+    private Date paseDate(String date) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date day = null;
+        try {
+            day = df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Assert.fail("invalid date format!");
+        }
+        return day;
+    }
+
+    private StockKey generateProcurementStock() {
+        final long DEFAULT_TENANT_ID = 1L;
+        ThreadLocalUtil.setTenantId(DEFAULT_TENANT_ID);
+
+        OfflineServiceProvider tempOsp = new OfflineServiceProvider();
+        tempOsp.setName("简途旅行");
+        tempOsp.setTenantId(DEFAULT_TENANT_ID);
+
+        OfflineServiceProvider savedOsp = ospBiz.addOfflineServiceProvider(tempOsp);
+        Assert.assertNotNull(savedOsp);
+
+        Area tempArea = new Area();
+        tempArea.setId(513337L);
+        tempArea.setName("四川省-甘孜藏族自治州-稻城县");
+
+        Destination tempDestination = new Destination();
+        tempDestination.setAddress("四川省-甘孜藏族自治州-稻城县");
+        tempDestination.setName("稻城亚丁");
+        tempDestination.setLat(new BigDecimal(168.1));
+        tempDestination.setLon(new BigDecimal(82.5));
+        tempDestination.setArea(tempArea);
+        tempDestination.setTenantId(DEFAULT_TENANT_ID);
+
+        Destination savedDestination = destinationBiz.addDestination(tempDestination);
+        Assert.assertNotNull(savedDestination);
+
+        Scenic tempScenic = new Scenic();
+        tempScenic.setName("稻城亚丁风景区");
+        tempScenic.setAddress(savedDestination.getAddress());
+        tempScenic.setDestination(savedDestination);
+        tempScenic.setLat(savedDestination.getLat());
+        tempScenic.setLon(savedDestination.getLon());
+        tempScenic.setDel(false);
+        tempScenic.setTenantId(DEFAULT_TENANT_ID);
+
+        Scenic savedScenic = scenicBiz.addScenic(tempScenic);
+        Assert.assertNotNull(savedScenic);
+
+        Procurement procurement = new Procurement();
+        procurement.setName("稻城亚丁门票-2张");
+        procurement.setRemark("景点元素");
+        procurement.setDestination(savedDestination);
+        procurement.setOsp(savedOsp);
+        procurement.setResourceType(Procurement.ResourceType.scenic);
+        procurement.setResourceId(savedScenic.getId());
+        procurement.setTenantId(DEFAULT_TENANT_ID);
+
+        Optional<Procurement> procurementOpt = resourcesService.addProcurement(procurement);
+        Assert.assertTrue(procurementOpt.isPresent());
+        return procurementOpt.get().getStockKey();
+    }
+
+    /**
+     * 添加单个景点元素库存
+     * @return
+     */
+    @Test
+    public void testAddProcurementStock() {
+        System.out.println("enter testAddProcurementStock");
+
+        StockKey stockKey = generateProcurementStock();
+        Date day = paseDate("2016-04-22");
+        List<Date> days = new ArrayList<Date>(1){{add(day);}};
+
+        List<Price> prices = new ArrayList<>(2);
+        prices.add(new Price(stockKey.getInventoryType(), stockKey.getInventoryId(), day, Price.Type.adult, 12295, 13098, 15050));
+        prices.add(new Price(stockKey.getInventoryType(), stockKey.getInventoryId(), day, Price.Type.child, 8086, 9550, 11000));
+
+        StockPrice stockPrice = new StockPrice(stockKey, days, 50, prices, true);
+        Optional<Stock> stockOptional = resourcesService.addProcurementStock(stockPrice);
+        Assert.assertTrue(stockOptional.isPresent());
+
+        Stock stock = stockOptional.get();
+        Assert.assertEquals(stockPrice.getStockKey().getInventoryType(), stock.getInventoryType());
+        Assert.assertEquals(stockPrice.getStockKey().getInventoryId(), stock.getInventoryId());
+        Assert.assertEquals(stockPrice.getQuantity(), stock.getQuantity());
+
+        System.out.println("end testAddProcurementStock");
+    }
+
+    /**
+     * 批量添加景点元素库存
+     * @return
+     */
+    @Test
+    public void testAddProcurementStocks() {
+        System.out.println("enter testAddProcurementStocks");
+
+        StockKey stockKey = generateProcurementStock();
+        Date day1 = paseDate("2016-04-23");
+        Date day2 = paseDate("2016-04-24");
+        Date day3 = paseDate("2016-04-25");
+        List<Date> days = new ArrayList<Date>(2){{add(day1);add(day2);add(day3);}};
+
+        List<Price> prices = new ArrayList<>(2);
+        prices.add(new Price(stockKey.getInventoryType(), stockKey.getInventoryId(), null, Price.Type.adult, 10115, 11598, 12970));
+        prices.add(new Price(stockKey.getInventoryType(), stockKey.getInventoryId(), null, Price.Type.child, 7011, 8160, 9900));
+        prices.add(new Price(stockKey.getInventoryType(), stockKey.getInventoryId(), null, Price.Type.child, 7011, 8160, 9900));
+
+        StockPrice stockPrice = new StockPrice(stockKey, days, 55, prices, true);
+        List<Stock> stocks = resourcesService.addProcurementStocks(stockPrice);
+        Assert.assertNotNull(stocks);
+        Assert.assertEquals(3, stocks.size());
+
+        System.out.println("end testAddProcurementStocks");
+    }
+
+    /**
+     * 更新单个景点元素库存
+     * @return
+     */
+    @Test
+    public void testUpdateProcurementStock() {
+        System.out.println("enter testUpdateProcurementStock");
+
+        StockKey stockKey = generateProcurementStock();
+        Date day = paseDate("2016-04-22");
+        List<Date> days = new ArrayList<Date>(1){{add(day);}};
+
+        List<Price> prices = new ArrayList<>(2);
+        prices.add(new Price(stockKey.getInventoryType(), stockKey.getInventoryId(), day, Price.Type.adult, 12295, 13098, 15050));
+        prices.add(new Price(stockKey.getInventoryType(), stockKey.getInventoryId(), day, Price.Type.child, 8086, 9550, 11000));
+
+        StockPrice stockPrice = new StockPrice(stockKey, days, 50, prices, true);
+        Optional<Stock> addStockOptional = resourcesService.addProcurementStock(stockPrice);
+        Assert.assertTrue(addStockOptional.isPresent());
+
+        Integer quantity = addStockOptional.get().getQuantity();
+        Assert.assertEquals(stockPrice.getQuantity(), quantity);
+        stockPrice.setQuantity(60);
+
+        List<Price> savedPrices = stockQueryBiz.getPrices(stockPrice.getStockKey(), day, null);
+        Price adultPrice = savedPrices.get(0);
+        int adultCost = adultPrice.getCost();
+        adultPrice.setCost(12200);
+
+        Price childPrice = savedPrices.get(1);
+        int childCost = childPrice.getCost();
+        childPrice.setCost(8080);
+
+        stockPrice.setPrices(savedPrices);
+        Optional<Stock> updateStockOptional = resourcesService.updateProcurementStock(stockPrice);
+        Assert.assertTrue(updateStockOptional.isPresent());
+
+        Stock stock = updateStockOptional.get();
+        Assert.assertEquals(addStockOptional.get().getId(), stock.getId());
+        Assert.assertNotEquals(quantity, stock.getQuantity());
+        Assert.assertNotEquals(adultCost, 12200);
+        Assert.assertNotEquals(childCost, 8080);
+
+        System.out.println("end testUpdateProcurementStock");
+    }
     
     /**
      * 测试正常情况下，多条件查询，返回元素分页对象
@@ -894,7 +1070,7 @@ public class ProcurementTest extends AbstractTransactionalTestNGSpringContextTes
         Assert.assertEquals(queriedProcurementVo.getName(), tempStr);
         Assert.assertEquals(queriedProcurementVo.getResourceType(), Procurement.ResourceType.catering.getRemark());
         Assert.assertEquals(queriedProcurementVo.getDestination(), destination.getName());
-        Assert.assertEquals(queriedProcurementVo.isOnline(), Boolean.TRUE);
+        Assert.assertTrue(queriedProcurementVo.isOnline());
     }
 
     /**

@@ -9,6 +9,7 @@ import com.simpletour.domain.inventory.Stock;
 import com.simpletour.domain.inventory.query.*;
 import com.simpletour.service.inventory.IStockQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,19 +24,20 @@ import java.util.Optional;
  *
  * @since 2.0-SNAPSHOT
  */
+@Service
 public class StockQueryServiceImp implements IStockQueryService {
     @Autowired
     private IStockQueryBiz stockQueryBiz;
 
-    @Override
-    public Optional<Stock> getStockById(long id) {
-        return stockQueryBiz.getStockById(id);
-    }
+//    @Override
+//    public Optional<Stock> getStockById(long id) {
+//        return stockQueryBiz.getStockById(id);
+//    }
 
-    @Override
-    public boolean stockIsExisted(Stock stock) throws BaseSystemException {
-        return stockQueryBiz.stockIsExisted(stock);
-    }
+//    @Override
+//    public boolean isExisted(Stock stock) throws BaseSystemException {
+//        return stockQueryBiz.isExisted(stock);
+//    }
 
 //    @Override
 //    public BaseDomain getStockWithDependencies(StockKey stockKey, Date day) {

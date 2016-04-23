@@ -1,12 +1,12 @@
 package com.simpletour.service.inventory.imp;
 
 import com.simpletour.biz.inventory.IPriceBiz;
-import com.simpletour.biz.inventory.IStockQueryBiz;
 import com.simpletour.biz.inventory.error.InventoryBizError;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.domain.inventory.Price;
 import com.simpletour.service.inventory.IPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +20,17 @@ import java.util.Optional;
  *
  * @since 2.0-SNAPSHOT
  */
+@Service
 public class PriceServiceImp implements IPriceService {
-    @Autowired
-    private IStockQueryBiz stockQueryBiz;
+//    @Autowired
+//    private IStockQueryBiz stockQueryBiz;
 
     @Autowired
     IPriceBiz priceBiz;
 
     @Override
     public Optional<Price> addPrice(Price price) throws BaseSystemException {
-        if (stockQueryBiz.priceIsExisting(price)) {
+        if (priceBiz.isExisted(price)) {
             throw new BaseSystemException(InventoryBizError.PRICE_IS_EXISTING);
         }
         return priceBiz.addPrice(price);
@@ -47,7 +48,7 @@ public class PriceServiceImp implements IPriceService {
 
     @Override
     public Optional<Price> updatePrice(Price price) throws BaseSystemException {
-        if (!stockQueryBiz.priceIsExisting(price)) {
+        if (!priceBiz.isExisted(price)) {
             throw new BaseSystemException(InventoryBizError.PRICE_NOT_EXIST);
         }
         return priceBiz.updatePrice(price);
@@ -63,19 +64,19 @@ public class PriceServiceImp implements IPriceService {
         return prices;
     }
 
-    @Override
-    public void deletePrice(Long id) throws BaseSystemException {
-        Optional<Price> optional = stockQueryBiz.getPriceById(id);
-        if (!optional.isPresent()) {
-            throw new BaseSystemException(InventoryBizError.PRICE_NOT_EXIST);
-        }
-        priceBiz.deletePrice(optional.get());
-    }
-
-    @Override
-    public void deletePrices(List<Long> ids) {
-        if (null != ids) {
-            ids.stream().filter(id -> null != id && 0 < id).forEach(id -> deletePrice(id));
-        }
-    }
+//    @Override
+//    public void deletePrice(Long id) throws BaseSystemException {
+//        Optional<Price> optional = stockQueryBiz.getPriceById(id);
+//        if (!optional.isPresent()) {
+//            throw new BaseSystemException(InventoryBizError.PRICE_NOT_EXIST);
+//        }
+//        priceBiz.deletePrice(optional.get());
+//    }
+//
+//    @Override
+//    public void deletePrices(List<Long> ids) {
+//        if (null != ids) {
+//            ids.stream().filter(id -> null != id && 0 < id).forEach(id -> deletePrice(id));
+//        }
+//    }
 }

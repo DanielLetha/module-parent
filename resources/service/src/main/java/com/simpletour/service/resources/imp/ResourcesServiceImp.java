@@ -1,5 +1,9 @@
 package com.simpletour.service.resources.imp;
 
+import com.simpletour.biz.inventory.IPriceBiz;
+import com.simpletour.biz.inventory.IStockBiz;
+import com.simpletour.biz.inventory.IStockQueryBiz;
+import com.simpletour.biz.inventory.error.InventoryBizError;
 import com.simpletour.biz.resources.*;
 import com.simpletour.biz.resources.vo.ProcurementVo;
 import com.simpletour.commons.data.dao.IBaseDao;
@@ -7,22 +11,26 @@ import com.simpletour.commons.data.domain.BaseDomain;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.resources.IResourcesDao;
+import com.simpletour.domain.inventory.Price;
+import com.simpletour.domain.inventory.Stock;
+import com.simpletour.domain.inventory.StockPrice;
+import com.simpletour.domain.inventory.query.StockKey;
 import com.simpletour.domain.resources.*;
 import com.simpletour.service.resources.IResourcesService;
 import com.simpletour.service.resources.error.ResourcesServiceError;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 文件描述：资源模块业务处理实现类
  * 创建人员：石广路
  * 创建日期：2015/11/25 14:27
  * 备注说明：将资源包名从travelresources改为resources
+ *  1、添加增删改查元素库存的功能接口
  * @Since 2.0.0-SNAPSHOT
  */
 @Service
@@ -45,6 +53,15 @@ public class ResourcesServiceImp implements IResourcesService {
     private IEntertainmentBiz entertainmentBiz;
     @Resource
     private IProcurementBiz procurementBiz;
+
+    @Autowired
+    private IStockBiz stockBiz;
+
+    @Autowired
+    private IPriceBiz priceBiz;
+
+    @Autowired
+    private IStockQueryBiz stockQueryBiz;
 
     @Override
     public Optional<Scenic> addScenic(Scenic scenic) throws BaseSystemException {
@@ -269,7 +286,7 @@ public class ResourcesServiceImp implements IResourcesService {
     }
 
     @Override
-    public Optional<Procurement> getProcurementById(long id) {
+    public Optional<Procurement> getProcurementById(Long id) {
         return Optional.ofNullable(procurementBiz.getProcurementById(id));
     }
 
@@ -286,6 +303,143 @@ public class ResourcesServiceImp implements IResourcesService {
         return procurementBiz.queryProcurementVoPagesByConditions(conditions, orderByFiledName
                 , orderBy, pageIndex, pageSize);
     }
+
+    //region ------------------------------------procurement stock--------------------------------
+
+    /**
+     * 验证元素库存的基本信息
+     * @param stockPrice
+     */
+    private void validateProcurement(StockPrice stockPrice) {
+        StockKey stockKey = stockPrice.getStockKey();
+        if (null == stockKey) {
+            throw new BaseSystemException(ResourcesServiceError.EMPTY_PROCUREMENT_STOCK_PARAMS);
+        }
+
+        Procurement procurement = procurementBiz.getProcurementById(stockKey.getInventoryId());
+        if (null == procurement) {
+            throw new BaseSystemException(ResourcesServiceError.PROCUREMENT_NOT_EXIST);
+        }
+
+        checkProcurementResourceExist(procurement);
+
+        List<Date> days = stockPrice.getDays();
+        if (null == days || days.isEmpty()) {
+            throw new BaseSystemException(InventoryBizError.INVALID_DATE_PARAM);
+        }
+
+        List<Price> prices = stockPrice.getPrices();
+        if (null == prices || prices.isEmpty()) {
+            throw new BaseSystemException(InventoryBizError.PRICE_IS_EMPTY);
+        }
+    }
+
+    @Transactional
+    private Optional<Stock> addProcurementStockPrice(Stock stock, List<Price> prices) {
+        if (stockBiz.isExisted(stock)) {
+            throw new BaseSystemException(InventoryBizError.STOCK_IS_EXISTING);
+        }
+
+        Optional<Stock> stockOptional = stockBiz.addStock(stock);
+        if (!stockOptional.isPresent()) {
+            throw new BaseSystemException(InventoryBizError.STOCK_ADD_FAILED);
+        }
+
+        Date day = stock.getDay();
+        prices.stream().filter(price -> null != price && null == price.getId()).forEach(price -> {
+            price.setDay(day);
+
+            if (priceBiz.isExisted(price)) {
+                throw new BaseSystemException(InventoryBizError.PRICE_IS_EXISTING);
+            }
+
+            Optional<Price> priceOptional = priceBiz.addPrice(price);
+            if (!priceOptional.isPresent()) {
+                throw new BaseSystemException(InventoryBizError.PRICE_ADD_FAILED);
+            }
+        });
+
+        return stockOptional;
+    }
+
+    @Override
+    public Optional<Stock> addProcurementStock(StockPrice stockPrice) throws BaseSystemException {
+        validateProcurement(stockPrice);
+        return addProcurementStockPrice(stockPrice.toStock(), stockPrice.getPrices());
+    }
+
+    @Override
+    public List<Stock> addProcurementStocks(StockPrice stockPrice) throws BaseSystemException {
+        validateProcurement(stockPrice);
+
+        List<Stock> stocks = stockPrice.toStocks();
+        if (stocks.isEmpty()) {
+            throw new BaseSystemException(InventoryBizError.INVALID_DATE_SLOT);
+        }
+
+        List<Price> prices = stockPrice.getPrices();
+        List<Stock> savedStocks = new ArrayList<>(stocks.size());
+        stocks.forEach(stock -> savedStocks.add(addProcurementStockPrice(stock, prices).get()));
+
+        return savedStocks;
+    }
+
+    @Transactional
+    public Optional<Stock> updateProcurementStock(StockPrice stockPrice, Date day) throws BaseSystemException {
+        Optional<Stock> optional = stockQueryBiz.getStock(stockPrice.getStockKey(), day, true, false);
+        if (!optional.isPresent()) {
+            throw new BaseSystemException(InventoryBizError.STOCK_NOT_EXIST);
+        }
+
+        Stock stock = optional.get();
+        stock.setQuantity(stockPrice.getQuantity());
+        stock.setOnline(stockPrice.isOnline());
+
+        Optional<Stock> stockOptional = stockBiz.updateStock(stock);
+        if (!stockOptional.isPresent()) {
+            throw new BaseSystemException(InventoryBizError.STOCK_UPDATE_FAILED);
+        }
+
+        stockPrice.getPrices().forEach(price -> {
+            price.setDay(day);
+
+            if (!priceBiz.isExisted(price)) {
+                throw new BaseSystemException(InventoryBizError.PRICE_NOT_EXIST);
+            }
+
+            Optional<Price> priceOptional = priceBiz.updatePrice(price);
+            if (!priceOptional.isPresent()) {
+                throw new BaseSystemException(InventoryBizError.PRICE_UPDATE_FAILED);
+            }
+        });
+
+        return stockOptional;
+    }
+
+    @Override
+    @Transactional
+    public Optional<Stock> updateProcurementStock(StockPrice stockPrice) throws BaseSystemException {
+        validateProcurement(stockPrice);
+        return updateProcurementStock(stockPrice, stockPrice.getDays().get(0));
+    }
+
+    @Override
+    public List<Stock> updateProcurementStocks(StockPrice stockPrice) throws BaseSystemException {
+        validateProcurement(stockPrice);
+
+        List<Date> days = stockPrice.getDays();
+        List<Stock> savedStocks = new ArrayList<>(days.size());
+        days.stream().filter(day -> null != day).forEach(day -> savedStocks.add(updateProcurementStock(stockPrice, day).get()));
+
+        return savedStocks;
+    }
+
+    @Override
+    public List<Price> getProcurementPrices(StockKey stockKey, Date day, Price.Type type) {
+        return stockQueryBiz.getPrices(stockKey, day, type);
+    }
+
+    //endregion
 
     public Optional<Area> getAreaById(Long id) {
         return Optional.ofNullable(resourcesBiz.getAreaById(id));

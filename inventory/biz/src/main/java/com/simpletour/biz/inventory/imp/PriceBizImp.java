@@ -5,9 +5,10 @@ import com.simpletour.biz.inventory.error.InventoryBizError;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.inventory.IStockDao;
 import com.simpletour.domain.inventory.Price;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 文件描述：库存价格业务实现类
@@ -17,27 +18,28 @@ import java.util.Optional;
  *
  * @since 2.0-SNAPSHOT
  */
+@Component
 public class PriceBizImp implements IPriceBiz {
     @Resource
     private IStockDao stockDao;
 
-//    @Override
-//    public boolean isExisting(Price price) {
-//        StockParamsValidater.validateBoundParams(price);
-//
-//        Long id = price.getId();
-//        if (null != id && 0 < id) {
-//            return null != stockDao.getEntityById(Price.class, id);
-//        }
-//
-//        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
-//        fieldNameValueMap.put("inventoryType", price.getInventoryType());
-//        fieldNameValueMap.put("inventoryId", price.getInventoryId());
-//        fieldNameValueMap.put("day", price.getDay());
-//        fieldNameValueMap.put("type", price.getType());
-//
-//        return 0 < stockDao.getEntityTotalCount(Price.class, fieldNameValueMap);
-//    }
+    @Override
+    public boolean isExisted(Price price) {
+        StockParamsValidater.validateBoundParams(price);
+
+        Long id = price.getId();
+        if (null != id && 0 < id) {
+            return null != stockDao.getEntityById(Price.class, id);
+        }
+
+        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
+        fieldNameValueMap.put("inventoryType", price.getInventoryType());
+        fieldNameValueMap.put("inventoryId", price.getInventoryId());
+        fieldNameValueMap.put("day", price.getDay());
+        fieldNameValueMap.put("type", price.getType());
+
+        return 0 < stockDao.getEntityTotalCount(Price.class, fieldNameValueMap);
+    }
 
     @Override
     public Optional<Price> addPrice(Price price) throws BaseSystemException {
@@ -61,10 +63,10 @@ public class PriceBizImp implements IPriceBiz {
         return Optional.ofNullable(stockDao.save(price));
     }
 
-    @Override
-    public void deletePrice(Price price) {
-        stockDao.remove(price);
-    }
+//    @Override
+//    public void deletePrice(Price price) {
+//        stockDao.remove(price);
+//    }
 
 //    @Override
 //    public void deletePrice(Long id) throws BaseSystemException {

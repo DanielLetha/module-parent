@@ -4,7 +4,6 @@ import com.simpletour.biz.inventory.IStockBiz;
 import com.simpletour.biz.inventory.error.InventoryBizError;
 import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.dao.inventory.ISoldEntryDao;
 import com.simpletour.dao.inventory.IStockDao;
 import com.simpletour.domain.inventory.InventoryType;
 import com.simpletour.domain.inventory.Stock;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -35,20 +33,43 @@ public class StockBizImp implements IStockBiz {
     @Autowired
     private IStockDao stockDao;
 
-    @Resource
-    private ISoldEntryDao soldEntryDao;
+//    @Autowired
+//    private ISoldEntryDao soldEntryDao;
 
-//    @Override
-//    public boolean isExisted(Stock stock) throws BaseSystemException {
-//        StockParamsValidater.validateBoundParams(stock);
-//
-//        Long id = stock.getId();
-//        if (null != id && 0 < id) {
-//            return null != stockDao.getEntityById(Stock.class, id);
-//        }
-//
-//        return stockQueryBiz.hasOnlineStock(new StockKey(stock.getInventoryType(), stock.getInventoryId()), stock.getDay());
-//    }
+    @Override
+    public boolean isExisted(Stock stock) throws BaseSystemException {
+        StockParamsValidater.validateBoundParams(stock);
+
+        Long id = stock.getId();
+        if (null != id && 0 < id) {
+            return null != stockDao.getEntityById(Stock.class, id);
+        }
+
+        return hasOnlineStock(new StockKey(stock.getInventoryType(), stock.getInventoryId()), stock.getDay());
+    }
+
+    @Override
+    public boolean hasOnlineStock(StockKey stockKey, Date day) {
+        if (null == stockKey) {
+            return false;
+        }
+
+        Map<String, Object> fieldNameValueMap = new HashMap<>(4);
+        fieldNameValueMap.put("inventoryType", stockKey.getInventoryType());
+        fieldNameValueMap.put("inventoryId", stockKey.getInventoryId());
+        fieldNameValueMap.put("online", true);
+
+        if (null != day) {
+            Date date = (Date)day.clone();
+            int offset = stockKey.getOffset();
+            if (0 < offset) {
+                date = Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
+            }
+            fieldNameValueMap.put("day", date);
+        }
+
+        return 0 < stockDao.getEntityTotalCount(Stock.class, fieldNameValueMap);
+    }
 
     @Override
     public Optional<Stock> addStock(Stock stock) throws BaseSystemException {
@@ -128,10 +149,10 @@ public class StockBizImp implements IStockBiz {
 //    }
 
 
-    @Override
-    public void deleteStock(Stock stock) {
-        stockDao.remove(stock);
-    }
+//    @Override
+//    public void deleteStock(Stock stock) {
+//        stockDao.remove(stock);
+//    }
 
 //    @Override
 //    public void deleteStock(Long id) throws BaseSystemException {
@@ -425,7 +446,7 @@ public class StockBizImp implements IStockBiz {
      */
     private Optional<Stock> getStock(final StockKey stockKey, final Date day, Boolean online, boolean calculateQuantities) throws BaseSystemException {
         if (null != stockKey) {
-            StockParamsValidater.validateStockParam(stockKey.getInventoryType(), stockKey.getInventoryId(), day);
+            StockParamsValidater.validateBoundParams(stockKey.getInventoryType(), stockKey.getInventoryId(), day);
             int offset = stockKey.getOffset();
             Date date = 0 >= offset ? day : Date.from(day.toInstant().plus(offset, ChronoUnit.DAYS));
             return calculateQuantities ? stockDao.getStockQuantitiesListByConditions(stockKey, date, online) : stockDao.getStockByConditions(stockKey, date, online);
@@ -444,7 +465,7 @@ public class StockBizImp implements IStockBiz {
     private List<Stock> getStocksList(IStockTraceable trace, Date startDate, Date endDate, Boolean online) throws BaseSystemException {
         StockKey stockKey = trace.getStockKey();
         if (null != stockKey) {
-            StockParamsValidater.validateStockParam(stockKey.getInventoryType(), stockKey.getInventoryId(), startDate, endDate);
+            StockParamsValidater.validateBoundParams(stockKey.getInventoryType(), stockKey.getInventoryId(), startDate, endDate);
             return stockDao.getStocksQuantitiesListByConditions(new StockQuery(stockKey, startDate, endDate, online));
         }
         return Collections.emptyList();

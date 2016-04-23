@@ -1,9 +1,10 @@
 package com.simpletour.biz.inventory;
 
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.domain.inventory.InventoryType;
 import com.simpletour.domain.inventory.Stock;
+import com.simpletour.domain.inventory.query.StockKey;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -17,32 +18,29 @@ import java.util.Optional;
  */
 public interface IStockBiz {
     /**
-     * 功能：检查库存实体参数的有效性
+     * 功能：检查上线的库存信息是否已存在
      * 作者：石广路
      * 新增：2016-4-20
-     * 备注：将判断库存参数有效性的逻辑放到上层来做
-     *
-     * @param inventoryType     库存类型
-     * @param inventoryId       库存对象ID
-     * @param day               库存日期
-     *
-     * return 库存实体
-     */
-    //void validateStockParam(InventoryType inventoryType, Long inventoryId, Date day) throws BaseSystemException;
-
-    //void validateStockParam(Stock stock) throws BaseSystemException;
-
-    /**
-     * 功能：检查库存实体是否已存在
-     * 作者：石广路
-     * 新增：2016-4-20
-     * 备注：仅对库存实体的存在性做检查，如果库存的基本信息无效则抛出BaseSystemException
+     * 备注：仅对上线的库存信息的存在性做检查，如果库存的基本信息无效则抛出BaseSystemException
      *
      * @param stock     库存实体
      *
      * return true - 存在，false - 不存在
      */
-    //boolean isExisted(Stock stock) throws BaseSystemException;
+    boolean isExisted(Stock stock) throws BaseSystemException;
+
+    /**
+     * 功能：检查指定日期上的上线库存信息是否存在
+     * 作者：石广路
+     * 新增：2015-12-18 15:02
+     * 备注：如果不指定日期，则忽略日期查找条件，如果指定了日期，该接口则可以根据库存组合键中的日期偏移量来查找具体某一天上的上线库存是否存在
+     *
+     * @param stockKey  库存联合主键
+     * @param day       库存日期
+     *
+     * return true：库存元素存在，false：库存元素不存在
+     */
+    boolean hasOnlineStock(StockKey stockKey, Date day);
 
     /**
      * 功能：保存库存实体
@@ -104,18 +102,18 @@ public interface IStockBiz {
      */
     //List<Stock> updateStocks(List<Stock> stocks) throws BaseSystemException;
 
-    /**
-     * 功能：删除库存信息
-     * 作者：石广路
-     * 新增：2015-11-26 17:03
-     * 修改：由之前的根据ID来删除库存，改成由库存实体来删除库存，库存实体的存在性由外层来保证
-     * 备注：物理删除
-     *
-     * @param stock 库存实体
-     *
-     * return void
-     */
-    void deleteStock(Stock stock);
+//    /**
+//     * 功能：删除库存信息
+//     * 作者：石广路
+//     * 新增：2015-11-26 17:03
+//     * 修改：由之前的根据ID来删除库存，改成由库存实体来删除库存，库存实体的存在性由外层来保证
+//     * 备注：物理删除
+//     *
+//     * @param stock 库存实体
+//     *
+//     * return void
+//     */
+//    void deleteStock(Stock stock);
 
     /**
      * 功能：根据ID来删除库存信息
@@ -160,7 +158,7 @@ public interface IStockBiz {
      * @param type
      * @param id
      */
-    void deleteStocksByInventoryId(InventoryType type, Long id);
+//    void deleteStocksByInventoryId(InventoryType type, Long id);
 
     /**
      * 功能：根据ID获取库存信息
