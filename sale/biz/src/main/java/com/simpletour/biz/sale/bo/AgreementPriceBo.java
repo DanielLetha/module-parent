@@ -22,6 +22,9 @@ public class AgreementPriceBo {
 
     private Map<Type, Price> priceMap;
 
+    public AgreementPriceBo() {
+    }
+
     public AgreementPriceBo(AgreementProductPriceGroupKey groupKey, List<AgreementProductPrice> prices) {
         this(groupKey.getAgreementProduct(), groupKey.getDay(), prices);
     }
