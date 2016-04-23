@@ -20,7 +20,6 @@ import java.util.Map;
  * @Since ： ${VERSION}
  * @Remark: ${Remark}
  */
-@Repository
 public interface IAgreementProductPriceBiz {
     /**
      * 添加协议产品价格
