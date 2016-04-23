@@ -67,8 +67,12 @@ public class AgreementProductPriceBizTest extends AbstractTransactionalTestNGSpr
     @AfterTest
     public void clearDate() {
         String now = "2016-04-23";
+        String now1 = "2016-04-24";
+
         AgreementProduct agreementProduct = agreementProductBiz.getAgreementProductById(1L);
         agreementProductPriceBiz.deleteAgreementProductPrice(agreementProduct, formateDate(now));
+        agreementProductPriceBiz.deleteAgreementProductPrice(agreementProduct, formateDate(now1));
+
     }
 
     @Test(priority = 1)
@@ -120,10 +124,12 @@ public class AgreementProductPriceBizTest extends AbstractTransactionalTestNGSpr
         agreementPriceBo.setAgreementProduct(agreementProduct);
         agreementPriceBo.setPriceMap(map);
 
-        agreementProductPriceBiz.addAgreementProductPrice(agreementPriceBo);
+        AgreementPriceBo agreementPriceBo1 =  agreementProductPriceBiz.addAgreementProductPrice(agreementPriceBo);
+        Assert.assertNotNull(agreementPriceBo1);
     }
 
     @Test(priority = 4)
+    @Rollback(value = false)
     public void testUpdateAPP() {
         String now = "2016-04-23";
         AgreementProduct agreementProduct = agreementProductBiz.getAgreementProductById(1L);
