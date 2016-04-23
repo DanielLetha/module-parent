@@ -51,19 +51,29 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     }
 
     @Override
-    public void deleteAgreementProductPrice(Long agreementId, Date date) throws BaseSystemException {
+    public void deleteAgreementProductPrice(AgreementProduct agreementProduct, Date date) throws BaseSystemException {
+
+        AgreementPriceBo agreementPriceBo = getAgreementProductPrice(agreementProduct, date);
+        agreementPriceBo.asList().stream().forEach(agrementPrice -> agreementProductPriceDao.remove(agrementPrice));
+    }
+
+    @Override
+    public AgreementPriceBo getAgreementProductPrice(AgreementProduct agreementProduct, Date date) throws BaseSystemException {
         ConditionOrderByQuery conditionOrderByQuery = new ConditionOrderByQuery();
         AndConditionSet conditionSet = new AndConditionSet();
-        conditionSet.addCondition("agreementId", agreementId);
+        conditionSet.addCondition("agreementProduct", agreementProduct);
         conditionSet.addCondition("date", date);
         conditionOrderByQuery.setCondition(conditionSet);
         List<AgreementPriceBo> agreementPriceBos = getAgreementProductPriceList(conditionOrderByQuery);
-        if (agreementPriceBos.size() == 1) {
-            agreementPriceBos.get(0).asList().stream().forEach(agrementPrice -> agreementProductPriceDao.remove(agrementPrice));
+        if (agreementPriceBos.size() > 1) {
+            throw new BaseSystemException(AgreementProductPriceBizError.AGREEMENT_PRODUCT_PRICE_MULTITERM);
         }
+        if (agreementPriceBos.isEmpty() || agreementPriceBos.size() == 0) {
+            return null;
+        }
+        return agreementPriceBos.get(0);
 
     }
-
 
     @Override
     public List<AgreementPriceBo> getAgreementProductPriceList(ConditionOrderByQuery query) {
@@ -75,7 +85,7 @@ public class AgreementProductPriceBizImp implements IAgreementProductPriceBiz {
     private void checkNull(AgreementPriceBo agreementProductPrice) {
         if (agreementProductPrice == null)
             throw new BaseSystemException(AgreementProductPriceBizError.AGREEMENT_PRODUCT_PRICE_EMPTY);
-        if (agreementProductPrice == null || agreementProductPrice.getAgreementProduct().getId() == null)
+        if (agreementProductPrice.getAgreementProduct() == null || agreementProductPrice.getAgreementProduct().getId() == null)
             throw new BaseSystemException(AgreementProductPriceBizError.AGREEMENT_PRODUCT_NULL);
 
 

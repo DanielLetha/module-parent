@@ -63,7 +63,7 @@ public class AgreementPriceBo {
 
 
     public List<AgreementProductPrice> asList() {
-        return priceMap.keySet().stream().map(type -> new AgreementProductPrice(agreementProduct, type, date, priceMap.get(type).getCost(), priceMap.get(type).getSettlement(), priceMap.get(type).getRetail(), priceMap.get(type).getVersion())).collect(Collectors.toList());
+        return priceMap.keySet().stream().map(type -> new AgreementProductPrice(priceMap.get(type).getId(),agreementProduct, type, date, priceMap.get(type).getCost(), priceMap.get(type).getSettlement(), priceMap.get(type).getRetail(), priceMap.get(type).getVersion())).collect(Collectors.toList());
     }
 
     public static List<AgreementPriceBo> from(List<AgreementProductPrice> prices) {

@@ -5,6 +5,7 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.domain.sale.AgreementProduct;
 import com.simpletour.domain.sale.AgreementProductPrice;
 import org.springframework.stereotype.Repository;
 
@@ -37,15 +38,22 @@ public interface IAgreementProductPriceBiz {
      */
     AgreementPriceBo updateAgreementProductPrice(AgreementPriceBo agreementPricebo) throws BaseSystemException;
 
+    /**
+     * 根据协议产品和日期获取协议产品价格
+     * @param agreementProduct
+     * @param date (format:yyyy-MM-dd, eg:2016-04-23)
+     * @return
+     */
+    AgreementPriceBo getAgreementProductPrice(AgreementProduct agreementProduct,Date date) throws BaseSystemException;
 
 
     /**
      * 删除价格
-     * @param agreementId
-     * @param date
+     * @param agreementProduct
+     * @param date (format:yyyy-MM-dd, eg:2016-04-23)
      * @throws BaseSystemException
      */
-     void deleteAgreementProductPrice(Long agreementId,Date date) throws BaseSystemException;
+     void deleteAgreementProductPrice(AgreementProduct agreementProduct, Date date) throws BaseSystemException;
 
     /**
      * 根据条件查询产品价格的list
