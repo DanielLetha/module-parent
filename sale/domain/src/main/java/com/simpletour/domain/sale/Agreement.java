@@ -24,7 +24,7 @@ public class Agreement extends BaseDomain {
     /**
      * 销售端
      */
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "app_id")
     private SaleApp saleApp;
 //    /**
