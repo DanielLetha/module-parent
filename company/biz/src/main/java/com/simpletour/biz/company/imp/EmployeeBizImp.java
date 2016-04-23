@@ -5,6 +5,7 @@ import com.simpletour.biz.company.error.EmployeeBizError;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.commons.util.PasswordUtil;
 import com.simpletour.dao.company.IEmployeeDao;
 import com.simpletour.domain.company.Employee;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by Mario on 2016/4/8.
@@ -34,8 +34,8 @@ public class EmployeeBizImp implements IEmployeeBiz {
         //设置jobNo
         setJobNoForEmployee(employee);
         //设置初始密码
-        employee.setPasswd("st" + employee.getJobNo());
-        employee.setSalt(UUID.randomUUID().toString());
+        employee.setSalt(PasswordUtil.generateSalt());
+        employee.setPasswd(PasswordUtil.getMd5Password("st" + employee.getJobNo(), employee.getSalt()));
         return Optional.ofNullable(employeeDao.save(employee));
     }
 
