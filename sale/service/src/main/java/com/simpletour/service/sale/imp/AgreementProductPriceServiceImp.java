@@ -1,25 +1,19 @@
 package com.simpletour.service.sale.imp;
 
-import com.simpletour.biz.product.IProductBiz;
-import com.simpletour.biz.sale.IAgreementBiz;
 import com.simpletour.biz.sale.IAgreementProductBiz;
 import com.simpletour.biz.sale.IAgreementProductPriceBiz;
 import com.simpletour.biz.sale.bo.AgreementPriceBo;
-import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
-import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
-import com.simpletour.domain.sale.AgreementProductPrice;
+import com.simpletour.domain.sale.AgreementProduct;
 import com.simpletour.service.sale.IAgreementProductPriceService;
-import com.simpletour.service.sale.IAgreementProductService;
 import com.simpletour.service.sale.error.AgreementProductPriceServiceError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -38,12 +32,6 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     private IAgreementProductBiz agreementProductBiz;
 
 
-
-    @Override
-    public List<AgreementPriceBo> getAgreementProductPriceList(ConditionOrderByQuery query) {
-        return agreementProductPriceBiz.getAgreementProductPriceList(query);
-    }
-
     @Override
     public Optional<AgreementPriceBo> addAgreementProductPrice(AgreementPriceBo agreementPriceBo) throws BaseSystemException {
         checkNull(agreementPriceBo);
@@ -55,23 +43,38 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     public Optional<AgreementPriceBo> updateAgreementProductPrice(AgreementPriceBo agreementPriceBo) throws BaseSystemException {
         checkNull(agreementPriceBo);
 
-        ConditionOrderByQuery query = new ConditionOrderByQuery();
-        AndConditionSet andConditionSet = new AndConditionSet();
-        andConditionSet.addCondition("agreementProductId",agreementPriceBo.getAgreementProduct().getId());
-        andConditionSet.addCondition("date",agreementPriceBo.getDate());
-        query.setCondition(andConditionSet);
-        List<AgreementPriceBo> list = getAgreementProductPriceList(query);
-        if(list.size() >2){
-            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_MUST_ONLY);
+        AgreementPriceBo agreementPriceBo1 = agreementProductPriceBiz.getAgreementProductPrice(agreementPriceBo.getAgreementProduct(), agreementPriceBo.getDate());
+
+        if (agreementPriceBo1 == null) {
+            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_AGREEMENT_NOT_EXIST_NOT_EXIST);
         }
-        list.stream().filter(p -> !p.getAgreementProduct().equals(agreementPriceBo.getAgreementProduct())||!p.getDate().equals(agreementPriceBo.getDate()));
-        return Optional.ofNullable(agreementProductPriceBiz.addAgreementProductPrice(agreementPriceBo));
+
+        return Optional.ofNullable(agreementProductPriceBiz.updateAgreementProductPrice(agreementPriceBo));
+    }
+
+    @Override
+    public Optional<AgreementPriceBo> getAgreementProductPrice(AgreementProduct agreementProduct, Date date) throws BaseSystemException {
+        return Optional.ofNullable(agreementProductPriceBiz.getAgreementProductPrice(agreementProduct, date));
+    }
+
+    @Override
+    public List<AgreementPriceBo> getAgreementProductPriceList(AgreementProduct agreementProduct) throws BaseSystemException {
+        ConditionOrderByQuery query = new ConditionOrderByQuery();
+        AndConditionSet conditionSet = new AndConditionSet();
+        conditionSet.addCondition("agreementProduct", agreementProduct);
+        query.setCondition(conditionSet);
+        return agreementProductPriceBiz.getAgreementProductPriceList(query);
+    }
+
+    @Override
+    public List<AgreementPriceBo> getAgreementProductPriceListByQuery(ConditionOrderByQuery query) {
+        return agreementProductPriceBiz.getAgreementProductPriceList(query);
     }
 
     @Override
     public void batchInsert(List<AgreementPriceBo> agreementPriceBos) throws BaseSystemException {
-        agreementPriceBos.stream().forEach(price -> agreementProductPriceBiz.deleteAgreementProductPrice(price.getAgreementProduct().getId(),price.getDate()));
-        agreementPriceBos.stream().forEach(price -> agreementProductPriceBiz.addAgreementProductPrice(price));
+        agreementPriceBos.stream().forEach(priceBo -> agreementProductPriceBiz.deleteAgreementProductPrice(priceBo.getAgreementProduct(), priceBo.getDate()));
+        agreementPriceBos.stream().forEach(priceBo -> agreementProductPriceBiz.addAgreementProductPrice(priceBo));
     }
 
 
@@ -81,14 +84,10 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     }
 
 
-
     private void checkAgreementProductAvailable(AgreementPriceBo agreementPriceBo) {
         if (!agreementProductBiz.isExisted(agreementPriceBo.getAgreementProduct().getId()))
-            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_NOT_EXIST);
+            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_NOT_EXIST);
     }
-
-
-
 
 
 }

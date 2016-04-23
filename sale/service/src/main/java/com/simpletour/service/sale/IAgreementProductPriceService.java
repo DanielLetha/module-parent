@@ -5,8 +5,10 @@ import com.simpletour.commons.data.dao.IBaseDao;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.domain.DomainPage;
 import com.simpletour.commons.data.exception.BaseSystemException;
+import com.simpletour.domain.sale.AgreementProduct;
 import com.simpletour.domain.sale.AgreementProductPrice;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,12 +47,30 @@ public interface IAgreementProductPriceService {
      */
     void batchInsert(List<AgreementPriceBo> agreementPriceBos) throws BaseSystemException;
 
+    /**
+     * 根据协议产品和时间获取协议产品价格
+     * @param agreementProduct
+     * @param date
+     * @return
+     * @throws BaseSystemException
+     */
+
+    Optional<AgreementPriceBo> getAgreementProductPrice(AgreementProduct agreementProduct, Date date) throws BaseSystemException;
+
+    /**
+     * 根据协议产品获取所有的协议产品价格
+     * @param agreementProduct
+     * @return
+     * @throws BaseSystemException
+     */
+
+    List<AgreementPriceBo> getAgreementProductPriceList(AgreementProduct agreementProduct) throws BaseSystemException;
 
     /**
      * 根据条件获取销售协议价格的list
      * @param query
      * @return
      */
-    List<AgreementPriceBo> getAgreementProductPriceList(ConditionOrderByQuery query);
+    List<AgreementPriceBo> getAgreementProductPriceListByQuery(ConditionOrderByQuery query);
 
 }
