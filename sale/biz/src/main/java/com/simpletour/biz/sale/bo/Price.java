@@ -19,10 +19,11 @@ public class Price {
 
     private Integer version;
 
-    public Price(Integer cost, Integer settlement, Integer retail) {
+    public Price(Integer cost, Integer settlement, Integer retail,Integer version) {
         this.cost = cost;
         this.settlement = settlement;
         this.retail = retail;
+        this.version = version;
     }
 
     public Price(Long id, Integer cost, Integer settlement, Integer retail, Integer version) {
