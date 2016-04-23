@@ -5,6 +5,7 @@ import com.simpletour.biz.sale.bo.Price;
 import com.simpletour.biz.sale.error.AgreementProductPriceBizError;
 import com.simpletour.commons.data.dao.query.ConditionOrderByQuery;
 import com.simpletour.commons.data.dao.query.condition.AndConditionSet;
+import com.simpletour.commons.data.dao.query.condition.Condition;
 import com.simpletour.commons.data.exception.BaseSystemException;
 import com.simpletour.dao.sale.IAgreementProductPriceDao;
 import com.simpletour.domain.sale.Agreement;
@@ -154,7 +155,13 @@ public class AgreementProductPriceBizTest extends AbstractTransactionalTestNGSpr
         AgreementProduct agreementProduct = agreementProductBiz.getAgreementProductById(1L);
         ConditionOrderByQuery query = new ConditionOrderByQuery();
         AndConditionSet conditionSet = new AndConditionSet();
+        String now = "2016-04-23";
+        String now2 = "2016-04-23";
+
         conditionSet.addCondition("agreementProduct",agreementProduct);
+        conditionSet.addCondition("date",formateDate(now), Condition.MatchType.greaterOrEqual);
+        conditionSet.addCondition("date",formateDate(now2), Condition.MatchType.lessOrEqual);
+        query.setCondition(conditionSet);
         List<AgreementPriceBo> agreementPriceBoList =  agreementProductPriceBiz.getAgreementProductPriceList(query);
         Assert.assertEquals(2,agreementPriceBoList.size());
     }
