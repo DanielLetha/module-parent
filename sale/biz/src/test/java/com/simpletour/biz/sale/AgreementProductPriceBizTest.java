@@ -65,7 +65,7 @@ public class AgreementProductPriceBizTest extends AbstractTransactionalTestNGSpr
         agreementProductPriceBiz.addAgreementProductPrice(agreementPriceBo);
     }
 
-    @AfterTest
+//    @AfterTest
     public void clearDate() {
         String now = "2016-04-23";
         String now1 = "2016-04-24";
@@ -156,7 +156,7 @@ public class AgreementProductPriceBizTest extends AbstractTransactionalTestNGSpr
         ConditionOrderByQuery query = new ConditionOrderByQuery();
         AndConditionSet conditionSet = new AndConditionSet();
         String now = "2016-04-23";
-        String now2 = "2016-04-23";
+        String now2 = "2016-04-24";
 
         conditionSet.addCondition("agreementProduct",agreementProduct);
         conditionSet.addCondition("date",formateDate(now), Condition.MatchType.greaterOrEqual);
