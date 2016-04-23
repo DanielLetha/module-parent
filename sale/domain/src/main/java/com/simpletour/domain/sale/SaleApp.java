@@ -5,6 +5,7 @@ package com.simpletour.domain.sale;
 import com.simpletour.commons.data.domain.LogicalDeletableDomain;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @Brief : 销售端
@@ -75,6 +76,11 @@ public class SaleApp extends LogicalDeletableDomain {
      */
     @Column(name = "remark")
     private String remark;
+    /**
+     * 销售协议
+     */
+    @OneToMany(mappedBy = "saleApp")
+    private List<Agreement> agreementList;
     /**
      * 乐观锁
      */
@@ -186,6 +192,14 @@ public class SaleApp extends LogicalDeletableDomain {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<Agreement> getAgreementList() {
+        return agreementList;
+    }
+
+    public void setAgreementList(List<Agreement> agreementList) {
+        this.agreementList = agreementList;
     }
 
     public Integer getVersion() {

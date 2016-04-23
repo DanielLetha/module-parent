@@ -69,7 +69,7 @@ public class ModuleBizImp implements IModuleBiz {
     @Override
     public void deleteModule(long id) {
         Module module=getModuleById(id);
-        module.setPermissions(new ArrayList<>());
+        module.getPermissions().clear();
         updateModule(module);
         moduleDao.removeEntityById(Module.class, id);
     }
