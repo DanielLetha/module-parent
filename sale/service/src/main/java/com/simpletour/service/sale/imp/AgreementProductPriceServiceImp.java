@@ -36,6 +36,10 @@ public class AgreementProductPriceServiceImp implements IAgreementProductPriceSe
     public Optional<AgreementPriceBo> addAgreementProductPrice(AgreementPriceBo agreementPriceBo) throws BaseSystemException {
         checkNull(agreementPriceBo);
         checkAgreementProductAvailable(agreementPriceBo);
+        Optional<AgreementPriceBo> optional =  getAgreementProductPrice(agreementPriceBo.getAgreementProduct(),agreementPriceBo.getDate());
+        if(optional.isPresent()){
+            throw new BaseSystemException(AgreementProductPriceServiceError.AGREEMENT_PRODUCT_PRICE_MUST_ONLY);
+        }
         return Optional.ofNullable(agreementProductPriceBiz.addAgreementProductPrice(agreementPriceBo));
     }
 
